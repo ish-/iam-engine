@@ -46,17 +46,19 @@ void Engine::run() {
 
   while (true)
   {
-    deltaTime = static_cast<double>(SDL_GetTicks()) / 1000.;
-    LOG("run()", deltaTime);
+
+    double now = SDL_GetTicks() / 1000.;
+    deltaTime = elapsedTime - now;
+    LOG("delta", deltaTime);
 
     SDL_PollEvent(&event);
-    // if (event.key.key == SDLK_ESCAPE)
     if (event.type == SDL_EVENT_QUIT)
       return;
-    if (event.type == SDL_EVENT_KEY_DOWN) {
+    if (event.type == SDL_EVENT_KEY_DOWN)
       if (event.key.key == SDLK_ESCAPE)
         return;
-    }
+
+    inputs.update(event);
 
     // inputManager.clear();
 
