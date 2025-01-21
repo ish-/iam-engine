@@ -1,3 +1,4 @@
+#pragma once
 #include "SDL3/SDL_mouse.h"
 #include "SDL3/SDL_oldnames.h"
 #include <SDL3/SDL_events.h>
@@ -12,6 +13,11 @@ public:
 
 class Inputs {
 public:
+  static Inputs& get() {
+    static Inputs instance;
+    return instance;
+  }
+
   MouseState mouse;
 
   bool update (SDL_Event& event) {

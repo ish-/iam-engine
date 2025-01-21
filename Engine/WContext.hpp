@@ -1,21 +1,21 @@
 #pragma once
 
-class WCallbacks;
-class WGraphics;
-class WInputs;
-class WPhysics;
-class WTime;
-class Engine;
-class Scene;
+// class WCallbacks;
+// class WGraphics;
+class Inputs;
+// class WPhysics;
+// class Time;
+// class Engine;
+// class Scene;
 
 struct WContext
 {
   // WCallbacks &callbacks;
 
   // WGraphics &graphics;
-  WInputs &inputs;
-  Scene &scene;
-  Engine &engine;
+  // Engine &engine;
+  Inputs &inputs;
+  // Scene &scene;
   // WPhysics &physics;
-  WTime &time;
+  // Time &time;
 };

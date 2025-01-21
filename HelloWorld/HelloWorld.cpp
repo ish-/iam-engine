@@ -1,16 +1,21 @@
-// #include "../Engine/WContext.hpp"
+#include "../Engine/WContext.hpp"
 #include "../Engine/Engine.hpp"
-// #include "../Engine/Scene.hpp"
+#include "../Engine/Inputs/Inputs.hpp"
 #include "../util/LOG.hpp"
+#include "HWScene.hpp"
 #include <memory>
 
+
 int main () {
+  // Inputs inputs = Inputs::get();
+  // WContext ctx {inputs};
   Engine engine;
+  auto scene = std::make_shared<HWScene>();
   // Scene scene;
 
-  engine.init();
   LOG("Hello World!");
-  auto scene = std::make_shared<Scene>();
+  // auto scene = std::make_shared<HWScene>();
+  engine.init(scene);
   engine.run(scene);
   engine.exit();
   LOG("Exit!");

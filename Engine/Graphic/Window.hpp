@@ -3,6 +3,13 @@
 
 class Window {
 public:
+    static Window& get() {
+        static Window instance;
+        return instance;
+    }
+
+    Window () {};
+
     SDL_Window* sdlWindow;
     void Init();
     void Close() const;

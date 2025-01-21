@@ -1,22 +1,22 @@
 #include "Engine.hpp"
 #include "../util/LOG.hpp"
 #include "SDL3/SDL_init.h"
+#include "Engine.hpp"
 #include <SDL3/SDL_timer.h>
 #include <SDL3/SDL_video.h>
 #include <glad/glad.h>
 
 #include "Inputs/Inputs.hpp"
 #include "Graphic/Window.hpp"
+#include "Renderer.hpp"
 // r
 
-void Engine::init() {
+void Engine::init(const std::shared_ptr<Scene>& scene) {
   if (SDL_Init(SDL_INIT_VIDEO) < 0) {
     LOG("SDL failed initialization. %s", SDL_GetError());
     // throw std::exception("Something Bad happened here");
     throw std::runtime_error("SDL failed initialization.");
   }
-
-  inputs = std::make_shared<Inputs>();
 
   SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
   SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
@@ -24,13 +24,16 @@ void Engine::init() {
   SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_DEBUG_FLAG);
 
   window = std::make_shared<Window>();
+  renderer = std::make_shared<Renderer>();
+
+  // auto cube = create<Mesh>();
+
   window->Init();
   SDL_GLContext context = SDL_GL_CreateContext(window->sdlWindow);
   // gladLoadGLLoader(SDL_GL_GetProcAddress);
   if (!gladLoadGLLoader((GLADloadproc)SDL_GL_GetProcAddress)) {
-    LOG("FAil");
+    LOG("GLAD initialization FAILED");
     return;
-    // throw(std::string("Failed to initialize GLAD"));
   }
 
   glEnable(GL_DEPTH_TEST);
@@ -42,20 +45,25 @@ void Engine::init() {
   // world = std::make_shared<World>(*this);
 }
 
+
 void Engine::exit() {
   window->Close();
 }
 
-void Engine::run(std::shared_ptr<Scene>& scene) {
+
+void Engine::run(const std::shared_ptr<Scene>& scene) {
   // gameplayManager.loadMap(startMap);
   SDL_Event event;
+
+  Inputs* inputs = &Inputs::get();
+  LOG("Inputs*", inputs);
 
   while (true)
   {
 
     double now = SDL_GetTicks() / 1000.;
     deltaTime = now - elapsedTime;
-    LOG("delta", deltaTime);
+    // LOG("delta", deltaTime);
 
     SDL_PollEvent(&event);
     if (event.type == SDL_EVENT_QUIT)

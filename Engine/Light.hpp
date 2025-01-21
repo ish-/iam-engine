@@ -4,6 +4,14 @@
 
 class Light : public Object3D {
 public:
-  float intensity = 1.0f;
-  glm::vec3 color{1.0f, 1.0f, 1.0f};
+  // Light() {}
+  Light(
+    float intensity = 1.f,
+    glm::vec3 color = {1.0f, 1.0f, 1.0f}
+  ) :intensity(intensity), color(color) {
+
+  }
+
+  float intensity;
+  glm::vec3 color;
 };
