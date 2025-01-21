@@ -1,6 +1,6 @@
 #pragma once
-#include "./Object3D.hpp"
 #include <glm/gtc/matrix_transform.hpp>
+#include "Object3D.hpp"
 
 class Camera: public Object3D {
 public:

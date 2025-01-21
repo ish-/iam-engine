@@ -1,11 +1,12 @@
-#pragma
+#pragma once
 #include <memory>
 #include <SDL3/SDL_video.h>
-
-#include "Inputs/Inputs.hpp"
-#include "Graphic/Window.hpp"
+// TODO: how move Scene to cpp?
+#include "Scene.hpp"
 
 class Inputs;
+class Window;
+// class Scene;
 
 class Engine {
   // common
@@ -15,13 +16,16 @@ public:
   // WContext& ctx;
 
   void init ();
-  void run();
+
+  void run(std::shared_ptr<Scene>& scene);
+
   void exit();
 
   double deltaTime;
   double elapsedTime;
+  bool pause;
 
 // this
   std::shared_ptr<Window> window;
-  Inputs inputs;
+  std::shared_ptr<Inputs> inputs;
 };

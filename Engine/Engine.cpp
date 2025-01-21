@@ -5,12 +5,18 @@
 #include <SDL3/SDL_video.h>
 #include <glad/glad.h>
 
+#include "Inputs/Inputs.hpp"
+#include "Graphic/Window.hpp"
+// r
+
 void Engine::init() {
   if (SDL_Init(SDL_INIT_VIDEO) < 0) {
     LOG("SDL failed initialization. %s", SDL_GetError());
     // throw std::exception("Something Bad happened here");
     throw std::runtime_error("SDL failed initialization.");
   }
+
+  inputs = std::make_shared<Inputs>();
 
   SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
   SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
@@ -33,14 +39,14 @@ void Engine::init() {
   glClearDepthf(1.0f);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-  window->Init();
+  // world = std::make_shared<World>(*this);
 }
 
 void Engine::exit() {
   window->Close();
 }
 
-void Engine::run() {
+void Engine::run(std::shared_ptr<Scene>& scene) {
   // gameplayManager.loadMap(startMap);
   SDL_Event event;
 
@@ -48,7 +54,7 @@ void Engine::run() {
   {
 
     double now = SDL_GetTicks() / 1000.;
-    deltaTime = elapsedTime - now;
+    deltaTime = now - elapsedTime;
     LOG("delta", deltaTime);
 
     SDL_PollEvent(&event);
@@ -58,9 +64,15 @@ void Engine::run() {
       if (event.key.key == SDLK_ESCAPE)
         return;
 
-    inputs.update(event);
+    inputs->update(event);
 
-    // inputManager.clear();
+    if (!pause) {  // stop GL redrawing
+      glViewport(0, 0, window->width, window->height);
+      glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+
+      scene->update();
+      SDL_GL_SwapWindow(window->sdlWindow);
+    }
 
     // physicsManager.update();
     // graphicsManager.update();

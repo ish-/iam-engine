@@ -5,13 +5,17 @@ class WGraphics;
 class WInputs;
 class WPhysics;
 class WTime;
+class Engine;
+class Scene;
 
 struct WContext
 {
   // WCallbacks &callbacks;
 
   // WGraphics &graphics;
-  // WInputs &inputs;
+  WInputs &inputs;
+  Scene &scene;
+  Engine &engine;
   // WPhysics &physics;
   WTime &time;
 };

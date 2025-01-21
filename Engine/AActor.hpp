@@ -1,11 +1,12 @@
 #pragma once
 #include <memory>
 #include <vector>
+#include "Object3D.hpp"
 
 class AComponent;
 class WContext;
 
-class AActor : public std::enable_shared_from_this<AActor> {
+class AActor : public Object3D, public std::enable_shared_from_this<AActor> {
 public:
     AActor(WContext& ctx);
     virtual ~AActor() = default;
