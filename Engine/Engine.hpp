@@ -1,4 +1,5 @@
 #pragma once
+#include <cstddef>
 #include <memory>
 #include <type_traits>
 #include <SDL3/SDL_video.h>
@@ -31,11 +32,11 @@ public:
 
   void exit();
 
-  double deltaTime;
-  double elapsedTime;
-  bool pause;
+  double deltaTime = 0;
+  double elapsedTime = 0;
+  bool pause = false;
 
 // this
-  std::shared_ptr<Window> window;
-  std::shared_ptr<Renderer> renderer;
+  std::shared_ptr<Window> window = nullptr;
+  std::shared_ptr<Renderer> renderer = nullptr;
 };

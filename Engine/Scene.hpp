@@ -2,6 +2,7 @@
 // #include "AActor.hpp"
 #include "Object3D.hpp"
 #include "WObject.hpp"
+// #include "AActor.hpp"
 #include "WContext.hpp"
 #include <memory>
 #include <vector>
@@ -15,8 +16,9 @@ public:
 
   std::shared_ptr<Camera> camera;
   std::shared_ptr<Light> light;
-  std::vector<std::shared_ptr<Object3D>> children;
-  // std::vector<std::shared_ptr<AActor>> actors;
+  // std::vector<std::shared_ptr<AActor>> children;
+  // std::vector<std::shared_ptr<AActor>> children;
+
 
   virtual bool load ();
   // virtual bool unload ();

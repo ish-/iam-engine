@@ -10,6 +10,11 @@ HWScene::HWScene ()
 
   camera = std::make_shared<Camera>(80, 1, 0.1, 100);
   light = std::make_shared<Light>();
+
+  cube = std::make_shared<Cube>();
+  children.push_back(cube);
+  // cube->init();
+  // children.push_back(cube);
 }
 
 bool HWScene::load () {
@@ -18,5 +23,9 @@ bool HWScene::load () {
 
 bool HWScene::update () {
   LOG("Mouse", inputs.mouse.x, inputs.mouse.y);
+  for (auto& child : children) {
+    child->update();
+  }
+  Super::update();
   return true;
 }

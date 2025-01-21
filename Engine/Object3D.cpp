@@ -3,8 +3,6 @@
 
 using namespace glm;
 
-// Object3D
-
 void Object3D::updateMat() {
   matrix[3] = vec4(position, 1.0f);
 }

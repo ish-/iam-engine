@@ -12,7 +12,7 @@
 // r
 
 void Engine::init(const std::shared_ptr<Scene>& scene) {
-  if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+  if (!SDL_Init(SDL_INIT_VIDEO)) {
     LOG("SDL failed initialization. %s", SDL_GetError());
     // throw std::exception("Something Bad happened here");
     throw std::runtime_error("SDL failed initialization.");

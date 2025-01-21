@@ -1,6 +1,7 @@
 #pragma once
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/quaternion.hpp>
+#include <memory>
 
 using namespace glm;
 
@@ -8,6 +9,8 @@ const mat4 I_MAT = mat4(1.f);
 
 class Object3D {
 public:
+  std::weak_ptr<Object3D> parent;
+
   mat4 matrix = I_MAT;
 
   vec3 position = vec3(0.);
@@ -37,4 +40,7 @@ public:
 
   void rotateLocal(const vec3& angles);
   void rotateEulLocal(const vec3& eulerAngs);
+
+  // mat4 getTransform() const;
+  // mat4 getAbsTransform() const;
 };
