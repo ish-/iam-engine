@@ -1,30 +1,56 @@
 #include "HWScene.hpp"
+#include <glm/vec3.hpp>
+#include <cmath>
 #include "../Engine/Inputs/Inputs.hpp"
-#include "../util/LOG.hpp"
-
 #include "../Engine/Camera.hpp"
+#include "../Engine/Graphic/Window.hpp"
 #include "../Engine/Light.hpp"
+#include "../Engine/BoxGeo.hpp"
+#include "../Engine/Mesh.hpp"
+#include "../util/LOG.hpp"
+#include "../util/math.hpp"
+using namespace std;
+using namespace glm;
 
 HWScene::HWScene ()
-    : inputs(Inputs::get()) {
+    : inputs(Inputs::get()), renderer(Renderer::get()) {
 
 }
 
 bool HWScene::load () {
-  camera = std::make_shared<Camera>(80, 1, 0.1, 100);
-  light = std::make_shared<Light>();
+  Window& w = Window::get();
 
-  cube = std::make_shared<Cube>();
+  camera = make_shared<Camera>(80, w.width / w.height, 0.1, 100);
+  camera->translate(vec3(2, 0, -5));
+  // camera->setRotation(vec3(60, 0, 0)); doest work
+  light = make_shared<Light>();
+
+  boxGeo = make_shared<BoxGeo>();
+  cube = make_shared<Cube>();
+  cube->geo = boxGeo;
   children.push_back(cube);
-
 
   return true;
 }
 
 bool HWScene::update () {
-  LOG("Mouse", inputs.mouse.x, inputs.mouse.y);
-  for (auto& child : children) {
+  Window& w = Window::get();
+
+  cube->setRotation(vec3(inputs.mouse.x / 100, inputs.mouse.y / 100, 0));
+  camera->setRotation(vec3(
+    remap(0.f, (float)w.width, -45.f, 45.f, inputs.mouse.x),
+    remap(0.f, (float)w.height, -45.f, 45.f, inputs.mouse.y),
+    0
+  ));
+
+  for (auto& child : children)
     child->update();
+
+  for (auto& child : children) {
+    if (auto mesh = dynamic_pointer_cast<Mesh>(child)) {
+      renderer.render(camera, light, mesh);
+      mesh->draw();
+    }
   }
   Super::update();
   return true;

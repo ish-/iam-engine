@@ -1,18 +1,17 @@
 #include "Engine.hpp"
 #include <filesystem>
-#include "../util/LOG.hpp"
-#include "SDL3/SDL_init.h"
-#include "Engine.hpp"
-#include <SDL3/SDL_timer.h>
-#include <SDL3/SDL_video.h>
 #include <glad/glad.h>
+#include <SDL3/SDL_init.h>
+#include <SDL3/SDL_video.h>
 
+#include "Engine.hpp"
 #include "Inputs/Inputs.hpp"
 #include "Graphic/Window.hpp"
 #include "Renderer.hpp"
+#include "../util/LOG.hpp"
 // r
 
-Engine::Engine() {
+Engine::Engine() : time(Time::get()) {
   std::filesystem::current_path(BIN_TO_BUILD_PATH);
   std::filesystem::path p = "resources/shaders/file.vert.glsl";
   LOG("Abs shaders fld", std::filesystem::absolute(p));
@@ -68,12 +67,8 @@ void Engine::run(const std::shared_ptr<Scene>& scene) {
 
   while (true)
   {
-
-    double now = SDL_GetTicks() / 1000.;
-    deltaTime = now - elapsedTime;
-    // LOG("delta", deltaTime);
-
     SDL_PollEvent(&event);
+    time.update();
     if (event.type == SDL_EVENT_QUIT)
       return;
     if (event.type == SDL_EVENT_KEY_DOWN)
@@ -102,5 +97,6 @@ void Engine::run(const std::shared_ptr<Scene>& scene) {
 
     // if (bExit)
     //   break;
+    SDL_Delay(time.frameEnd());
   }
 }

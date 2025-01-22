@@ -1,5 +1,8 @@
 #pragma once
 #include <memory>
+#include "Camera.hpp"
+#include "Light.hpp"
+#include "Mesh.hpp"
 using namespace std;
 
 class Camera;
@@ -15,5 +18,5 @@ public:
   // virtual ~Renderer() = default;
 
   void init();
-  // void render(shared_ptr<Camera> camera, shared_ptr<Light> light, shared_ptr<Mesh> mesh);
+  void render(shared_ptr<Camera> camera, shared_ptr<Light> light, shared_ptr<Mesh> mesh);
 };

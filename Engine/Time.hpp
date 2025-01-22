@@ -1,23 +1,26 @@
-#ifndef TIME_H
-#define TIME_H
-/*
-* Hold time related functions.
-* In charge of computing the delta time and ensure smooth game ticking.
-*/
+#pragma once
+#include <SDL3/SDL_timer.h>
+
 class Time {
 public:
-    // Compute delta time as the number of milliseconds since last frame
-    float ComputeDeltaTime();
-    // Wait if the game run faster than the decided FPS
-    void DelayTime();
-private:
-    const static int FPS = 60;
-    const static int frameDelay = 1000 / FPS;
-    // Time in milliseconds when frame starts
-    unsigned int frameStart { 0 };
-    // Last frame start time in milliseconds
-    unsigned int lastFrame { 0 };
-    // Time it tooks to run the loop. Used to cap framerate.
-    unsigned int frameTime { 0 };
+    static Time& get() {
+        static Time instance;
+        return instance;
+    }
+
+    double rate = 60; // fps
+    double eT = 0; // elapsed time
+    double dT = 0; // delta time
+
+    double update () {
+        double now = SDL_GetTicks() / 1000.;
+        dT = now - eT;
+        eT = now;
+        return dT;
+    }
+
+    double frameEnd () {
+        double now = SDL_GetTicks() / 1000.;
+        return 1. / rate - (now - eT);
+    }
 };
-#endif

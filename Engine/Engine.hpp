@@ -7,6 +7,7 @@
 #include "Scene.hpp"
 #include "WContext.hpp"
 #include "WObject.hpp"
+#include "Time.hpp"
 
 class Inputs;
 class Window;
@@ -26,6 +27,7 @@ public:
   virtual ~Engine() = default;
 
   // WContext& ctx;
+  Time& time;
 
   void init(const std::shared_ptr<Scene>& scene);
 
@@ -33,8 +35,6 @@ public:
 
   void exit();
 
-  double deltaTime = 0;
-  double elapsedTime = 0;
   bool pause = false;
 
 // this
