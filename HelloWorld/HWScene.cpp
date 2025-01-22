@@ -8,16 +8,16 @@
 HWScene::HWScene ()
     : inputs(Inputs::get()) {
 
+}
+
+bool HWScene::load () {
   camera = std::make_shared<Camera>(80, 1, 0.1, 100);
   light = std::make_shared<Light>();
 
   cube = std::make_shared<Cube>();
   children.push_back(cube);
-  // cube->init();
-  // children.push_back(cube);
-}
 
-bool HWScene::load () {
+
   return true;
 }
 

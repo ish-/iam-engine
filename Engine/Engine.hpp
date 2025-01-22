@@ -20,6 +20,7 @@ public:
   //   static Engine instance;
   //   return instance;
   // }
+  Engine();
 
   // Engine(WContext& ctx) : ctx(ctx) {}
   virtual ~Engine() = default;

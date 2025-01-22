@@ -1,4 +1,5 @@
 #include "Engine.hpp"
+#include <filesystem>
 #include "../util/LOG.hpp"
 #include "SDL3/SDL_init.h"
 #include "Engine.hpp"
@@ -10,6 +11,12 @@
 #include "Graphic/Window.hpp"
 #include "Renderer.hpp"
 // r
+
+Engine::Engine() {
+  std::filesystem::current_path(BIN_TO_BUILD_PATH);
+  std::filesystem::path p = "resources/shaders/file.vert.glsl";
+  LOG("Abs shaders fld", std::filesystem::absolute(p));
+}
 
 void Engine::init(const std::shared_ptr<Scene>& scene) {
   if (!SDL_Init(SDL_INIT_VIDEO)) {
@@ -42,6 +49,7 @@ void Engine::init(const std::shared_ptr<Scene>& scene) {
   glClearDepthf(1.0f);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+  scene->load();
   // world = std::make_shared<World>(*this);
 }
 

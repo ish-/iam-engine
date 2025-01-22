@@ -58,12 +58,12 @@ add_executable(${PROJECT_NAME} ${SAMPLE_DIR}/${SAMPLE_NAME}.cpp ${SOURCES} ${SAM
 # set(RESOURCE_FILES
 #     ${PROJECT_SOURCE_DIR}/shaders
 # )
-# add_custom_target(copy_resources ALL
-#     # COMMAND ${CMAKE_COMMAND} -E copy_directory ${PROJECT_SOURCE_DIR}/shaders ${CMAKE_BINARY_DIR}/resources/shaders
-#     COMMAND ${CMAKE_COMMAND} -E copy ${PROJECT_SOURCE_DIR}/config.json ${CMAKE_BINARY_DIR}/resources/config.json
-#     DEPENDS ${RESOURCE_FILES}
-#     COMMENT "Copying resource files to build directory"
-# )
+add_custom_target(copy_resources ALL
+    COMMAND ${CMAKE_COMMAND} -E copy_directory ${PROJECT_SOURCE_DIR}/shaders ${CMAKE_BINARY_DIR}/resources/shaders
+    # COMMAND ${CMAKE_COMMAND} -E copy ${PROJECT_SOURCE_DIR}/config.json ${CMAKE_BINARY_DIR}/resources/config.json
+    DEPENDS ${RESOURCE_FILES}
+    COMMENT "Copying resource files to build directory"
+)
 
 # if (${CMAKE_BUILD_TYPE} STREQUAL "Debug")
 #     add_custom_target(symlink_config ALL
