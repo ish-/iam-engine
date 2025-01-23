@@ -1,9 +1,6 @@
 #pragma once
-// #include "AActor.hpp"
 #include "Object3D.hpp"
 #include "WObject.hpp"
-// #include "AActor.hpp"
-#include "WContext.hpp"
 #include <memory>
 #include <vector>
 
@@ -23,7 +20,7 @@ public:
   virtual bool load ();
   // virtual bool unload ();
 
-  virtual bool update();
+  virtual void update(float dt);
 
   // ~Scene() = default;
 };

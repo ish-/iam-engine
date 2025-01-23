@@ -14,6 +14,7 @@
 #include "Cube.hpp"
 #include "SDL3/SDL_keycode.h"
 #include "glm/ext/vector_float3.hpp"
+#include "../Engine/Engine.hpp"
 using namespace std;
 using namespace glm;
 
@@ -64,10 +65,10 @@ bool HWScene::load () {
   return true;
 }
 
-bool HWScene::update () {
+void HWScene::update (float dt) {
   Window& w = Window::get();
 
-  float pan = inputs.btn[SDLK_A] - inputs.btn[SDLK_D]; // left-right
+  float pan = Engine::getCtx().inputs.btn[SDLK_A] - inputs.btn[SDLK_D]; // left-right
   float tilt = inputs.btn[SDLK_Q] - inputs.btn[SDLK_E]; // up-down
   float dolly = inputs.btn[SDLK_W] - inputs.btn[SDLK_S]; // forward-back
   vec3 move = vec3(pan, tilt, dolly);
@@ -77,8 +78,8 @@ bool HWScene::update () {
   float roll = inputs.btn[SDLK_LSHIFT] * inputs.mouseRel.x; // roll
   vec3 rotate = vec3(pitch, yaw, roll);
 
-  cameraOrigin->rotateLocal(-rotate / 100.f);
-  cameraOrigin->translateLocal(move * -0.005f);
+  cameraOrigin->rotateLocal(-rotate * dt);
+  cameraOrigin->translateLocal(-move * dt);
 
   for (auto& child : children)
     child->update();
@@ -89,6 +90,6 @@ bool HWScene::update () {
       mesh->draw();
     }
   }
-  Super::update();
-  return true;
+  Super::update(dt);
+  // return true;
 }

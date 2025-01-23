@@ -9,7 +9,7 @@
 int main () {
   // Inputs inputs = Inputs::get();
   // WContext ctx {inputs};
-  Engine engine;
+  Engine& engine = Engine::get();
   auto scene = std::make_shared<HWScene>();
   // Scene scene;
 

@@ -4,38 +4,34 @@
 #include <type_traits>
 #include <SDL3/SDL_video.h>
 // TODO: how move Scene to cpp?
-#include "Scene.hpp"
-#include "WContext.hpp"
-#include "WObject.hpp"
-#include "Time.hpp"
+// #include "Scene.hpp"
+#include "IEngine.hpp"
 
-class Inputs;
-class Window;
-class Renderer;
-// class Scene;
+class Scene;
 
 class Engine {
   // common
 public:
-  // static Engine& get() {
-  //   static Engine instance;
-  //   return instance;
-  // }
+  static Engine& get() {
+    static Engine instance;
+    return instance;
+  }
+  static IEngine& getCtx() {
+    return Engine::get().ctx;
+  }
+
   Engine();
 
   // Engine(WContext& ctx) : ctx(ctx) {}
   virtual ~Engine() = default;
 
-  // WContext& ctx;
-  Time& time;
-  Window& window;
-  Renderer& renderer;
+  IEngine ctx;
+  void exit();
 
   void init(const std::shared_ptr<Scene>& scene);
 
   void run(const std::shared_ptr<Scene>& scene);
 
-  void exit();
 
   bool pause = false;
 

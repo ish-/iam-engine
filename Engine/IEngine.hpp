@@ -1,10 +1,17 @@
 #pragma once
-#include <memory>
-#include "WObject.hpp"
 
-class IEngine {
+class Time;
+class Inputs;
+class Window;
+class Renderer;
+
+struct IEngine {
 public:
-  virtual ~IEngine() = default;
+  // virtual ~IEngine() = default;
 
-  virtual std::shared_ptr<WObject> create() = 0;
+  Time& time;
+  Window& window;
+  Renderer& renderer;
+  Inputs& inputs;
+  void exit();
 };

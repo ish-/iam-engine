@@ -8,9 +8,9 @@ bool Scene::load() {
 //   // Add your unloading logic here
 //   return true;
 // }
-bool Scene::update() {
+void Scene::update(float dt) {
   // for (auto& actor : children) {
   //   actor->update();
   // }
-  return true;
+  // return true;
 }

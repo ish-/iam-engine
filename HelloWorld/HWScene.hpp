@@ -25,7 +25,7 @@ public:
   vector<shared_ptr<HWObject>> children;
 
   virtual bool load () override;
-  virtual bool update () override;
+  virtual void update (float dt) override;
 
   // ~HWScene() = default;
 };
