@@ -6,6 +6,7 @@ in vec3 vFragPos;
 in vec3 vNormal;
 // in vec2 TexCoords;
 
+uniform vec3 wireColor;
 uniform vec3 lightPos;
 uniform vec3 lightColor;
 uniform vec3 viewPos;
@@ -31,6 +32,10 @@ vec3 attenuateLight (vec3 lightPos, vec3 lightColor, vec3 fragPos) {
 
 void main()
 {
+		if (wireColor.r + wireColor.g + wireColor.g > 0.) {
+			FragColor = vec4(wireColor, 1.);
+			return;
+		}
     // Ambient
     float ambientStrength = 0.03;
     vec3 ambient = ambientStrength * vec3(1.0);
@@ -52,6 +57,10 @@ void main()
 
     // vec3 result = (ambient + diffuse + specular) * texture(texture1, TexCoords).rgb;
     vec3 result = (ambient + diffuse + specular) * tintColor;
-    FragColor = vec4(result, 1.0);
+
+		// if inside a mesh
+		float inside = 1 - step(0, dot(viewDir, norm));
+    FragColor = vec4(result, inside * .3);
+    // FragColor = vec4(result, 1.);
 		// FragColor = vec4(1.0);
 }

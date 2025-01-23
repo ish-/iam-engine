@@ -9,9 +9,10 @@
 #include "Graphic/Window.hpp"
 #include "Renderer.hpp"
 #include "../util/LOG.hpp"
+#include "SDL3/SDL_opengl.h"
 // r
 
-Engine::Engine() : time(Time::get()), window(Window::get()) {
+Engine::Engine() : time(Time::get()), window(Window::get()), renderer(Renderer::get()) {
   std::filesystem::current_path(BIN_TO_BUILD_PATH);
   std::filesystem::path p = "resources/shaders/file.vert.glsl";
   LOG("Abs shaders fld", std::filesystem::absolute(p));
@@ -24,29 +25,15 @@ void Engine::init(const std::shared_ptr<Scene>& scene) {
     throw std::runtime_error("SDL failed initialization.");
   }
 
-  SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-  SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
-  SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-  SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_DEBUG_FLAG);
-
-  renderer = std::make_shared<Renderer>();
+  window.Init();
+  renderer.init(window.sdlWindow);
 
   // auto cube = create<Mesh>();
 
-  window.Init();
-  SDL_GLContext context = SDL_GL_CreateContext(window.sdlWindow);
-  // gladLoadGLLoader(SDL_GL_GetProcAddress);
-  if (!gladLoadGLLoader((GLADloadproc)SDL_GL_GetProcAddress)) {
-    LOG("GLAD initialization FAILED");
-    return;
-  }
 
-  glEnable(GL_DEPTH_TEST);
-  glDepthFunc(GL_LESS);
-  // TODO: enable culling
-  glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-  glClearDepthf(1.0f);
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+  if (auto err = glGetError())
+    LOG("GL ERROR!", err);
 
   scene->load();
   // world = std::make_shared<World>(*this);

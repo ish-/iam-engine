@@ -9,7 +9,7 @@ public:
   Light(
     float intensity = 1.f,
     glm::vec3 color = {1.0f, 1.0f, 1.0f},
-    glm::vec2 atteniation = {5.f, 10.f}
+    glm::vec2 atteniation = {8.f, 21.f}
   ) :intensity(intensity), color(color), atteniation(atteniation) {
 
   }

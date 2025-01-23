@@ -2,12 +2,12 @@
 #include <memory>
 #include "Camera.hpp"
 #include "Light.hpp"
-#include "Mesh.hpp"
 using namespace std;
 
 class Camera;
 class Light;
-// class Mesh;
+class Mesh;
+class SDL_Window;
 
 class Renderer {
 public:
@@ -17,6 +17,6 @@ public:
   }
   // virtual ~Renderer() = default;
 
-  void init();
+  void init (SDL_Window* sdlWindow);
   void render(shared_ptr<Camera> camera, shared_ptr<Light> light, shared_ptr<Mesh> mesh);
 };

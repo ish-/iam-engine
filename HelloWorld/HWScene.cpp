@@ -12,6 +12,7 @@
 #include "../util/math.hpp"
 #include "../util/random.hpp"
 #include "Cube.hpp"
+#include "SDL3/SDL_keycode.h"
 #include "glm/ext/vector_float3.hpp"
 using namespace std;
 using namespace glm;
@@ -26,7 +27,7 @@ bool HWScene::load () {
 
   cameraOrigin = make_shared<Object3D>();
   camera = make_shared<Camera>(80, w.width / w.height, 0.1, 1000);
-  camera->translate(vec3(0, 0, 5));
+  camera->translate(vec3(0, 0, .5));
   cameraOrigin->attach(camera);
 
   // camera->setRotation(vec3(60, 0, 0)); doest work
@@ -53,7 +54,7 @@ bool HWScene::load () {
 
   for (uint i = 0; i < 100; i++) {
     auto _cube = cube->clone<Cube>();
-    _cube->setPosition(vec3( rd::in(-7., 7.), rd::in(-7., 7.), rd::in(-7., 7.)));
+    _cube->setPosition(vec3( rd::in(-15., 15.), rd::in(-15., 15.), rd::in(-15., 15.)));
     _cube->tint = vec3( rd::in(0, 1), rd::in(0, 1), rd::in(0, 1));
     children.push_back(_cube);
   }
@@ -66,23 +67,18 @@ bool HWScene::load () {
 bool HWScene::update () {
   Window& w = Window::get();
 
-  // cube->setRotation(vec3(inputs.mouse.x / 100, inputs.mouse.y / 100, 0));
+  float pan = inputs.btn[SDLK_A] - inputs.btn[SDLK_D]; // left-right
+  float tilt = inputs.btn[SDLK_Q] - inputs.btn[SDLK_E]; // up-down
+  float dolly = inputs.btn[SDLK_W] - inputs.btn[SDLK_S]; // forward-back
+  vec3 move = vec3(pan, tilt, dolly);
 
-  // cameraOrigin->setRotation(vec3(
-  //   remap(0.f, (float)w.width, -3.f, 3.f, inputs.mouse.y),
-  //   remap(0.f, (float)w.height, -3.f, 3.f, inputs.mouse.x),
-  //   0
-  // ));
+  float pitch = inputs.mouseRel.y; // pitch
+  float yaw = (1 - inputs.btn[SDLK_LSHIFT]) * inputs.mouseRel.x;  // yaw
+  float roll = inputs.btn[SDLK_LSHIFT] * inputs.mouseRel.x; // roll
+  vec3 rotate = vec3(pitch, yaw, roll);
 
-  // vec3 move = vec3(
-  //   inputs.btn[SDLK_D] - inputs.btn[SDLK_A],
-  //   inputs.btn[SDLK_E] - inputs.btn[SDLK_Q],
-  //   inputs.btn[SDLK_W] - inputs.btn[SDLK_S]
-  // ) * cameraOrigin->getRotation();
-
-  // cameraOrigin->translateLocal(move * 0.005f);
-
-  cameraOrigin->rotateLocal(vec3(inputs.mouseRel.y, inputs.mouseRel.x, 0) / 100.f);
+  cameraOrigin->rotateLocal(-rotate / 100.f);
+  cameraOrigin->translateLocal(move * -0.005f);
 
   for (auto& child : children)
     child->update();

@@ -9,6 +9,9 @@ const mat4 I_MAT = mat4(1.f);
 
 class Transform {
 public:
+  Transform() = default;
+  Transform (const mat4& matrix): matrix(matrix) {}
+
   mat4 matrix = I_MAT;
 
   vec3 position = vec3(0.);

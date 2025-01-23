@@ -83,8 +83,7 @@ void Transform::rotateEul(const vec3& eulerAngs) {
 }
 
 void Transform::rotateLocal(const vec3& angles) {
-  quat quater = quat(angles);
-  mat4 rotationMatrix = toMat4(quater);
+  mat4 rotationMatrix = toMat4(quat(angles));
   matrix = matrix * rotationMatrix;
 }
 void Transform::rotateEulLocal(const vec3& eulerAngs) {
