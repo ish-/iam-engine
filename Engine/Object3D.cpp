@@ -7,7 +7,7 @@ mat4 Object3D::getTransformMatrix() const {
 
 mat4 Object3D::getAbsTransformMatrix() const {
   if (auto _parent = parent.lock()) {
-      return getTransformMatrix() + _parent->getAbsTransformMatrix();
+      return _parent->getAbsTransformMatrix() * getTransformMatrix();
   }
   return getTransformMatrix();
 }

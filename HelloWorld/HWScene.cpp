@@ -23,7 +23,7 @@ bool HWScene::load () {
 
   cameraOrigin = make_shared<Object3D>();
   camera = make_shared<Camera>(80, w.width / w.height, 0.1, 100);
-  camera->translate(vec3(2, 0, -5));
+  camera->translate(vec3(0, 0, -5));
   cameraOrigin->attach(camera);
 
   // camera->setRotation(vec3(60, 0, 0)); doest work
@@ -40,11 +40,11 @@ bool HWScene::load () {
 bool HWScene::update () {
   Window& w = Window::get();
 
-  cube->setRotation(vec3(inputs.mouse.x / 100, inputs.mouse.y / 100, 0));
+  // cube->setRotation(vec3(inputs.mouse.x / 100, inputs.mouse.y / 100, 0));
 
   cameraOrigin->setRotation(vec3(
-    remap(0.f, (float)w.width, -45.f, 45.f, inputs.mouse.x),
-    remap(0.f, (float)w.height, -45.f, 45.f, inputs.mouse.y),
+    remap(0.f, (float)w.width, -1.f, 1.f, inputs.mouse.x),
+    remap(0.f, (float)w.height, -1.f, 1.f, inputs.mouse.y),
     0
   ));
 
