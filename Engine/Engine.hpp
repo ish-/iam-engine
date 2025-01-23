@@ -28,6 +28,7 @@ public:
 
   // WContext& ctx;
   Time& time;
+  Window& window;
 
   void init(const std::shared_ptr<Scene>& scene);
 
@@ -38,6 +39,5 @@ public:
   bool pause = false;
 
 // this
-  std::shared_ptr<Window> window = nullptr;
   std::shared_ptr<Renderer> renderer = nullptr;
 };

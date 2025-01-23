@@ -17,6 +17,5 @@ public:
   void attach(const std::shared_ptr<Object3D>& child);
   std::shared_ptr<Object3D> getParent() const;
 
-  mat4 getTransformMatrix() const;
   mat4 getAbsTransformMatrix() const;
 };

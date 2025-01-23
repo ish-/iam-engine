@@ -53,10 +53,12 @@ bool HWScene::load () {
 
   for (uint i = 0; i < 100; i++) {
     auto _cube = cube->clone<Cube>();
-    _cube->setPosition(vec3( rd::in(-10., 10.), rd::in(-10., 10.), rd::in(-10., 10.)));
+    _cube->setPosition(vec3( rd::in(-7., 7.), rd::in(-7., 7.), rd::in(-7., 7.)));
     _cube->tint = vec3( rd::in(0, 1), rd::in(0, 1), rd::in(0, 1));
     children.push_back(_cube);
   }
+
+  inputs.mouseLock(true);
 
   return true;
 }
@@ -66,20 +68,21 @@ bool HWScene::update () {
 
   // cube->setRotation(vec3(inputs.mouse.x / 100, inputs.mouse.y / 100, 0));
 
-  cameraOrigin->setRotation(vec3(
-    remap(0.f, (float)w.width, -3.f, 3.f, inputs.mouse.y),
-    remap(0.f, (float)w.height, -3.f, 3.f, inputs.mouse.x),
-    0
-  ));
+  // cameraOrigin->setRotation(vec3(
+  //   remap(0.f, (float)w.width, -3.f, 3.f, inputs.mouse.y),
+  //   remap(0.f, (float)w.height, -3.f, 3.f, inputs.mouse.x),
+  //   0
+  // ));
 
-  LOG("Button", inputs.btn[SDLK_W], inputs.btn[SDLK_S]);
-  vec3 move = vec3(
-    inputs.btn[SDLK_D] - inputs.btn[SDLK_A],
-    inputs.btn[SDLK_E] - inputs.btn[SDLK_Q],
-    inputs.btn[SDLK_W] - inputs.btn[SDLK_S]
-  ) * cameraOrigin->getRotation();
+  // vec3 move = vec3(
+  //   inputs.btn[SDLK_D] - inputs.btn[SDLK_A],
+  //   inputs.btn[SDLK_E] - inputs.btn[SDLK_Q],
+  //   inputs.btn[SDLK_W] - inputs.btn[SDLK_S]
+  // ) * cameraOrigin->getRotation();
 
-  cameraOrigin->translateLocal(move * 0.005f);
+  // cameraOrigin->translateLocal(move * 0.005f);
+
+  cameraOrigin->rotateLocal(vec3(inputs.mouseRel.y, inputs.mouseRel.x, 0) / 100.f);
 
   for (auto& child : children)
     child->update();

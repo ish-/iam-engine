@@ -1,9 +1,11 @@
 #pragma once
-#include "SDL3/SDL_mouse.h"
+// #include "SDL3/SDL_mouse.h"
 // #include "SDL3/SDL_oldnames.h"
 // #include "SDL3/SDL_scancode.h"
 #include <SDL3/SDL_events.h>
 #include <unordered_map>
+
+class SDL_Window;
 
 class MouseState {
 public:
@@ -24,6 +26,8 @@ public:
   MouseState mouseRel;
 
   bool update (SDL_Event& event) {
+    mouseRel = {0, 0, 0, 0};
+
     switch (event.type) {
       case SDL_EVENT_MOUSE_MOTION:
       case SDL_EVENT_MOUSE_BUTTON_DOWN:
@@ -41,6 +45,9 @@ public:
   }
 
   void processMouse (const SDL_Event& event);
+  void mouseLock(class SDL_Window* sdlWindow, bool lock);
+  void mouseLock(bool lock);
+
 
   std::unordered_map<SDL_Keycode, bool> btn;
 };

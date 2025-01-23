@@ -4,6 +4,10 @@
 
 using namespace glm;
 
+mat4 Transform::getTransformMatrix() const {
+  return matrix;
+}
+
 void Transform::updateMat() {
   matrix[3] = vec4(position, 1.0f);
 }

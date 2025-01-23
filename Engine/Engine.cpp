@@ -11,7 +11,7 @@
 #include "../util/LOG.hpp"
 // r
 
-Engine::Engine() : time(Time::get()) {
+Engine::Engine() : time(Time::get()), window(Window::get()) {
   std::filesystem::current_path(BIN_TO_BUILD_PATH);
   std::filesystem::path p = "resources/shaders/file.vert.glsl";
   LOG("Abs shaders fld", std::filesystem::absolute(p));
@@ -29,13 +29,12 @@ void Engine::init(const std::shared_ptr<Scene>& scene) {
   SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
   SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_DEBUG_FLAG);
 
-  window = std::make_shared<Window>();
   renderer = std::make_shared<Renderer>();
 
   // auto cube = create<Mesh>();
 
-  window->Init();
-  SDL_GLContext context = SDL_GL_CreateContext(window->sdlWindow);
+  window.Init();
+  SDL_GLContext context = SDL_GL_CreateContext(window.sdlWindow);
   // gladLoadGLLoader(SDL_GL_GetProcAddress);
   if (!gladLoadGLLoader((GLADloadproc)SDL_GL_GetProcAddress)) {
     LOG("GLAD initialization FAILED");
@@ -55,7 +54,7 @@ void Engine::init(const std::shared_ptr<Scene>& scene) {
 
 
 void Engine::exit() {
-  window->Close();
+  window.Close();
 }
 
 
@@ -79,11 +78,11 @@ void Engine::run(const std::shared_ptr<Scene>& scene) {
     inputs->update(event);
 
     if (!pause) {  // stop GL redrawing
-      glViewport(0, 0, window->width, window->height);
+      glViewport(0, 0, window.width, window.height);
       glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 
       scene->update();
-      SDL_GL_SwapWindow(window->sdlWindow);
+      SDL_GL_SwapWindow(window.sdlWindow);
     }
 
     // physicsManager.update();

@@ -1,5 +1,6 @@
 #pragma once
 #include <SDL3/SDL_video.h>
+#include "../../util/LOG.hpp"
 
 class Window {
 public:
@@ -8,7 +9,9 @@ public:
         return instance;
     }
 
-    Window () {};
+    Window () {
+        LOG("Window created!");
+    };
 
     SDL_Window* sdlWindow;
     void Init();

@@ -13,6 +13,8 @@ public:
 
   vec3 position = vec3(0.);
 
+  mat4 getTransformMatrix() const;
+
   void updateMat();
   void scale(const vec3& scale);
   void scale(float scale);
