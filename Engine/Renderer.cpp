@@ -5,6 +5,7 @@
 
 #include "Renderer.hpp"
 #include "Shader.hpp"
+#include "glm/exponential.hpp"
 
 using namespace glm;
 
@@ -23,6 +24,6 @@ void Renderer::render (shared_ptr<Camera> camera, shared_ptr<Light> light, share
 
   glUniform3fv(glGetUniformLocation(shId, "lightPos"), 1, value_ptr(light->getAbsTransformMatrix()[3]));
   glUniform3fv(glGetUniformLocation(shId, "lightColor"), 1, value_ptr(light->color));
-  glUniform2fv(glGetUniformLocation(shId, "lightAttenuation"), 1, value_ptr(light->atteniation));
+  glUniform2fv(glGetUniformLocation(shId, "lightAttenuationSq"), 1, value_ptr(light->atteniation * light->atteniation));
   glUniform3fv(glGetUniformLocation(shId, "viewPos"), 1, value_ptr(cameraMat[3]));
 }

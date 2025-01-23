@@ -10,6 +10,7 @@
 #include "../Engine/Mesh.hpp"
 #include "../util/LOG.hpp"
 #include "../util/math.hpp"
+#include "../util/random.hpp"
 #include "Cube.hpp"
 #include "glm/ext/vector_float3.hpp"
 using namespace std;
@@ -49,6 +50,13 @@ bool HWScene::load () {
   // cube3->setPosition(vec3(0, 2, -2));
   cube3->tint = vec3(0.,1.,0.);
   children.push_back(cube3);
+
+  for (uint i = 0; i < 100; i++) {
+    auto _cube = cube->clone<Cube>();
+    _cube->setPosition(vec3( rd::in(-10., 10.), rd::in(-10., 10.), rd::in(-10., 10.)));
+    _cube->tint = vec3( rd::in(0, 1), rd::in(0, 1), rd::in(0, 1));
+    children.push_back(_cube);
+  }
 
   return true;
 }

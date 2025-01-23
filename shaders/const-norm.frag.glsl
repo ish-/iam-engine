@@ -11,7 +11,7 @@ uniform vec3 lightColor;
 uniform vec3 viewPos;
 // uniform sampler2D texture1;
 uniform vec3 tintColor;
-uniform vec2 lightAttenuation;
+uniform vec2 lightAttenuationSq;
 
 float invlerp (float from, float to, float value){
   return (value - from) / (to - from);
@@ -23,8 +23,9 @@ float remap (float origFrom, float origTo, float targetFrom, float targetTo, flo
 }
 
 vec3 attenuateLight (vec3 lightPos, vec3 lightColor, vec3 fragPos) {
-	float dist = length(lightPos - vFragPos);
-	float atteniation = clamp(remap(lightAttenuation[0], lightAttenuation[1], 1., 0. , dist), 0., 1.);
+	vec3 toLight = lightPos - vFragPos;
+	float distSq = dot(toLight, toLight);
+	float atteniation = clamp(remap(lightAttenuationSq[0], lightAttenuationSq[1], 1., 0. , distSq), 0., 1.);
 	return lightColor * atteniation;
 }
 
@@ -35,10 +36,12 @@ void main()
     vec3 ambient = ambientStrength * vec3(1.0);
 
     // Diffuse
-    vec3 norm = normalize(vNormal);
+    // vec3 norm = normalize(vNormal);
+    vec3 norm = vNormal;
     vec3 lightDir = normalize(lightPos - vFragPos);
     float diff = max(dot(norm, lightDir), 0.0);
     vec3 diffuse = diff * attenuateLight(lightPos, lightColor, vFragPos);
+		// TODO: discard not enlighten fragments
 
     // Specular
     float specularStrength = 0.5;

@@ -1,3 +1,5 @@
+#pragma once
+
 template<typename T>
 inline T invlerp (T from, T to, T value){
   return (value - from) / (to - from);
