@@ -19,6 +19,7 @@ public:
   Renderer& renderer;
   //  = Inputs::get();
 
+  shared_ptr<Object3D> cameraOrigin;
   shared_ptr<Cube> cube;
   shared_ptr<BoxGeo> boxGeo;
   vector<shared_ptr<HWObject>> children;

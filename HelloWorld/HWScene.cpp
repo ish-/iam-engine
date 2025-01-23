@@ -1,6 +1,7 @@
 #include "HWScene.hpp"
 #include <glm/vec3.hpp>
 #include <cmath>
+#include <memory>
 #include "../Engine/Inputs/Inputs.hpp"
 #include "../Engine/Camera.hpp"
 #include "../Engine/Graphic/Window.hpp"
@@ -20,8 +21,11 @@ HWScene::HWScene ()
 bool HWScene::load () {
   Window& w = Window::get();
 
+  cameraOrigin = make_shared<Object3D>();
   camera = make_shared<Camera>(80, w.width / w.height, 0.1, 100);
   camera->translate(vec3(2, 0, -5));
+  cameraOrigin->attach(camera);
+
   // camera->setRotation(vec3(60, 0, 0)); doest work
   light = make_shared<Light>();
 
@@ -37,7 +41,8 @@ bool HWScene::update () {
   Window& w = Window::get();
 
   cube->setRotation(vec3(inputs.mouse.x / 100, inputs.mouse.y / 100, 0));
-  camera->setRotation(vec3(
+
+  cameraOrigin->setRotation(vec3(
     remap(0.f, (float)w.width, -45.f, 45.f, inputs.mouse.x),
     remap(0.f, (float)w.height, -45.f, 45.f, inputs.mouse.y),
     0
