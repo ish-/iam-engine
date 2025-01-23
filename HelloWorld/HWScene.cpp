@@ -76,6 +76,10 @@ bool HWScene::load () {
 void HWScene::update (float dt) {
   Window& w = Window::get();
 
+  if (inputs.btn[SDLK_F]) {
+    w.setFullscreen(true);
+  }
+
   float pan = Engine::getCtx().inputs.btn[SDLK_A] - inputs.btn[SDLK_D]; // left-right
   float tilt = inputs.btn[SDLK_Q] - inputs.btn[SDLK_E]; // up-down
   float dolly = inputs.btn[SDLK_W] - inputs.btn[SDLK_S]; // forward-back

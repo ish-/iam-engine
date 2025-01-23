@@ -30,7 +30,8 @@ void Engine::init(const std::shared_ptr<Scene>& scene) {
     throw std::runtime_error("SDL failed initialization.");
   }
 
-  ctx.window.Init();
+  ctx.window.Init("Hello World");
+  ctx.window.setFullscreen(true);
   ctx.renderer.init(ctx.window.sdlWindow);
 
   // auto cube = create<Mesh>();

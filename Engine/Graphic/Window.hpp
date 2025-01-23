@@ -9,13 +9,11 @@ public:
         return instance;
     }
 
-    Window () {
-        LOG("Window created!");
-    };
-
     SDL_Window* sdlWindow;
-    void Init();
+    int width { 1280 };
+    int height { 720 };
+
+    void Init(const char* title);
     void Close() const;
-    int width { 640 };
-    int height { 640 };
+    void setFullscreen(bool value);
 };
