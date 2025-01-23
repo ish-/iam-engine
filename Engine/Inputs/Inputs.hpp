@@ -21,16 +21,13 @@ public:
   }
 
   MouseState mouse;
+  MouseState mouseRel;
 
   bool update (SDL_Event& event) {
     switch (event.type) {
       case SDL_EVENT_MOUSE_MOTION:
       case SDL_EVENT_MOUSE_BUTTON_DOWN:
-        mouse.lb = event.button.button == SDL_BUTTON_LEFT;
-        mouse.rb = event.button.button == SDL_BUTTON_RIGHT;
-        mouse.x = event.motion.x;
-        mouse.y = event.motion.y;
-        break;
+        processMouse(event); break;
 
       case SDL_EVENT_KEY_DOWN:
         btn[event.key.key] = true;
@@ -42,6 +39,8 @@ public:
 
     return false;
   }
+
+  void processMouse (const SDL_Event& event);
 
   std::unordered_map<SDL_Keycode, bool> btn;
 };
