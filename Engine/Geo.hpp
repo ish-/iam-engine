@@ -12,6 +12,10 @@ class Geo {
   GLuint elementBuffer;
   glm::vec2 size = glm::vec2(0, 0);
 
+  Geo () {
+
+  }
+
   void bindBuffers(const std::vector<GLfloat>& vertices,
                    const std::vector<GLint>& elements,
                    const std::vector<GLfloat>& normals);

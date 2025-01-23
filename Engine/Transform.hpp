@@ -14,8 +14,8 @@ public:
   vec3 position = vec3(0.);
 
   void updateMat();
-  void setScale(const vec3& scale);
-  void setScale(float scale);
+  void scale(const vec3& scale);
+  void scale(float scale);
 
   void setPosition(const vec3& _position);
 

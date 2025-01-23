@@ -27,7 +27,7 @@ public:
         mouse.lb = event.button.button == SDL_BUTTON_LEFT;
         mouse.rb = event.button.button == SDL_BUTTON_RIGHT;
         mouse.x = event.motion.x;
-        mouse.y = event.motion.x;
+        mouse.y = event.motion.y;
         break;
     }
 

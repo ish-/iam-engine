@@ -17,11 +17,11 @@ glm::mat4 Mesh::getMatrix() const {
 }
 
 void Mesh::draw() {
-  LOG("Mesh::draw()");
+  // LOG("Mesh::draw()");
   glBindVertexArray(geo->vertexArrayId);
 
-  int colorLoc = glGetUniformLocation(shader->shaderId, "diffuseCol");
-  glUniform3fv(colorLoc, 1, glm::value_ptr(color));
+  int tintColor = glGetUniformLocation(shader->shaderId, "tintColor");
+  glUniform3fv(tintColor, 1, glm::value_ptr(tint));
 
   glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 

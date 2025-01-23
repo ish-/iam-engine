@@ -8,11 +8,13 @@ void Transform::updateMat() {
   matrix[3] = vec4(position, 1.0f);
 }
 
-void Transform::setScale(const vec3& scale) {
-  matrix = glm::scale(mat4(1.0f), scale) * mat4(mat3(matrix));
+void Transform::scale(const vec3& scale) {
+  // matrix = glm::scale(mat4(1.0f), scale) * mat4(mat3(matrix));
+  matrix = glm::scale(mat4(1.0f), scale) * matrix;
 }
-void Transform::setScale(float scale) {
-  setScale(vec3(scale, scale, scale));
+
+void Transform::scale(float _scale) {
+  scale(vec3(_scale, _scale, _scale));
 }
 
 void Transform::setPosition(const vec3& _position) {

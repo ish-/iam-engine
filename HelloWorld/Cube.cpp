@@ -13,5 +13,5 @@ Cube::Cube () {
 // Cube::~Cube () {}
 
 void Cube::update (){
-  LOG("Cube update");
+  // LOG("Cube update");
 }

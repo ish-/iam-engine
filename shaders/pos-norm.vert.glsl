@@ -6,18 +6,15 @@ layout (location = 1) in vec3 aNormal;
 uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
-uniform mat4 modelView;
-uniform mat4 modelViewProjection;
-uniform mat4 normalMat;
-uniform vec3 lightPos;
 
+out vec3 vFragPos;
 out vec3 vNormal;
-out vec3 vLightVec;
 
 void main() {
-	vec4 pos = modelViewProjection * vec4(aPos, 1.0);
-	// normalMat_ = transpose(inverse(view * model));
-	vNormal = normalize((normalMat * vec4(aNormal, 1.)).xyz);
-	vLightVec = lightPos - pos.xyz;
-	gl_Position = pos;
+	vFragPos = vec3(model * vec4(aPos, 1.0));
+	// vNormal = mat3(transpose(inverse(model))) * aNormal;
+	vNormal = aNormal;
+	// TexCoords = aTexCoords;
+
+	gl_Position = projection * view * vec4(vFragPos, 1.0);
 }
