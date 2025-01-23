@@ -72,6 +72,15 @@ bool HWScene::update () {
     0
   ));
 
+  LOG("Button", inputs.btn[SDLK_W], inputs.btn[SDLK_S]);
+  vec3 move = vec3(
+    inputs.btn[SDLK_D] - inputs.btn[SDLK_A],
+    inputs.btn[SDLK_E] - inputs.btn[SDLK_Q],
+    inputs.btn[SDLK_W] - inputs.btn[SDLK_S]
+  ) * cameraOrigin->getRotation();
+
+  cameraOrigin->translateLocal(move * 0.005f);
+
   for (auto& child : children)
     child->update();
 

@@ -1,7 +1,9 @@
 #pragma once
 #include "SDL3/SDL_mouse.h"
-#include "SDL3/SDL_oldnames.h"
+// #include "SDL3/SDL_oldnames.h"
+// #include "SDL3/SDL_scancode.h"
 #include <SDL3/SDL_events.h>
+#include <unordered_map>
 
 class MouseState {
 public:
@@ -29,8 +31,17 @@ public:
         mouse.x = event.motion.x;
         mouse.y = event.motion.y;
         break;
+
+      case SDL_EVENT_KEY_DOWN:
+        btn[event.key.key] = true;
+        break;
+      case SDL_EVENT_KEY_UP:
+        btn[event.key.key] = false;
+        break;
     }
 
     return false;
   }
+
+  std::unordered_map<SDL_Keycode, bool> btn;
 };
