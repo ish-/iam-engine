@@ -15,6 +15,7 @@
 #include "SDL3/SDL_keycode.h"
 #include "glm/ext/vector_float3.hpp"
 #include "../Engine/Engine.hpp"
+#include "../Engine/MovementCtrl.hpp"
 using namespace std;
 using namespace glm;
 
@@ -26,10 +27,17 @@ HWScene::HWScene ()
 bool HWScene::load () {
   Window& w = Window::get();
 
-  cameraOrigin = make_shared<Object3D>();
+  movementCtrl = make_shared<MovementCtrl>();
+  movementCtrl->inertia = 0.1;
+  movementCtrl->angularInertia = 0.1;
+  movementCtrl->drag = 2.9;
+  movementCtrl->angularDrag = 2.6;
+
+  // cameraOrigin = make_shared<Object3D>();
   camera = make_shared<Camera>(80, w.width / w.height, 0.1, 1000);
   camera->translate(vec3(0, 0, .5));
-  cameraOrigin->attach(camera);
+  cameraOrigin = camera;
+  // cameraOrigin->attach(camera);
 
   // camera->setRotation(vec3(60, 0, 0)); doest work
   light = make_shared<Light>();
@@ -71,15 +79,25 @@ void HWScene::update (float dt) {
   float pan = Engine::getCtx().inputs.btn[SDLK_A] - inputs.btn[SDLK_D]; // left-right
   float tilt = inputs.btn[SDLK_Q] - inputs.btn[SDLK_E]; // up-down
   float dolly = inputs.btn[SDLK_W] - inputs.btn[SDLK_S]; // forward-back
-  vec3 move = vec3(pan, tilt, dolly);
+  if (pan != 0 || tilt != 0 || dolly != 0) {
+    vec3 move = -vec3(pan, tilt, dolly);
+    movementCtrl->applyForce(cameraOrigin->getForward() * move * vec3(50.));
+  }
 
   float pitch = inputs.mouseRel.y; // pitch
   float yaw = (1 - inputs.btn[SDLK_LSHIFT]) * inputs.mouseRel.x;  // yaw
   float roll = inputs.btn[SDLK_LSHIFT] * inputs.mouseRel.x; // roll
-  vec3 rotate = vec3(pitch, yaw, roll);
+  if (pitch != 0 || yaw != 0 || roll != 0) {
+    vec3 rotate = -vec3(pitch, yaw, roll);
+    movementCtrl->applyTorque(rotate * vec3(10.));
+  }
+  movementCtrl->update(dt, cameraOrigin.get());
 
-  cameraOrigin->rotateLocal(-rotate * dt);
-  cameraOrigin->translateLocal(-move * dt);
+
+  // cameraOrigin->rotateLocal(-rotate * dt);
+  // // cameraOrigin->rotateSlerp(-rotate * dt, .3f);
+  // cameraOrigin->translateLocal(-move * dt);
+
 
   for (auto& child : children)
     child->update();

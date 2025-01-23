@@ -9,6 +9,7 @@
 using namespace std;
 
 class Inputs;
+class MovementCtrl;
 
 class HWScene : public Scene {
 public:
@@ -17,6 +18,7 @@ public:
   HWScene();
   Inputs& inputs;
   Renderer& renderer;
+  shared_ptr<MovementCtrl> movementCtrl;
   //  = Inputs::get();
 
   shared_ptr<Object3D> cameraOrigin;

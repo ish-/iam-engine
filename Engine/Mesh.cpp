@@ -28,9 +28,9 @@ void Mesh::draw() {
   shader->setUniform("wireColor", vec3(0,0,0));
   glDrawElements(GL_TRIANGLES, geo->vertexCount, GL_UNSIGNED_INT, 0);
 
-  glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-  shader->setUniform("wireColor", vec3(1,1,1));
-  glDrawElements(GL_TRIANGLES, geo->vertexCount, GL_UNSIGNED_INT, 0);
+  // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+  // shader->setUniform("wireColor", vec3(1,1,1));
+  // glDrawElements(GL_TRIANGLES, geo->vertexCount, GL_UNSIGNED_INT, 0);
 
   glBindVertexArray(0);
 }

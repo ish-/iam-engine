@@ -1,4 +1,5 @@
 #pragma once
+#include "glm/fwd.hpp"
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/quaternion.hpp>
 #include <memory>
@@ -17,6 +18,7 @@ public:
   vec3 position = vec3(0.);
 
   mat4 getTransformMatrix() const;
+  quat getForward() const;
 
   void updateMat();
   void scale(const vec3& scale);
@@ -43,6 +45,8 @@ public:
 
   void rotateLocal(const vec3& angles);
   void rotateEulLocal(const vec3& eulerAngs);
+
+  // void rotateSlerp(const vec3& angles, float t);
 
   // mat4 getTransform() const;
   // mat4 getAbsTransform() const;

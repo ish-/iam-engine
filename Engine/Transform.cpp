@@ -1,4 +1,6 @@
 #include "Transform.hpp"
+#include "../util/slerp.hpp"
+#include "glm/gtc/quaternion.hpp"
 
 #include <glm/gtx/quaternion.hpp>
 
@@ -82,6 +84,15 @@ void Transform::rotateEul(const vec3& eulerAngs) {
   rotate(radians(eulerAngs));
 }
 
+// void Transform::rotateSlerp(const vec3& angles, float t) {
+//   mat4 originMat = matrix;
+//   quat originQuat = quat_cast(mat3(matrix));
+//   quat rotateQuat = quat(radians(angles));
+//   quat result = slerp(originQuat, rotateQuat * originQuat, t);
+//   mat4 rotationMatrix = toMat4(result);
+//   matrix = rotationMatrix * matrix;
+// }
+
 void Transform::rotateLocal(const vec3& angles) {
   mat4 rotationMatrix = toMat4(quat(angles));
   matrix = matrix * rotationMatrix;
@@ -90,3 +101,6 @@ void Transform::rotateEulLocal(const vec3& eulerAngs) {
   rotateLocal(radians(eulerAngs));
 }
 
+quat Transform::getForward() const {
+  return quat_cast(mat3(matrix));
+}
