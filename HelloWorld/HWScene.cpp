@@ -19,6 +19,9 @@
 #include "../Engine/Engine.hpp"
 #include "../Engine/MovementCtrl.hpp"
 #include "imgui.h"
+#include "../Engine/Renderer.hpp"
+#include "HWObject.hpp"
+
 using namespace std;
 using namespace glm;
 
@@ -42,14 +45,12 @@ bool HWScene::load () {
 
   // cameraOrigin = make_shared<Object3D>();
   camera = make_shared<Camera>(80, w.width / w.height, 0.1, 1000);
-  camera->translate(vec3(0, 0, 5));
+  camera->setPosition(vec3(0, 0, 5));
   cameraOrigin = camera;
   // cameraOrigin->attach(camera);
 
   // camera->setRotation(vec3(60, 0, 0)); doest work
-  light = make_shared<Light>();
-  light->setPosition(vec3(1, 2, 3));
-  light->color = vec3(1,1,.7);
+  light = make_shared<Light>(vec3(1, 2, 3), vec3(1, 1, .7));
 
   boxGeo = make_shared<BoxGeo>();
   cube = make_shared<Cube>();

@@ -11,6 +11,9 @@ class Object3D : public Transform, public std::enable_shared_from_this<Object3D>
 protected:
   std::weak_ptr<Object3D> parent;
 public:
+  template<typename... Args>
+  Object3D (Args&&... args): Transform(std::forward<Args>(args)...) {}
+
   std::vector<std::shared_ptr<Object3D>> children;
 
   void attach(const Object3D& child);

@@ -3,13 +3,17 @@
 #include "../util/LOG.hpp"
 #include "../Engine/Geo.hpp"
 #include "../Engine/Shader.hpp"
+#include "../Engine/PhongShader.hpp"
 #include "../Engine/Physics.hpp"
 #include "../util/random.hpp"
 using namespace std;
 
 Cube::Cube () {
-  Shader::Opts shaderOpt { .vertPath = "shaders/pos-norm.vert.glsl", .fragPath = "shaders/phong.frag.glsl" };
-  shader = make_shared<Shader>(shaderOpt);
+  init();
+}
+
+void Cube::init () {
+  shader = make_shared<Shader>(PhongShader::get());
   geo = make_shared<Geo>();
 }
 
@@ -20,10 +24,10 @@ void Cube::enablePhysics () {
 
   btTransform transform;
   transform.setIdentity();
-  transform.setOrigin(Physics::toBt(getPosition()));
+  transform.setOrigin(Physics::toBtVec3(getPosition()));
   btDefaultMotionState* motionState = new btDefaultMotionState(transform);
 
-  inertia = new btVector3(10, 10, 10);
+  inertia = new btVector3(.8, .8, .8);
   shape->calculateLocalInertia(1., *inertia);
 
   btRigidBody::btRigidBodyConstructionInfo groundRigidBodyCI(1., motionState, shape, *inertia);
@@ -37,12 +41,12 @@ void Cube::enablePhysics () {
 
 mat4 Cube::getTransformMatrix() const {
   if (groundRigidBody)
-    return Physics::get().btGetBodyGlTransform(groundRigidBody);
+    return Physics::toGlmTMat4(groundRigidBody);
   return matrix;
 }
 
 void Cube::update (){
-  // matrix = Physics::get().btGetBodyGlTransform(groundRigidBody);
+  // matrix = Physics::get().toGlmTMat4(groundRigidBody);
   // transform.getRotation()
   // LOG("Cube update");
 }

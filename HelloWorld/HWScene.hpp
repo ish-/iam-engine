@@ -1,17 +1,20 @@
 #include <memory>
 #include <vector>
 #include "../Engine/Scene.hpp"
-#include "../Engine/BoxGeo.hpp"
-#include "../Engine/Renderer.hpp"
-
-#include "Cube.hpp"
-#include "HWObject.hpp"
 #include "glm/fwd.hpp"
+#include "glm/vec3.hpp"
+#include "glm/vec4.hpp"
 using namespace std;
+using namespace glm;
 
 class Inputs;
 class MovementCtrl;
 class Physics;
+class Renderer;
+class Object3D;
+class Cube;
+class BoxGeo;
+class HWObject;
 
 class HWScene : public Scene {
 public:

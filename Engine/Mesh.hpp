@@ -16,6 +16,9 @@ public:
   Mesh(const Mesh& mesh) : shader(mesh.shader), geo(mesh.geo), tint(mesh.tint) {}
   Mesh(const shared_ptr<Geo>& geo, const shared_ptr<Shader>& shader) : shader(shader), geo(geo) {}
 
+  template<typename... Args>
+  Mesh (Args&&... args): Object3D(std::forward<Args>(args)...) {}
+
   shared_ptr<Shader> shader;
   shared_ptr<Geo> geo;
   glm::vec3 tint = glm::vec3(1.);
