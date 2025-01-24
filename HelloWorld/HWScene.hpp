@@ -6,6 +6,7 @@
 
 #include "Cube.hpp"
 #include "HWObject.hpp"
+#include "glm/fwd.hpp"
 using namespace std;
 
 class Inputs;
@@ -21,6 +22,13 @@ public:
   shared_ptr<MovementCtrl> movementCtrl;
   //  = Inputs::get();
 
+  struct GuiParams {
+    float slider = .5f;
+    vec4 color = {1,0,0,1};
+    vec3 vec3 = {1,0,0};
+  };
+  GuiParams params;
+
   bool showWireframe = false;
   shared_ptr<Object3D> cameraOrigin;
   shared_ptr<Cube> cube;
@@ -31,4 +39,6 @@ public:
   virtual void update (float dt) override;
 
   // ~HWScene() = default;
+
+  void drawGui ();
 };

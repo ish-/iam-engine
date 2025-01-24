@@ -8,6 +8,13 @@
 
 class SDL_Window;
 
+enum Bool : uint8_t {
+  FALSE = 0,
+  TRUE = 1,
+  TOGGLE = 2,
+  GET = 3
+};
+
 class MouseState {
 public:
   float x = 0;
@@ -54,8 +61,8 @@ public:
   }
 
   void processMouse (const SDL_Event& event);
-  void mouseLock(class SDL_Window* sdlWindow, bool lock);
-  void mouseLock(bool lock);
+  bool mouseLock(class SDL_Window* sdlWindow, bool lock);
+  bool mouseLock(Bool lock);
 
   SDL_Keycode lastBtnKey = SDLK_UNKNOWN;
   std::unordered_map<SDL_Keycode, bool> btn;

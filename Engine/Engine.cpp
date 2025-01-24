@@ -10,13 +10,14 @@
 #include "Renderer.hpp"
 #include "Time.hpp"
 #include "Scene.hpp"
+#include "GUI.hpp"
 #include "../util/LOG.hpp"
 #include "SDL3/SDL_opengl.h"
 #include "IEngine.hpp"
 // r
 
 Engine::Engine()
-  : ctx{Time::get(), Window::get(), Renderer::get(), Inputs::get()}
+  : ctx{Time::get(), Window::get(), Renderer::get(), Inputs::get(), GUI::get()}
 {
   std::filesystem::current_path(BIN_TO_BUILD_PATH);
   LOG("Current path: %s", std::filesystem::current_path().c_str());
@@ -32,6 +33,8 @@ void Engine::init(const std::shared_ptr<Scene>& scene) {
   ctx.window.Init("Hello World");
   // ctx.window.setFullscreeln(true);
   ctx.renderer.init(ctx.window.sdlWindow);
+
+  ctx.gui.init(ctx.window.sdlWindow, ctx.renderer.context);
 
   // auto cube = create<Mesh>();
 
@@ -57,6 +60,8 @@ void Engine::run(const std::shared_ptr<Scene>& scene) {
   while (true)
   {
     SDL_PollEvent(&event);
+    ImGui_ImplSDL3_ProcessEvent(&event);
+
     ctx.time.update();
     if (event.type == SDL_EVENT_QUIT)
       return;
@@ -67,10 +72,18 @@ void Engine::run(const std::shared_ptr<Scene>& scene) {
     ctx.inputs.update(event);
 
     if (!pause) {  // stop GL redrawing
+      // Start ImGui frame
+      ImGui_ImplOpenGL3_NewFrame();
+      ImGui_ImplSDL3_NewFrame();
+      ImGui::NewFrame();
+
       glViewport(0, 0, ctx.window.width, ctx.window.height);
       glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 
+
       scene->update(ctx.time.dT);
+      ImGui::Render();
+      ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
       SDL_GL_SwapWindow(ctx.window.sdlWindow);
     }
 

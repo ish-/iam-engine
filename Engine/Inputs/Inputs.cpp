@@ -1,7 +1,9 @@
 #include "Inputs.hpp"
 #include <SDL3/SDL_mouse.h>
+#include <objc/objc.h>
 #include "../Graphic/Window.hpp"
 #include "../../util/LOG.hpp"
+#include "SDL3/SDL_stdinc.h"
 
 void Inputs::processMouse(const SDL_Event& event) {
   bool lb = event.button.button == SDL_BUTTON_LEFT;
@@ -20,10 +22,19 @@ void Inputs::processMouse(const SDL_Event& event) {
   mouse.y = y;
 }
 
-void Inputs::mouseLock(SDL_Window* sdlWindow, bool lock) {
-  if (!SDL_SetWindowRelativeMouseMode(sdlWindow, lock))
+bool Inputs::mouseLock(SDL_Window* sdlWindow, bool lock) {
+  if (!SDL_SetWindowRelativeMouseMode(sdlWindow, lock)) {
     LOG("Cant lock cursor", SDL_GetError(), sdlWindow);
+    return false;
+  }
+  return true;
 }
-void Inputs::mouseLock(bool lock) {
-   mouseLock(Window::get().sdlWindow, lock);
+
+bool Inputs::mouseLock(Bool lock) {
+  if (GET == lock)
+    return SDL_GetWindowRelativeMouseMode(Window::get().sdlWindow);
+  bool _lock = bool(lock);
+  if (TOGGLE == lock)
+    _lock = !SDL_GetWindowRelativeMouseMode(Window::get().sdlWindow);
+  return mouseLock(Window::get().sdlWindow, _lock);
 }

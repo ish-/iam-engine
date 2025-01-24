@@ -8,6 +8,7 @@
 #include "../Engine/Light.hpp"
 #include "../Engine/BoxGeo.hpp"
 #include "../Engine/Mesh.hpp"
+#include "../Engine/GUI.hpp"
 #include "../util/LOG.hpp"
 #include "../util/math.hpp"
 #include "../util/random.hpp"
@@ -16,6 +17,7 @@
 #include "glm/ext/vector_float3.hpp"
 #include "../Engine/Engine.hpp"
 #include "../Engine/MovementCtrl.hpp"
+#include "imgui.h"
 using namespace std;
 using namespace glm;
 
@@ -68,7 +70,7 @@ bool HWScene::load () {
     children.push_back(_cube);
   }
 
-  inputs.mouseLock(true);
+  inputs.mouseLock(Bool::TRUE);
 
   return true;
 }
@@ -82,6 +84,10 @@ void HWScene::update (float dt) {
   if (inputs.btnRel[SDLK_L] > 0)
     showWireframe = !showWireframe;
 
+  if (inputs.btnRel[SDLK_TAB] > 0) {
+    inputs.mouseLock(Bool::TOGGLE);
+  }
+
   float pan = Engine::getCtx().inputs.btn[SDLK_A] - inputs.btn[SDLK_D]; // left-right
   float tilt = inputs.btn[SDLK_Q] - inputs.btn[SDLK_E]; // up-down
   float dolly = inputs.btn[SDLK_W] - inputs.btn[SDLK_S]; // forward-back
@@ -90,12 +96,14 @@ void HWScene::update (float dt) {
     movementCtrl->applyForce(cameraOrigin->getForward() * move * vec3(50.));
   }
 
-  float pitch = inputs.mouseRel.y; // pitch
-  float yaw = (1 - inputs.btn[SDLK_LSHIFT]) * inputs.mouseRel.x;  // yaw
-  float roll = inputs.btn[SDLK_LSHIFT] * inputs.mouseRel.x; // roll
-  if (pitch != 0 || yaw != 0 || roll != 0) {
-    vec3 rotate = -vec3(pitch, yaw, roll);
-    movementCtrl->applyTorque(rotate * vec3(10.));
+  if (bool mouseLocked = inputs.mouseLock(Bool::GET)) {
+    float pitch = inputs.mouseRel.y; // pitch
+    float yaw = (1 - inputs.btn[SDLK_LSHIFT]) * inputs.mouseRel.x;  // yaw
+    float roll = inputs.btn[SDLK_LSHIFT] * inputs.mouseRel.x; // roll
+    if (pitch != 0 || yaw != 0 || roll != 0) {
+      vec3 rotate = -vec3(pitch, yaw, roll);
+      movementCtrl->applyTorque(rotate * vec3(10.));
+    }
   }
   movementCtrl->update(dt, cameraOrigin.get());
 
@@ -116,6 +124,20 @@ void HWScene::update (float dt) {
       mesh->draw();
     }
   }
+
+  drawGui();
+
   Super::update(dt);
   // return true;
+}
+
+void HWScene::drawGui () {
+  ImGui::Begin("iam-engine");
+
+    ImGui::Checkbox("Wireframes", &showWireframe);
+    ImGui::Text("This is an example window.");
+    ImGui::SliderFloat("Slider", &params.slider, 0.0f, 1.0f);
+    ImGui::ColorEdit4("Color Picker", (float *)&params.color);
+    // ImGui::SliderFloat3("Vector 3", vec3Value, -10.0f, 10.0f);
+  ImGui::End();
 }

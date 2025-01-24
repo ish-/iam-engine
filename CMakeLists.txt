@@ -120,3 +120,39 @@ target_include_directories(GLAD PRIVATE "${CMAKE_SOURCE_DIR}/ext/glad/include")
 # )
 # FetchContent_MakeAvailable(nlohmann_json)
 # target_link_libraries(${PROJECT_NAME} PRIVATE nlohmann_json::nlohmann_json)
+
+# Fetch ImGui
+FetchContent_Declare(
+    ImGui
+    GIT_REPOSITORY https://github.com/ocornut/imgui.git
+    GIT_TAG v1.91.7
+)
+FetchContent_MakeAvailable(ImGui)
+
+add_library(imgui STATIC
+    ${imgui_SOURCE_DIR}/imgui.cpp
+    ${imgui_SOURCE_DIR}/imgui_demo.cpp
+    ${imgui_SOURCE_DIR}/imgui_draw.cpp
+    ${imgui_SOURCE_DIR}/imgui_widgets.cpp
+    ${imgui_SOURCE_DIR}/imgui_tables.cpp
+    ${imgui_SOURCE_DIR}/backends/imgui_impl_sdl3.cpp
+    ${imgui_SOURCE_DIR}/backends/imgui_impl_opengl3.cpp
+)
+
+target_include_directories(${PROJECT_NAME} PUBLIC
+    ${imgui_SOURCE_DIR}
+    ${imgui_SOURCE_DIR}/backends
+)
+
+# target_include_directories(imgui INTERFACE
+#   $<BUILD_INTERFACE:${imgui_SOURCE_DIR}>
+#   $<BUILD_INTERFACE:${imgui_SOURCE_DIR}/backends>
+# )
+target_include_directories(imgui PUBLIC
+  ${imgui_SOURCE_DIR}
+  ${imgui_SOURCE_DIR}/backends
+)
+
+target_link_libraries(imgui PUBLIC SDL3::SDL3 GLAD)
+
+target_link_libraries(${PROJECT_NAME} imgui)

@@ -1,5 +1,6 @@
 #pragma once
 #include <memory>
+#include <SDL3/SDL_video.h>
 // #include "Camera.hpp"
 // #include "Light.hpp"
 // #include "Scene.hpp"
@@ -13,6 +14,7 @@ class Light;
 class Mesh;
 class Shader;
 class SDL_Window;
+// class SDL_GLContext;
 
 class Renderer {
 public:
@@ -32,6 +34,7 @@ public:
   };
   // virtual ~Renderer() = default;
   // shared_ptr<Scene> scene;
+  SDL_GLContext* context;
 
   void init (SDL_Window* sdlWindow);
   // void setScene(shared_ptr<Scene> scene);

@@ -4,6 +4,7 @@ class Time;
 class Inputs;
 class Window;
 class Renderer;
+class GUI;
 
 struct IEngine {
 public:
@@ -13,5 +14,6 @@ public:
   Window& window;
   Renderer& renderer;
   Inputs& inputs;
+  GUI& gui;
   void exit();
 };
