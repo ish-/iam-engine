@@ -17,7 +17,7 @@ public:
 
   vec3 position = vec3(0.);
 
-  mat4 getTransformMatrix() const;
+  virtual mat4 getTransformMatrix() const;
   quat getForward() const;
 
   void updateMat();

@@ -1,10 +1,24 @@
 #pragma once
 #include <btBulletDynamicsCommon.h>
+#include <glm/mat4x4.hpp>
+#include <glm/gtc/type_ptr.hpp>
 #include <iostream>
 
 class Physics {
 public:
   static Physics& get() { static Physics instance; return instance; } // singleton
+
+  static btVector3 toBt(const glm::vec3& v) {
+    return btVector3(v.x, v.y, v.z);
+  }
+
+  glm::mat4 btGetBodyGlTransform (btRigidBody* body) {
+    btTransform transform;
+    body->getMotionState()->getWorldTransform(transform);
+    btScalar matrix[16];
+    transform.getOpenGLMatrix(matrix);
+    return glm::make_mat4(matrix);
+  }
 
   Physics ();
 
@@ -22,7 +36,7 @@ public:
     solver = new btSequentialImpulseConstraintSolver();
     dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConfig);
     // dynamicsWorld->setGravity(btVector3(0, -9.8, 0));
-    dynamicsWorld->setGravity(btVector3(0, -9.8, 0));
+    dynamicsWorld->setGravity(btVector3(0, 0, 0));
     return true;
   }
 
@@ -43,3 +57,4 @@ public:
     delete broadphase;
   }
 };
+

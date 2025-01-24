@@ -32,6 +32,7 @@ HWScene::HWScene ()
 
 bool HWScene::load () {
   Window& w = Window::get();
+  physics.init();
 
   movementCtrl = make_shared<MovementCtrl>();
   movementCtrl->inertia = 0.1;
@@ -41,7 +42,7 @@ bool HWScene::load () {
 
   // cameraOrigin = make_shared<Object3D>();
   camera = make_shared<Camera>(80, w.width / w.height, 0.1, 1000);
-  camera->translate(vec3(0, 0, .5));
+  camera->translate(vec3(0, 0, 5));
   cameraOrigin = camera;
   // cameraOrigin->attach(camera);
 
@@ -69,14 +70,13 @@ bool HWScene::load () {
 
   for (uint i = 0; i < 100; i++) {
     auto _cube = cube->clone<Cube>();
-    _cube->setPosition(vec3( rd::in(-15., 15.), rd::in(-15., 15.), rd::in(-15., 15.)));
+    _cube->setPosition(vec3( rd::in(-5., 5.), rd::in(-5., 5.), rd::in(-5., 5.)));
     _cube->tint = vec3( rd::in(0, 1), rd::in(0, 1), rd::in(0, 1));
+    _cube->enablePhysics();
     children.push_back(_cube);
   }
 
   inputs.mouseLock(Bool::TRUE);
-
-  physics.init();
 
   return true;
 }
