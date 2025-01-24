@@ -10,25 +10,28 @@
 #include <glm/gtc/type_ptr.hpp>
 using namespace std;
 
-struct ShaderOpts {
-  string vertPath;
-  string fragPath;
-};
 
 class Shader {
 public:
+  using Ptr = shared_ptr<Shader>;
+  struct Opts {
+    string vertPath;
+    string fragPath;
+  };
+
   GLuint shaderId;
   bool invertNormals = false;
 
-  Shader (const ShaderOpts& opts) {
+  Shader (const Shader::Opts& opts) {
     string vertShaderCode = loadFile("resources/" + opts.vertPath);
     string fragShaderCode = loadFile("resources/" + opts.fragPath);
 
+    LOG("--- Loading shader");
     shaderId = loadShader(vertShaderCode, fragShaderCode);
+    LOG("--- Shader loaded", shaderId);
 
     // setUniform("invertNormals", invertNormals);
   }
-
 
   void setUniform(const char* name, const glm::mat4& value) { glUniformMatrix4fv(glGetUniformLocation(shaderId, name), 1, GL_FALSE, glm::value_ptr(value)); }
   void setUniform(const char* name, const glm::vec3& value) { glUniform3fv(glGetUniformLocation(shaderId, name), 1, glm::value_ptr(value)); }

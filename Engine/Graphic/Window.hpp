@@ -15,5 +15,8 @@ public:
 
     void Init(const char* title);
     void Close() const;
+
+    bool fullscreen = false;
     void setFullscreen(bool value);
+    void toggleFullscreen();
 };

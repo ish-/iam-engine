@@ -21,6 +21,7 @@ public:
   shared_ptr<MovementCtrl> movementCtrl;
   //  = Inputs::get();
 
+  bool showWireframe = false;
   shared_ptr<Object3D> cameraOrigin;
   shared_ptr<Cube> cube;
   shared_ptr<BoxGeo> boxGeo;

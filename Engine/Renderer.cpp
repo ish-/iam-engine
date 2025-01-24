@@ -8,6 +8,10 @@
 #include "Renderer.hpp"
 #include "Mesh.hpp"
 #include "Shader.hpp"
+#include "Camera.hpp"
+#include "Light.hpp"
+// #include "Scene.hpp"
+#include "WireframeShader.hpp"
 #include "Transform.hpp"
 #include "glm/exponential.hpp"
 
@@ -43,22 +47,48 @@ void Renderer::init (SDL_Window* sdlWindow) {
   glMinSampleShading(8);
 }
 
+
 void Renderer::render (shared_ptr<Camera> camera, shared_ptr<Light> light, shared_ptr<Mesh> mesh) {
-  GLuint shId = mesh->shader->shaderId;
+  if (!mesh->visible)
+    return;
 
-  mat4 model = mesh->getAbsTransformMatrix();
+  glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
   mat4 cameraMat = camera->getAbsTransformMatrix();
-  mat4 view = glm::inverse(cameraMat);
-  // mat4 normalMat = glm::inverseTranspose(modelView);
+  MVP mvp = {
+    .model = mesh->getAbsTransformMatrix(),
+    .view = glm::inverse(cameraMat),
+    .projection = camera->projection,
+    .viewPos = Transform(camera->getAbsTransformMatrix()).getPosition()
+  };
 
-  glUseProgram(shId);
-  // glUniformMatrix4fv(glGetUniformLocation(shId, "model"), 1, GL_FALSE, value_ptr(model));
-  mesh->shader->setUniform("model", model);
-  mesh->shader->setUniform("view", view);
-  mesh->shader->setUniform("projection", camera->projection);
+  if (mesh->shaded) {
+    glUseProgram(mesh->shader->shaderId);
+    setMVP(mesh->shader, mvp);
+    setLight(mesh->shader, light);
+    mesh->draw();
+  }
 
-  mesh->shader->setUniform("lightPos", Transform(light->getAbsTransformMatrix()).getPosition());
-  mesh->shader->setUniform("lightColor", light->color);
-  mesh->shader->setUniform("lightAttenuationSq", light->atteniation * light->atteniation);
-  mesh->shader->setUniform("viewPos", Transform(cameraMat).getPosition());
+  if (mesh->wireframe) {
+    shared_ptr<Shader> wfShader = WireframeShader::get();
+    glUseProgram(wfShader->shaderId);
+    setMVP(wfShader, mvp);
+    // setUniform("wireColor", glm::vec3(1, 1, 1));
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+  }
+
+  mesh->shader->setUniform("wireColor", vec3(0,0,0));
+}
+
+void Renderer::setMVP(shared_ptr<Shader> shader, const MVP& mvp) {
+  shader->setUniform("model", mvp.model);
+  shader->setUniform("view", mvp.view);
+  shader->setUniform("projection", mvp.projection);
+  shader->setUniform("viewPos", mvp.viewPos);
+}
+
+void Renderer::setLight(shared_ptr<Shader> shader, shared_ptr<Light> light) {
+  shader->setUniform("lightPos", Transform(light->getAbsTransformMatrix()).getPosition());
+  shader->setUniform("lightColor", light->color);
+  shader->setUniform("lightAttenuationSq", light->atteniation * light->atteniation);
 }

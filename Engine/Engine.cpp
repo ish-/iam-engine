@@ -19,8 +19,6 @@ Engine::Engine()
   : ctx{Time::get(), Window::get(), Renderer::get(), Inputs::get()}
 {
   std::filesystem::current_path(BIN_TO_BUILD_PATH);
-  std::filesystem::path p = "resources/shaders/file.vert.glsl";
-  LOG("Abs shaders fld", std::filesystem::absolute(p));
 }
 
 void Engine::init(const std::shared_ptr<Scene>& scene) {
@@ -31,7 +29,7 @@ void Engine::init(const std::shared_ptr<Scene>& scene) {
   }
 
   ctx.window.Init("Hello World");
-  ctx.window.setFullscreen(true);
+  // ctx.window.setFullscreeln(true);
   ctx.renderer.init(ctx.window.sdlWindow);
 
   // auto cube = create<Mesh>();

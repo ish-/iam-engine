@@ -76,9 +76,11 @@ bool HWScene::load () {
 void HWScene::update (float dt) {
   Window& w = Window::get();
 
-  if (inputs.btn[SDLK_F]) {
-    w.setFullscreen(true);
-  }
+  if (inputs.btnRel[SDLK_F] > 0)
+    w.toggleFullscreen();
+
+  if (inputs.btnRel[SDLK_L] > 0)
+    showWireframe = !showWireframe;
 
   float pan = Engine::getCtx().inputs.btn[SDLK_A] - inputs.btn[SDLK_D]; // left-right
   float tilt = inputs.btn[SDLK_Q] - inputs.btn[SDLK_E]; // up-down
@@ -106,8 +108,10 @@ void HWScene::update (float dt) {
   for (auto& child : children)
     child->update();
 
+  // renderer.render(*this, { .wireframe = false });
   for (auto& child : children) {
     if (auto mesh = dynamic_pointer_cast<Mesh>(child)) {
+      mesh->wireframe = showWireframe;
       renderer.render(camera, light, mesh);
       mesh->draw();
     }

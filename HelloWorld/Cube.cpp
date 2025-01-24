@@ -6,8 +6,8 @@
 using namespace std;
 
 Cube::Cube () {
-  ShaderOpts shaderOpts { .vertPath = "shaders/pos-norm.vert.glsl", .fragPath = "shaders/const-norm.frag.glsl" };
-  shader = make_shared<Shader>(shaderOpts);
+  Shader::Opts shaderOpt { .vertPath = "shaders/pos-norm.vert.glsl", .fragPath = "shaders/phong.frag.glsl" };
+  shader = make_shared<Shader>(shaderOpt);
   geo = make_shared<Geo>();
 }
 // Cube::~Cube () {}
