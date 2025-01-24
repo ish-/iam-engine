@@ -19,6 +19,7 @@ Engine::Engine()
   : ctx{Time::get(), Window::get(), Renderer::get(), Inputs::get()}
 {
   std::filesystem::current_path(BIN_TO_BUILD_PATH);
+  LOG("Current path: %s", std::filesystem::current_path().c_str());
 }
 
 void Engine::init(const std::shared_ptr<Scene>& scene) {

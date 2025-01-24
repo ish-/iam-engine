@@ -2,10 +2,11 @@
 #include <iostream>
 #include <sstream>
 #include <string>
+#include "../util/LOG.hpp"
 
 inline std::string loadFile(std::string filePath)
 {
-  // Read the Vertex Shader code from the file
+  LOG("Reading file", filePath.c_str());
   std::string content;
   std::ifstream fileStream(filePath, std::ios::in);
   if (fileStream.is_open()) {
@@ -14,12 +15,44 @@ inline std::string loadFile(std::string filePath)
     content = sstr.str();
     fileStream.close();
   } else {
-    printf("Impossible to open %s. Are you in the right directory?\n", filePath.c_str());
+    LOG("Impossible to open", filePath.c_str());
     getchar();
     return "0";
   }
   return content;
 }
+
+// const char* filePath = "example.txt";
+//     size_t fileSize = 0;
+
+//     // Load the file into memory
+//     void* fileData = SDL_LoadFile(filePath, &fileSize);
+//     if (!fileData) {
+//         std::cerr << "SDL_LoadFile Error: " << SDL_GetError() << std::endl;
+//         SDL_Quit();
+//         return 1;
+//     }
+
+//     // Output the file size and content
+//     std::cout << "Loaded file size: " << fileSize << " bytes" << std::endl;
+//     std::cout << "File content: " << std::string((char*)fileData, fileSize) << std::endl;
+
+//     // Free the allocated memory
+//     SDL_free(fileData);
+
+// #include <SDL3/SDL_iostream.h>
+
+// bool saveFile (const char* filePath, const char* dataToSave) {
+//   size_t dataSize = strlen(dataToSave);
+
+//   if (SDL_SaveFile(filePath, dataToSave, dataSize) != 0) {
+//       std::cerr << "SDL_SaveFile Error: " << SDL_GetError() << std::endl;
+//       SDL_Quit();
+//       return 1;
+//   }
+
+//   std::cout << "File saved successfully to: " << filePath << std::endl;
+// }
 
 // std::vector<char> readFile(const std::string &filepath)
 // {
