@@ -11,6 +11,7 @@ using namespace std;
 
 class Inputs;
 class MovementCtrl;
+class Physics;
 
 class HWScene : public Scene {
 public:
@@ -19,6 +20,7 @@ public:
   HWScene();
   Inputs& inputs;
   Renderer& renderer;
+  Physics& physics;
   shared_ptr<MovementCtrl> movementCtrl;
   //  = Inputs::get();
 

@@ -1,6 +1,7 @@
-cmake_minimum_required(VERSION 3.19)
+cmake_minimum_required(VERSION 3.20)
 
 project(iam-engine VERSION 1.0)
+project(iam-engine VERSION 1.0 LANGUAGES CXX)
 message(STATUS "CMAKE_BUILD_TYPE: ${CMAKE_BUILD_TYPE}")
 
 # if(NOT CMAKE_BUILD_TYPE)
@@ -131,7 +132,7 @@ FetchContent_MakeAvailable(ImGui)
 
 add_library(imgui STATIC
     ${imgui_SOURCE_DIR}/imgui.cpp
-    ${imgui_SOURCE_DIR}/imgui_demo.cpp
+    # ${imgui_SOURCE_DIR}/imgui_demo.cpp
     ${imgui_SOURCE_DIR}/imgui_draw.cpp
     ${imgui_SOURCE_DIR}/imgui_widgets.cpp
     ${imgui_SOURCE_DIR}/imgui_tables.cpp
@@ -156,3 +157,17 @@ target_include_directories(imgui PUBLIC
 target_link_libraries(imgui PUBLIC SDL3::SDL3 GLAD)
 
 target_link_libraries(${PROJECT_NAME} imgui)
+
+# !!!!!! Bullet
+
+# add_subdirectory(${CMAKE_SOURCE_DIR}/ext/bullet3/build_cmake/src)
+# add_subdirectory(${CMAKE_SOURCE_DIR}/ext/bullet3/build_cmake/src/Bullet3Common)
+
+# set(BULLET_ROOT ${CMAKE_SOURCE_DIR}/ext/bullet3)
+# set(BULLET_INCLUDE_DIR ${BULLET_ROOT}/src)
+# set(BULLET_LIBRARIES ${BULLET_ROOT}/lib)
+
+find_package(Bullet REQUIRED)
+
+include_directories(${BULLET_INCLUDE_DIRS})
+target_link_libraries(${PROJECT_NAME} ${BULLET_LIBRARIES})

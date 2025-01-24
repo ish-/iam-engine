@@ -8,6 +8,7 @@
 #include "../Engine/Light.hpp"
 #include "../Engine/BoxGeo.hpp"
 #include "../Engine/Mesh.hpp"
+#include "../Engine/Physics.hpp"
 #include "../Engine/GUI.hpp"
 #include "../util/LOG.hpp"
 #include "../util/math.hpp"
@@ -22,7 +23,10 @@ using namespace std;
 using namespace glm;
 
 HWScene::HWScene ()
-    : inputs(Inputs::get()), renderer(Renderer::get()) {
+    : inputs(Inputs::get()),
+      renderer(Renderer::get()),
+      physics(Physics::get())
+{
 
 }
 
@@ -72,6 +76,8 @@ bool HWScene::load () {
 
   inputs.mouseLock(Bool::TRUE);
 
+  physics.init();
+
   return true;
 }
 
@@ -107,6 +113,7 @@ void HWScene::update (float dt) {
   }
   movementCtrl->update(dt, cameraOrigin.get());
 
+  physics.update();
 
   // cameraOrigin->rotateLocal(-rotate * dt);
   // // cameraOrigin->rotateSlerp(-rotate * dt, .3f);
