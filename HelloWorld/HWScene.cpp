@@ -34,9 +34,10 @@ HWScene::HWScene ()
     : inputs(Inputs::get()),
       renderer(Renderer::get()),
       physics(Physics::get()),
-      maestro(AMaestro::get())
+      maestro(AMaestro::get()),
+      time(Time::get())
 {
-
+  rd::globalSeed(time.abs);
 }
 
 bool HWScene::load () {

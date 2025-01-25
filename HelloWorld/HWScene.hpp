@@ -13,6 +13,7 @@ class MovementCtrl;
 class Physics;
 class Renderer;
 class Object3D;
+class Time;
 class Cube;
 class BoxGeo;
 class AMaestro;
@@ -26,6 +27,7 @@ public:
   Renderer& renderer;
   Physics& physics;
   AMaestro& maestro;
+  Time& time;
   shared_ptr<MovementCtrl> movementCtrl;
   //  = Inputs::get();
 
