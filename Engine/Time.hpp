@@ -8,13 +8,19 @@ public:
         return instance;
     }
 
-    double rate = 60; // fps
-    double eT = 0; // elapsed time
-    double dT = 0; // delta time
-    double frameDelay = 0; // delta time
-    double abs = 0; // delta time
+    double rate = 60; //
+    double eT = 0;
+    double dT = 0;
+    double frameDelay = 0;
+
+    unsigned int frame = 0;
 
     double update ();
 
     double endFrame ();
+
+    long long getSystemTime () {
+        auto chronoNow = std::chrono::system_clock::now();
+        return static_cast<long long>(std::chrono::system_clock::to_time_t(chronoNow));
+    }
 };

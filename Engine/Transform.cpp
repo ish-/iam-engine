@@ -106,3 +106,4 @@ quat Transform::getForward() const {
 }
 
 void Transform::setMatrix(const mat4& _matrix) { matrix = _matrix; }
+void Transform::setMatrix(const mat4&& _matrix) { matrix = _matrix; }

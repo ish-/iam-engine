@@ -2,7 +2,6 @@
 #include "glm/fwd.hpp"
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/quaternion.hpp>
-#include <memory>
 
 using namespace glm;
 
@@ -54,6 +53,7 @@ public:
   // mat4 getAbsTransform() const;
 
   void setMatrix(const mat4& _matrix);
+  void setMatrix(const mat4&& _matrix);
 protected:
   mat4 matrix = I_MAT;
 };

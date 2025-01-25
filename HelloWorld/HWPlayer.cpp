@@ -41,7 +41,6 @@ void HWPlayer::init () {
 
 void HWPlayer::update (){
   Inputs& inputs = Inputs::get();
-  LOG("HWPlayer update");
 
   float pan = inputs.btn[SDLK_D] - inputs.btn[SDLK_A]; // left-right
   float tilt = inputs.btn[SDLK_E] - inputs.btn[SDLK_Q]; // up-down

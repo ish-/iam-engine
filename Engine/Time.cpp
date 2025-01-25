@@ -3,11 +3,8 @@
 #include "Time.hpp"
 
 double Time::update () {
-  auto chronoNow = std::chrono::system_clock::now();
-  abs = std::chrono::system_clock::to_time_t(chronoNow);
-  // abs = std::ctime(&chronoTime);
+  frame++;
 
-  // Convert to time_t (absolute time in seconds since epoch)
   double now = SDL_GetTicks() / 1000.;
   dT = now - eT;
   eT = now;
