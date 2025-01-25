@@ -19,7 +19,7 @@ public:
 
   mat4 getTransformMatrix() const override;
 
-  void init();
+  void init() override;
   void update() override;
   void enablePhysics ();
 };

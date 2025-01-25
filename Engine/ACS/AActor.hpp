@@ -11,7 +11,7 @@ using namespace std;
 class AComponent;
 // class WContext;
 
-class AActor : public std::enable_shared_from_this<AActor> {
+class AActor {
 public:
     template <typename T, typename... Args>
     static std::shared_ptr<T> create(Args&&... args) {
@@ -32,18 +32,18 @@ public:
     virtual void init();
     virtual void update();
 
-    template <typename T, typename... Args>
-    std::shared_ptr<T> addComponent(Args&&... args) {
-        auto component = std::make_shared<T>(std::forward<Args>(args)...);
-        try {
-            component->setOwner(shared_from_this());
-        } catch (const std::bad_weak_ptr& e) {
-            std::cout << "AActor::addComponent() bad_weak_ptr\n";
-            std::cout << "Do not try to addComponent() inside an initialization of the Actor\n";
-        }
-        components[typeid(T)] = component;
-        return component;
-    }
+    // template <typename T, typename... Args>
+    // std::shared_ptr<T> addComponent(Args&&... args) {
+    //     auto component = std::make_shared<T>(std::forward<Args>(args)...);
+    //     try {
+    //         component->setOwner(shared_from_this());
+    //     } catch (const std::bad_weak_ptr& e) {
+    //         std::cout << "AActor::addComponent() bad_weak_ptr\n";
+    //         std::cout << "Do not try to addComponent() inside an initialization of the Actor\n";
+    //     }
+    //     components[typeid(T)] = component;
+    //     return component;
+    // }
 
     template <typename T>
     std::shared_ptr<T> getComponent() {

@@ -4,11 +4,11 @@
 #include <memory>
 #include <vector>
 #include "Transform.hpp"
-// #include <ACS/AActor.hpp>
+#include "ACS/AActor.hpp"
 
 using namespace glm;
 
-class Object3D : public Transform, public std::enable_shared_from_this<Object3D> {
+class Object3D : public Transform, public AActor, public std::enable_shared_from_this<Object3D> {
 protected:
   std::weak_ptr<Object3D> parent;
 public:

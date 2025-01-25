@@ -13,8 +13,8 @@ void Object3D::attach(const Object3D& child) {
 }
 
 void Object3D::attach(const std::shared_ptr<Object3D>& child) {
+  child->parent = shared_from_this();
   children.push_back(child);
-  children.back()->parent = shared_from_this();
 }
 
 std::shared_ptr<Object3D> Object3D::getParent() const {
