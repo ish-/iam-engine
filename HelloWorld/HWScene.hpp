@@ -1,6 +1,7 @@
 #include <memory>
 #include <vector>
 #include "../Engine/Scene.hpp"
+#include "../Engine/Object3D.hpp"
 #include "glm/fwd.hpp"
 #include "glm/vec3.hpp"
 #include "glm/vec4.hpp"
@@ -14,7 +15,8 @@ class Renderer;
 class Object3D;
 class Cube;
 class BoxGeo;
-class HWObject;
+class AMaestro;
+class AActor;
 
 class HWScene : public Scene {
 public:
@@ -24,6 +26,7 @@ public:
   Inputs& inputs;
   Renderer& renderer;
   Physics& physics;
+  AMaestro& maestro;
   shared_ptr<MovementCtrl> movementCtrl;
   //  = Inputs::get();
 
@@ -36,9 +39,9 @@ public:
 
   bool showWireframe = false;
   shared_ptr<Object3D> cameraOrigin;
-  shared_ptr<Cube> cube;
+  shared_ptr<AActor> cube;
   shared_ptr<BoxGeo> boxGeo;
-  vector<shared_ptr<HWObject>> children;
+  vector<shared_ptr<Object3D>> children;
 
   virtual bool load () override;
   virtual void update (float dt) override;

@@ -20,8 +20,8 @@ public:
   unordered_map<std::type_index, vector<shared_ptr<AComponent>>> components;
   vector<shared_ptr<AActor>> actors;
 
-  template <typename... Args>
-  std::shared_ptr<AActor> newActor(Args&&... args) {
+  template <typename AA = AActor, typename... Args>
+  std::shared_ptr<AA> newActor(Args&&... args) {
     auto actor = std::make_shared<AActor>(std::forward<Args>(args)...);
     actors.push_back(actor);
     actor->init();

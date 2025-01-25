@@ -7,11 +7,11 @@
 #include <glm/exponential.hpp>
 
 #include "Renderer.hpp"
-#include "Mesh.hpp"
+#include "MeshComponent.hpp"
 #include "Shader.hpp"
 #include "../Camera.hpp"
 #include "../Light.hpp"
-// #include "Scene.hpp"
+#include "../Scene.hpp"
 #include "WireframeShader.hpp"
 #include "../Transform.hpp"
 
@@ -49,7 +49,17 @@ void Renderer::init (SDL_Window* sdlWindow) {
 }
 
 
-void Renderer::render (shared_ptr<Camera> camera, shared_ptr<Light> light, shared_ptr<Mesh> mesh) {
+void Renderer::renderComponents (shared_ptr<Camera> camera, shared_ptr<Light> light) {
+  auto comps = getComponents();
+  for (auto& comp : comps) {
+    shared_ptr<MeshComponent> meshComp = dynamic_pointer_cast<MeshComponent>(comp);
+    if (meshComp) {
+      render(camera, light, meshComp);
+    }
+  }
+}
+
+void Renderer::render (shared_ptr<Camera> camera, shared_ptr<Light> light, shared_ptr<MeshComponent> mesh) {
   if (!mesh->visible)
     return;
 

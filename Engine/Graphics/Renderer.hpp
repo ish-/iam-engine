@@ -6,17 +6,19 @@
 // #include "Scene.hpp"
 #include <glm/vec3.hpp>
 #include <glm/mat4x4.hpp>
+#include "../ACS/ASystem.hpp"
+#include "MeshComponent.hpp"
 using namespace std;
 using namespace glm;
 
 class Camera;
 class Light;
-class Mesh;
+class MeshComponent;
 class Shader;
 class SDL_Window;
 // class SDL_GLContext;
 
-class Renderer {
+class Renderer : public ASystem<MeshComponent> {
 public:
   static Renderer& get() {
     static Renderer instance;
@@ -38,7 +40,8 @@ public:
 
   void init (SDL_Window* sdlWindow);
   // void setScene(shared_ptr<Scene> scene);
-  void render(shared_ptr<Camera> camera, shared_ptr<Light> light, shared_ptr<Mesh> mesh);
+  void render(shared_ptr<Camera> camera, shared_ptr<Light> light, shared_ptr<MeshComponent> mesh);
+  void renderComponents(shared_ptr<Camera> camera, shared_ptr<Light> light);
 
   // TODO: pass by ref
   void setMVP(shared_ptr<Shader> shader, const MVP& mvp);
