@@ -107,9 +107,8 @@ void Engine::run(const std::shared_ptr<Scene>& scene) {
 
     // if (bExit)
     //   break;
+
     ctx.time.endFrame();
-    LOG("Frame FPS: ", 1 / ctx.time.dT);
-    LOG("Frame delay: ", ctx.time.frameDelay * 1000.);
     if (ctx.time.frameDelay > 0)
       SDL_Delay(ctx.time.frameDelay * 1000);
   }

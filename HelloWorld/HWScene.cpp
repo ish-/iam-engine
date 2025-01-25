@@ -10,7 +10,7 @@
 #include "../Engine/Light.hpp"
 #include "../Engine/BoxGeo.hpp"
 #include "../Engine/Mesh.hpp"
-#include "../Engine/Physics.hpp"
+#include "../Engine/Physics/Physics.hpp"
 #include "../Engine/GUI.hpp"
 #include "../util/LOG.hpp"
 #include "../util/math.hpp"

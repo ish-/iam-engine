@@ -1,4 +1,3 @@
-#include "../Engine/WContext.hpp"
 #include "../Engine/Engine.hpp"
 #include "../Engine/Inputs/Inputs.hpp"
 #include "../util/LOG.hpp"

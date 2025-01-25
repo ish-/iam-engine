@@ -4,7 +4,7 @@
 #include "../Engine/Geo.hpp"
 #include "../Engine/Shader.hpp"
 #include "../Engine/PhongShader.hpp"
-#include "../Engine/Physics.hpp"
+#include "../Engine/Physics/Physics.hpp"
 #include "../util/random.hpp"
 using namespace std;
 

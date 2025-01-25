@@ -32,7 +32,13 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # set(PROJECT_SOURCE_DIR ${PROJECT_SOURCE_DIR}/src)
 
-file(GLOB_RECURSE SOURCES ${PROJECT_SOURCE_DIR}/Engine/*.cpp ${PROJECT_SOURCE_DIR}/util/*.cpp)
+file(GLOB SOURCES
+    ${PROJECT_SOURCE_DIR}/Engine/*.cpp
+    ${PROJECT_SOURCE_DIR}/Engine/Graphic/*.cpp
+    ${PROJECT_SOURCE_DIR}/Engine/Inputs/*.cpp
+    ${PROJECT_SOURCE_DIR}/Engine/Physics/*.cpp
+    ${PROJECT_SOURCE_DIR}/util/*.cpp
+)
 
 set(SAMPLE_NAME "HelloWorld")
 set(SAMPLE_DIR ${PROJECT_SOURCE_DIR}/${SAMPLE_NAME})
@@ -48,6 +54,16 @@ message(STATUS "SAMPLE_SOURCES: ${SAMPLE_SOURCES}")
 # )
 
 add_executable(${PROJECT_NAME} ${SAMPLE_DIR}/${SAMPLE_NAME}.cpp ${SOURCES} ${SAMPLE_SOURCES})
+
+set(ACS_lib ${PROJECT_NAME}-acs)
+set(ACS_lib_DIRS ${PROJECT_SOURCE_DIR}/Engine/ACS)
+file(GLOB ACS_lib_SOURCES ${ACS_lib_DIRS}/*.cpp)
+message(STATUS "ACS_lib_DIRS: ${ACS_lib_DIRS}")
+message(STATUS "ACS_lib_SOURCES: ${ACS_lib_SOURCES}")
+add_library(${ACS_lib} OBJECT ${ACS_lib_SOURCES})
+target_include_directories(${ACS_lib} PUBLIC ${ACS_lib_DIRS})
+# add_library(${PROJECT_NAME} SHARED $<TARGET_OBJECTS:${ACS_lib}>)
+target_link_libraries(${PROJECT_NAME} ${ACS_lib})
 
 # include_directories(./ext/)
 
