@@ -1,8 +1,8 @@
 #pragma once
 #include <SDL3/SDL_filesystem.h>
 #include <glad/glad.h>
-#include "../util/file.hpp"
-#include "../util/LOG.hpp"
+#include "../../util/file.hpp"
+#include "../../util/LOG.hpp"
 #include <string>
 #include <glm/mat4x4.hpp>
 #include <glm/vec3.hpp>

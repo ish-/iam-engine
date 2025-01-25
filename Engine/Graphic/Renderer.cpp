@@ -4,16 +4,16 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/matrix_inverse.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <glm/exponential.hpp>
 
 #include "Renderer.hpp"
 #include "Mesh.hpp"
 #include "Shader.hpp"
-#include "Camera.hpp"
-#include "Light.hpp"
+#include "../Camera.hpp"
+#include "../Light.hpp"
 // #include "Scene.hpp"
 #include "WireframeShader.hpp"
-#include "Transform.hpp"
-#include "glm/exponential.hpp"
+#include "../Transform.hpp"
 
 using namespace glm;
 

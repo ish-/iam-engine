@@ -1,9 +1,9 @@
 #include "Cube.hpp"
 #include <memory>
 #include "../util/LOG.hpp"
-#include "../Engine/Geo.hpp"
-#include "../Engine/Shader.hpp"
-#include "../Engine/PhongShader.hpp"
+#include "../Engine/Graphic/Geo.hpp"
+#include "../Engine/Graphic/Shader.hpp"
+#include "../Engine/Graphic/PhongShader.hpp"
 #include "../Engine/Physics/Physics.hpp"
 #include "../util/random.hpp"
 using namespace std;

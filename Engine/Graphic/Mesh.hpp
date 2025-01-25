@@ -1,6 +1,6 @@
 #pragma once
 // #include "AComponent.hpp"
-#include "Object3D.hpp"
+#include "../Object3D.hpp"
 #include <memory>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/vec3.hpp>
