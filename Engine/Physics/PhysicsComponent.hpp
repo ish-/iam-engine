@@ -1,5 +1,6 @@
 #pragma once
 #include "LinearMath/btVector3.h"
+#include "../ACS/AComponent.hpp"
 
 class Physics;
 class btConvexInternalShape;
@@ -8,7 +9,7 @@ class btCollisionShape;
 class btDefaultMotionState;
 class btBoxShape;
 
-class PhysicsComponent {
+class PhysicsComponent : public AComponent {
 public:
   struct Params {
     btBoxShape* shape;
@@ -34,6 +35,7 @@ public:
   btDefaultMotionState* motionState;
   btVector3* inertia;
 
-  template<typename Shape = btBoxShape>
-  bool init (const Params& params);
+  // template<typename Shape = btBoxShape>
+  bool init (Params& params);
+  virtual void update(float dt) override;
 };

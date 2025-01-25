@@ -34,7 +34,7 @@ public:
   std::shared_ptr<T> addComponent(shared_ptr<Object3D> actor, Args&&... args) {
     auto component = std::make_shared<T>(std::forward<Args>(args)...);
     components[typeid(T)].push_back(component);
-    actor->components[typeid(T)] = component;
+    // actor->components[typeid(T)] = component;
     component->setOwner(actor);
     return component;
   }

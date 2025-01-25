@@ -8,9 +8,9 @@ class Object3D;
 class AComponent : public std::enable_shared_from_this<AComponent> {
 public:
     // virtual ~AComponent() = default;
-    virtual ~AComponent() {
-        std::cout << "AComponent::~AComponent()\n";
-    };
+    // virtual ~AComponent() {
+    //     std::cout << "AComponent::~AComponent()\n";
+    // };
 
     void setOwner(const std::shared_ptr<Object3D>& actor);
 

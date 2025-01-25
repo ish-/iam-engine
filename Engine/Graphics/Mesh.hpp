@@ -32,6 +32,7 @@ public:
     return make_shared<T>(static_cast<const T&>(*this));
   }
 
+  void init ();
   virtual void draw();
   // virtual void update();
 };

@@ -11,3 +11,7 @@ void Mesh::draw() {
 
   glBindVertexArray(0);
 }
+
+void Mesh::init () {
+  LOG("Mesh::init()");
+}

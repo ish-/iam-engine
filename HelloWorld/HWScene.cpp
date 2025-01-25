@@ -27,6 +27,9 @@
 #include "../Engine/Time.hpp"
 #include "../Engine/ACS/AMaestro.hpp"
 
+// TODO: tmp for debug
+#include "../Engine/Physics/PhysicsComponent.hpp"
+
 using namespace std;
 using namespace glm;
 
@@ -42,7 +45,7 @@ HWScene::HWScene ()
 
 bool HWScene::load () {
   Window& w = Window::get();
-  // physics.init();
+  physics.init();
 
   movementCtrl = make_shared<MovementCtrl>();
   movementCtrl->inertia = 0.1;
@@ -61,14 +64,17 @@ bool HWScene::load () {
 
   boxGeo = make_shared<BoxGeo>();
 
-  cube = maestro.newActor();
-  auto meshComp = maestro.addComponent<MeshComponent>(cube);
-  meshComp->shader = PhongShader::getPtr();
-  meshComp->geo = boxGeo;
+  // cube = maestro.newActor();
+  // auto meshComp = maestro.addComponent<MeshComponent>(cube);
+  // meshComp->shader = PhongShader::getPtr();
+  // meshComp->geo = boxGeo;
 
   for (uint i = 0; i < 100; i++) {
-    auto cube = maestro.newActor<ACube>();
-    cube->setPosition(vec3( rd::in(-5., 5.), rd::in(-5., 5.), rd::in(-5., 5.)));
+    auto cube = maestro.newActor<ACube>(
+      vec3( rd::in(-5., 5.), rd::in(-5., 5.), rd::in(-5., 5.))
+    );
+    // cube->setPosition();
+    // cube->phyComp->init();
   }
 
   inputs.mouseLock(Bool::TRUE);
@@ -110,7 +116,7 @@ void HWScene::update (float dt) {
   }
   movementCtrl->update(dt, cameraOrigin.get());
 
-  // physics.update();
+  physics.update();
   renderer.renderComponents(camera, light);
 
   // // cameraOrigin->rotateLocal(-rotate * dt);

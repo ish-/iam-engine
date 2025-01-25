@@ -35,6 +35,7 @@ public:
 
   }
 
+  // TODO: cache it since it's not update()d
   mat4 getAbsTransformMatrix() const {
     if (auto _parent = getOwner()) {
         return _parent->getAbsTransformMatrix() * getTransformMatrix();
