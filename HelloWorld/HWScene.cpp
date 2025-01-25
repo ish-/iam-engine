@@ -87,18 +87,6 @@ bool HWScene::load () {
 void HWScene::update (float dt) {
   Window& w = Window::get();
 
-  if (inputs.btnRel[SDLK_F] > 0) {
-    w.toggleFullscreen();
-    camera->update(80, (float)w.width / (float)w.height, 0.1, 1000);
-  }
-
-  if (inputs.btnRel[SDLK_L] > 0)
-    showWireframe = !showWireframe;
-
-  if (inputs.btnRel[SDLK_TAB] > 0) {
-    inputs.mouseLock(Bool::TOGGLE);
-  }
-
   for(auto& actor : maestro.actors)
     actor->update();
 
@@ -124,11 +112,6 @@ void HWScene::update (float dt) {
   physics.update(dt);
   renderer.renderComponents(camera, light);
 
-  // // cameraOrigin->rotateLocal(-rotate * dt);
-  // // // cameraOrigin->rotateSlerp(-rotate * dt, .3f);
-  // // cameraOrigin->translateLocal(-move * dt);
-
-
   // for (auto& child : children)
   //   child->update();
 
@@ -145,7 +128,6 @@ void HWScene::update (float dt) {
 }
 
 void HWScene::drawGui () {
-  ImGui::Checkbox("Wireframes", &showWireframe);
   ImGui::SliderFloat("Slider", &params.slider, 0.0f, 1.0f);
   ImGui::ColorEdit4("Color Picker", (float *)&params.color);
 }

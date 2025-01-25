@@ -9,8 +9,10 @@
 #include "Inputs/Inputs.hpp"
 #include "Graphics/Window.hpp"
 #include "Graphics/Renderer.hpp"
+#include "Physics/Physics.hpp"
 #include "Time.hpp"
 #include "Scene.hpp"
+#include "Camera.hpp"
 #include "GUI.hpp"
 #include "../util/LOG.hpp"
 #include "SDL3/SDL_opengl.h"
@@ -18,7 +20,7 @@
 // r
 
 Engine::Engine()
-  : ctx{Time::get(), Window::get(), Renderer::get(), Inputs::get(), GUI::get()}
+  : ctx{Time::get(), Window::get(), Renderer::get(), Inputs::get(), GUI::get(), Physics::get()}
 {
   std::filesystem::current_path(BIN_TO_BUILD_PATH);
   LOG("Current path: %s", std::filesystem::current_path().c_str());
@@ -56,17 +58,22 @@ void Engine::run(const std::shared_ptr<Scene>& scene) {
 
   while (true)
   {
+    ctx.time.update();
     SDL_PollEvent(&event);
     ImGui_ImplSDL3_ProcessEvent(&event);
-
-    ctx.time.update();
-    if (event.type == SDL_EVENT_QUIT)
-      return;
-    if (event.type == SDL_EVENT_KEY_DOWN)
-      if (event.key.key == SDLK_ESCAPE)
-        return;
-
     ctx.inputs.update(event);
+
+    if (event.type == SDL_EVENT_QUIT) return;
+    if (ctx.inputs.btnRel[SDLK_ESCAPE] > 0) return;
+    if (ctx.inputs.btnRel[SDLK_P] > 0) pause = !pause;
+    if (ctx.inputs.btnRel[SDLK_F] > 0) {
+      ctx.window.toggleFullscreen();
+      scene->camera->update(80, (float)ctx.window.width / (float)ctx.window.height, 0.1, 1000);
+    }
+
+    if (ctx.inputs.btnRel[SDLK_TAB] > 0) {
+      ctx.inputs.mouseLock(Bool::TOGGLE);
+    }
 
     if (!pause) {  // stop GL redrawing
       // Start ImGui frame
@@ -82,6 +89,8 @@ void Engine::run(const std::shared_ptr<Scene>& scene) {
 
       ImGui::Begin("iam-engine");
         ImGui::Text("FPS: %i + %i", int(1. / ctx.time.dT), int(1. / ctx.time.frameDelay));
+        ImGui::Checkbox("Engine pause (P)", &pause);
+        ImGui::Checkbox("Wireframes", &ctx.renderer.wireframes);
       ImGui::End();
 
       scene->drawGui();

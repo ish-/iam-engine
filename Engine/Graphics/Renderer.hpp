@@ -47,4 +47,10 @@ public:
   void setMVP(shared_ptr<Shader> shader, const MVP& mvp);
   void setLight(shared_ptr<Shader> shader, shared_ptr<Light> light);
   // void render(const Scene& _scene, const RenderSceneOpts& opts);
+
+// utils
+  // shared_ptr<class WireframeShader> wireframeShader;
+
+// settings
+  bool wireframes = false;
 };

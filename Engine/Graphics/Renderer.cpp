@@ -80,7 +80,7 @@ void Renderer::render (shared_ptr<Camera> camera, shared_ptr<Light> light, share
     mesh->draw();
   }
 
-  if (mesh->wireframe) {
+  if (wireframes || mesh->wireframe) {
     shared_ptr<Shader> wfShader = WireframeShader::get();
     glUseProgram(wfShader->shaderId);
     setMVP(wfShader, mvp);

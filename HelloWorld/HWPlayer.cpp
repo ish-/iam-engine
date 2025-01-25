@@ -9,6 +9,7 @@
 #include "../util/random.hpp"
 #include "glm/ext/vector_float3.hpp"
 #include "../util/LOG.hpp"
+#include "../Engine/GUI.hpp"
 // TODO: clear bullet includes
 using namespace std;
 using namespace glm;
@@ -29,6 +30,7 @@ void HWPlayer::init () {
     .initialImpulse = btVector3(rd::in(-10,10), rd::in(-10,10), rd::in(-10,10)),
   };
   phyComp = AMaestro::get().addComponent<PhysicsComponent>(shared_from_this(), createParams);
+  phyComp->rigidBody->setDamping(.3f, .3f);
 }
 
 // mat4 HWPlayer::getTransformMatrix() const{
@@ -47,7 +49,7 @@ void HWPlayer::update (){
   if (pan != 0 || tilt != 0 || dolly != 0) {
     vec3 move = { pan, tilt, dolly };
 
-    phyComp->applyForce(getForward() * move * vec3(1.));
+    phyComp->applyForce(getForward() * move * vec3(3.));
   }
 
   if (bool mouseLocked = inputs.mouseLock(Bool::GET)) {
