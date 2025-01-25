@@ -6,13 +6,13 @@ using namespace glm;
 
 class MovementCtrl {
 public:
-    glm::vec3 position;
-    glm::vec3 velocity;
-    glm::vec3 appliedForce;
+    glm::vec3 position {0,0,0};
+    glm::vec3 velocity {0,0,0};
+    glm::vec3 appliedForce {0,0,0};
 
-    glm::vec3 rotation;      // 3D rotation (pitch, yaw, roll)
-    glm::vec3 angularVelocity;
-    glm::vec3 appliedTorque;
+    glm::vec3 rotation {0,0,0};      // 3D rotation (pitch, yaw, roll)
+    glm::vec3 angularVelocity {0,0,0};
+    glm::vec3 appliedTorque {0,0,0};
 
     float mass = 1.0f;       // Mass of the object
     float drag = 0.1f;       // Drag coefficient

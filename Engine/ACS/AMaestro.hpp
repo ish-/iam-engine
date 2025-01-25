@@ -22,7 +22,7 @@ public:
 
   template <typename AA = AActor, typename... Args>
   std::shared_ptr<AA> newActor(Args&&... args) {
-    auto actor = std::make_shared<AActor>(std::forward<Args>(args)...);
+    auto actor = std::make_shared<AA>(std::forward<Args>(args)...);
     actors.push_back(actor);
     actor->init();
     return actor;
