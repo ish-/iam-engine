@@ -1,7 +1,9 @@
 #include "HWScene.hpp"
+#include <cstdio>
 #include <glm/vec3.hpp>
 #include <cmath>
 #include <memory>
+#include <string>
 #include "../Engine/Inputs/Inputs.hpp"
 #include "../Engine/Camera.hpp"
 #include "../Engine/Graphic/Window.hpp"
@@ -20,6 +22,7 @@
 #include "../Engine/MovementCtrl.hpp"
 #include "imgui.h"
 #include "../Engine/Renderer.hpp"
+#include "../Engine/Time.hpp"
 #include "HWObject.hpp"
 
 using namespace std;
@@ -44,7 +47,8 @@ bool HWScene::load () {
   movementCtrl->angularDrag = 2.6;
 
   // cameraOrigin = make_shared<Object3D>();
-  camera = make_shared<Camera>(80, w.width / w.height, 0.1, 1000);
+  LOG("Window", w.width, w.height);
+  camera = make_shared<Camera>(80, (float)w.width / (float)w.height, 0.1, 1000);
   camera->setPosition(vec3(0, 0, 5));
   cameraOrigin = camera;
   // cameraOrigin->attach(camera);
@@ -85,8 +89,10 @@ bool HWScene::load () {
 void HWScene::update (float dt) {
   Window& w = Window::get();
 
-  if (inputs.btnRel[SDLK_F] > 0)
+  if (inputs.btnRel[SDLK_F] > 0) {
     w.toggleFullscreen();
+    camera->update(80, (float)w.width / (float)w.height, 0.1, 1000);
+  }
 
   if (inputs.btnRel[SDLK_L] > 0)
     showWireframe = !showWireframe;
@@ -133,19 +139,14 @@ void HWScene::update (float dt) {
     }
   }
 
-  drawGui();
+  // drawGui();
 
   Super::update(dt);
   // return true;
 }
 
 void HWScene::drawGui () {
-  ImGui::Begin("iam-engine");
-
-    ImGui::Checkbox("Wireframes", &showWireframe);
-    ImGui::Text("This is an example window.");
-    ImGui::SliderFloat("Slider", &params.slider, 0.0f, 1.0f);
-    ImGui::ColorEdit4("Color Picker", (float *)&params.color);
-    // ImGui::SliderFloat3("Vector 3", vec3Value, -10.0f, 10.0f);
-  ImGui::End();
+  ImGui::Checkbox("Wireframes", &showWireframe);
+  ImGui::SliderFloat("Slider", &params.slider, 0.0f, 1.0f);
+  ImGui::ColorEdit4("Color Picker", (float *)&params.color);
 }

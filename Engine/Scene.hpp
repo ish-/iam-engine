@@ -22,5 +22,6 @@ public:
 
   virtual void update(float dt);
 
+  virtual void drawGui () = 0;
   // ~Scene() = default;
 };

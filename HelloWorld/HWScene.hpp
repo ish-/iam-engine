@@ -45,5 +45,5 @@ public:
 
   // ~HWScene() = default;
 
-  void drawGui ();
+  void drawGui () override;
 };

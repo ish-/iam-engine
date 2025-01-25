@@ -26,7 +26,7 @@ void Window::setFullscreen(bool value) {
     else
         SDL_SetWindowSize(sdlWindow, 1280, 800);
     width = displayBounds.w;
-    height = displayBounds.w;
+    height = displayBounds.h;
     fullscreen = value;
     // SDL_SetWindowFullscreen(sdlWindow, SDL_WINDOW_FULLSCREEN);
 }

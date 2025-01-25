@@ -3,6 +3,7 @@
 #include <glad/glad.h>
 #include <SDL3/SDL_init.h>
 #include <SDL3/SDL_video.h>
+#include <SDL3/SDL_timer.h>
 
 #include "Engine.hpp"
 #include "Inputs/Inputs.hpp"
@@ -82,6 +83,13 @@ void Engine::run(const std::shared_ptr<Scene>& scene) {
 
 
       scene->update(ctx.time.dT);
+
+      ImGui::Begin("iam-engine");
+        ImGui::Text("FPS: %i + %i", int(1. / ctx.time.dT), int(1. / ctx.time.frameDelay));
+      ImGui::End();
+
+      scene->drawGui();
+
       ImGui::Render();
       ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
       SDL_GL_SwapWindow(ctx.window.sdlWindow);
@@ -99,6 +107,10 @@ void Engine::run(const std::shared_ptr<Scene>& scene) {
 
     // if (bExit)
     //   break;
-    SDL_Delay(ctx.time.frameEnd());
+    ctx.time.endFrame();
+    LOG("Frame FPS: ", 1 / ctx.time.dT);
+    LOG("Frame delay: ", ctx.time.frameDelay * 1000.);
+    if (ctx.time.frameDelay > 0)
+      SDL_Delay(ctx.time.frameDelay * 1000);
   }
 }
