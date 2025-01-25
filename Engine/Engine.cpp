@@ -37,10 +37,6 @@ void Engine::init(const std::shared_ptr<Scene>& scene) {
 
   ctx.gui.init(ctx.window.sdlWindow, ctx.renderer.context);
 
-  // auto cube = create<Mesh>();
-
-
-
   if (auto err = glGetError())
     LOG("GL ERROR!", err);
 

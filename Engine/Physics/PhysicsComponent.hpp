@@ -8,7 +8,7 @@ class btCollisionShape;
 class btDefaultMotionState;
 class btBoxShape;
 
-class PhysicsComp {
+class PhysicsComponent {
 public:
   struct Params {
     btBoxShape* shape;
@@ -24,8 +24,8 @@ public:
 
   Params& params;
 
-  PhysicsComp (Params& params);
-  ~PhysicsComp ();
+  PhysicsComponent (Params& params);
+  ~PhysicsComponent ();
 
   Physics& physics;
 

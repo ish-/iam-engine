@@ -29,13 +29,6 @@ public:
   mat4 getAbsTransformMatrix() const;
 
 // AActor
-  template <typename T, typename... Args>
-  static std::shared_ptr<T> create(Args&&... args) {
-      auto actor = std::make_shared<T>(std::forward<Args>(args)...);
-      actor->init();
-      return actor;
-  }
-
   // TODO:
   std::string name = "Actor";
 

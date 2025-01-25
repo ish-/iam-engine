@@ -65,33 +65,10 @@ bool HWScene::load () {
   auto meshComp = maestro.addComponent<MeshComponent>(cube);
   meshComp->shader = PhongShader::getPtr();
   meshComp->geo = boxGeo;
-  // , {
-  //   .shader = make_shared<Shader>(PhongShader::get()),
-  //   .geo = boxGeo,
-  // });
-
-  // auto cube2 = cube->clone<Cube>();
-  // cube2->scale(vec3(900., .1, .1));
-  // cube2->setPosition(vec3(2, 0, 0));
-  // cube2->tint = vec3(1.,0.,0.);
-  // children.push_back(cube2);
-
-  // auto cube3 = cube->clone<Cube>();
-  // cube3->scale(30);
-  // // cube3->setPosition(vec3(0, 2, -2));
-  // cube3->tint = vec3(0.,1.,0.);
-  // children.push_back(cube3);
 
   for (uint i = 0; i < 100; i++) {
-    auto cube = maestro.newActor<Object3D>();
+    auto cube = maestro.newActor<ACube>();
     cube->setPosition(vec3( rd::in(-5., 5.), rd::in(-5., 5.), rd::in(-5., 5.)));
-    // auto cube = maestro.newActor();
-    auto meshComp = maestro.addComponent<MeshComponent>(cube);
-    meshComp->tint = vec3( rd::in(0, 1), rd::in(0, 1), rd::in(0, 1));
-    meshComp->shader = make_shared<Shader>(PhongShader::get());
-    meshComp->geo = boxGeo;
-
-    // children.push_back(_cube);
   }
 
   inputs.mouseLock(Bool::TRUE);

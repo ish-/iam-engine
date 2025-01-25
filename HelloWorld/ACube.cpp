@@ -6,17 +6,22 @@
 #include "../Engine/Graphics/PhongShader.hpp"
 #include "../Engine/Physics/Physics.hpp"
 #include "../Engine/Graphics/Mesh.hpp"
+#include "../Engine/Graphics/MeshComponent.hpp"
+#include "../Engine/Graphics/BoxGeo.hpp"
+#include "../Engine/ACS/AMaestro.hpp"
 #include "../util/random.hpp"
 using namespace std;
 
 ACube::ACube () {
-  init();
+  // init();
 }
 
 void ACube::init () {
 
-  // shader = make_shared<Shader>(PhongShader::get());
-  // geo = make_shared<Geo>();
+  auto meshComp = AMaestro::get().addComponent<MeshComponent>(shared_from_this());
+  meshComp->tint = vec3( rd::in(0, 1), rd::in(0, 1), rd::in(0, 1));
+  meshComp->shader = make_shared<Shader>(PhongShader::get());
+  meshComp->geo = make_shared<BoxGeo>();
 }
 
 // void ACube::enablePhysics () {

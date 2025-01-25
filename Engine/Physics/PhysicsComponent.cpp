@@ -1,15 +1,15 @@
 #include <btBulletDynamicsCommon.h>
 #include "Physics.hpp"
-#include "PhysicsComp.hpp"
+#include "PhysicsComponent.hpp"
 
-PhysicsComp::PhysicsComp (Params& params)
+PhysicsComponent::PhysicsComponent (Params& params)
   : physics(Physics::get()), params(params)
 {
   init(params);
 }
 
 template<typename Shape>
-bool PhysicsComp::init (const Params& params) {
+bool PhysicsComponent::init (const Params& params) {
   // if constexpr (std::is_same<Shape, btBoxShape>::value) {
   //   shape = new btBoxShape(params.size);
   // } else if constexpr (std::is_same<Shape, btSphereShape>::value) {
@@ -38,7 +38,7 @@ bool PhysicsComp::init (const Params& params) {
     params.initialImpulsePos);
 }
 
-PhysicsComp::~PhysicsComp () {
+PhysicsComponent::~PhysicsComponent () {
   physics.dynamicsWorld->removeRigidBody(rigidBody);
 
   delete params.shape;
