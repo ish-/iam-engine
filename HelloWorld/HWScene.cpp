@@ -86,7 +86,6 @@ bool HWScene::load () {
     cube->setPosition(vec3( rd::in(-5., 5.), rd::in(-5., 5.), rd::in(-5., 5.)));
     // auto cube = maestro.newActor();
     auto meshComp = maestro.addComponent<MeshComponent>(cube);
-    meshComp->setPosition(vec3( rd::in(-5., 5.), rd::in(-5., 5.), rd::in(-5., 5.)));
     meshComp->tint = vec3( rd::in(0, 1), rd::in(0, 1), rd::in(0, 1));
     meshComp->shader = make_shared<Shader>(PhongShader::get());
     meshComp->geo = boxGeo;

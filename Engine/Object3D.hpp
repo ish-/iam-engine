@@ -3,12 +3,17 @@
 #include <glm/gtc/quaternion.hpp>
 #include <memory>
 #include <vector>
+#include <string>
+#include <unordered_map>
+#include <typeindex>
 #include "Transform.hpp"
-#include "ACS/AActor.hpp"
-
+// #include "ACS/AActor.hpp"
 using namespace glm;
 
-class Object3D : public Transform, public AActor, public std::enable_shared_from_this<Object3D> {
+class AComponent;
+
+class Object3D : public Transform, public std::enable_shared_from_this<Object3D> {
+// Object3D
 protected:
   std::weak_ptr<Object3D> parent;
 public:
@@ -22,4 +27,29 @@ public:
   std::shared_ptr<Object3D> getParent() const;
 
   mat4 getAbsTransformMatrix() const;
+
+// AActor
+  template <typename T, typename... Args>
+  static std::shared_ptr<T> create(Args&&... args) {
+      auto actor = std::make_shared<T>(std::forward<Args>(args)...);
+      actor->init();
+      return actor;
+  }
+
+  // TODO:
+  std::string name = "Actor";
+
+  std::unordered_map<std::type_index, std::shared_ptr<AComponent>> components;
+
+  virtual void init();
+  virtual void update();
+
+  template <typename T>
+  std::shared_ptr<T> getComponent() {
+      auto it = components.find(typeid(T));
+      if (it != components.end()) {
+          return std::dynamic_pointer_cast<T>(it->second);
+      }
+      return nullptr;
+  }
 };

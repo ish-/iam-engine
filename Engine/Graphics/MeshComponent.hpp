@@ -34,4 +34,11 @@ public:
   void update (float dt) override {
 
   }
+
+  mat4 getAbsTransformMatrix() const {
+    if (auto _parent = getOwner()) {
+        return _parent->getAbsTransformMatrix() * getTransformMatrix();
+    }
+    return getTransformMatrix();
+  }
 };

@@ -1,10 +1,10 @@
 #include "AComponent.hpp"
 // #include "../util/LOG.hpp"
 
-void AComponent::setOwner(const std::shared_ptr<AActor>& actor) {
+void AComponent::setOwner(const std::shared_ptr<Object3D>& actor) {
     owner = actor;
 }
 
-std::shared_ptr<AActor> AComponent::getOwner() const {
+std::shared_ptr<Object3D> AComponent::getOwner() const {
     return owner.lock();
 }

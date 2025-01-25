@@ -4,8 +4,10 @@
 #include <unordered_map>
 #include <typeindex>
 
-#include "AActor.hpp"
+// #include "Object3D.hpp"
+#include "../Object3D.hpp"
 #include "AComponent.hpp"
+using namespace std;
 
 class AMaestro {
 public:
@@ -18,9 +20,9 @@ public:
 
   // vector<shared_ptr<AComponent>> components;
   unordered_map<std::type_index, vector<shared_ptr<AComponent>>> components;
-  vector<shared_ptr<AActor>> actors;
+  vector<shared_ptr<Object3D>> actors;
 
-  template <typename AA = AActor, typename... Args>
+  template <typename AA = Object3D, typename... Args>
   std::shared_ptr<AA> newActor(Args&&... args) {
     auto actor = std::make_shared<AA>(std::forward<Args>(args)...);
     actors.push_back(actor);
@@ -29,7 +31,7 @@ public:
   }
 
   template <typename T, typename... Args>
-  std::shared_ptr<T> addComponent(shared_ptr<AActor> actor, Args&&... args) {
+  std::shared_ptr<T> addComponent(shared_ptr<Object3D> actor, Args&&... args) {
     auto component = std::make_shared<T>(std::forward<Args>(args)...);
     components[typeid(T)].push_back(component);
     actor->components[typeid(T)] = component;
@@ -38,7 +40,7 @@ public:
   }
 
   // template <typename T, typename... Args>
-  // void removeComponent(shared_ptr<AActor> actor) {
+  // void removeComponent(shared_ptr<Object3D> actor) {
   //   auto component = actor->components[typeid(T)];
   //   actor->components.erase(typeid(T));
   //   auto& sysComps = components[typeid(T)];

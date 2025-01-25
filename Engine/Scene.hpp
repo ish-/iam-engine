@@ -13,8 +13,8 @@ public:
 
   std::shared_ptr<Camera> camera;
   std::shared_ptr<Light> light;
-  // std::vector<std::shared_ptr<AActor>> children;
-  // std::vector<std::shared_ptr<AActor>> children;
+  // std::vector<std::shared_ptr<Object3D>> children;
+  // std::vector<std::shared_ptr<Object3D>> children;
 
 
   virtual bool load ();

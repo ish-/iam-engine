@@ -16,7 +16,6 @@ class Object3D;
 class Cube;
 class BoxGeo;
 class AMaestro;
-class AActor;
 
 class HWScene : public Scene {
 public:
@@ -39,7 +38,7 @@ public:
 
   bool showWireframe = false;
   shared_ptr<Object3D> cameraOrigin;
-  shared_ptr<AActor> cube;
+  shared_ptr<Object3D> cube;
   shared_ptr<BoxGeo> boxGeo;
   vector<shared_ptr<Object3D>> children;
 
