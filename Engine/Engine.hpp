@@ -26,6 +26,13 @@ public:
   virtual ~Engine() = default;
 
   IEngine ctx;
+  class Time& time;
+  class Window& window;
+  class Renderer& renderer;
+  class Inputs& inputs;
+  class GUI& gui;
+  class Physics& physics;
+
   void exit();
 
   void init(const std::shared_ptr<Scene>& scene);
