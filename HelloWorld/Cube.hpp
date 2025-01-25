@@ -1,6 +1,6 @@
 #pragma once
 #include "HWObject.hpp"
-#include "../Engine/Graphic/Mesh.hpp"
+#include "../Engine/Graphics/Mesh.hpp"
 
 class btRigidBody;
 class btVector3;

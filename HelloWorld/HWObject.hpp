@@ -1,5 +1,5 @@
 #pragma once
-#include "../Engine/Graphic/Mesh.hpp"
+#include "../Engine/Graphics/Mesh.hpp"
 
 class HWObject {
 public:

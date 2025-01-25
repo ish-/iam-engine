@@ -7,8 +7,8 @@
 
 #include "Engine.hpp"
 #include "Inputs/Inputs.hpp"
-#include "Graphic/Window.hpp"
-#include "Graphic/Renderer.hpp"
+#include "Graphics/Window.hpp"
+#include "Graphics/Renderer.hpp"
 #include "Time.hpp"
 #include "Scene.hpp"
 #include "GUI.hpp"

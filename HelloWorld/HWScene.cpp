@@ -6,10 +6,10 @@
 #include <string>
 #include "../Engine/Inputs/Inputs.hpp"
 #include "../Engine/Camera.hpp"
-#include "../Engine/Graphic/Window.hpp"
+#include "../Engine/Graphics/Window.hpp"
 #include "../Engine/Light.hpp"
-#include "../Engine/Graphic/BoxGeo.hpp"
-#include "../Engine/Graphic/Mesh.hpp"
+#include "../Engine/Graphics/BoxGeo.hpp"
+#include "../Engine/Graphics/Mesh.hpp"
 #include "../Engine/Physics/Physics.hpp"
 #include "../Engine/GUI.hpp"
 #include "../util/LOG.hpp"
@@ -21,7 +21,7 @@
 #include "../Engine/Engine.hpp"
 #include "../Engine/MovementCtrl.hpp"
 #include "imgui.h"
-#include "../Engine/Graphic/Renderer.hpp"
+#include "../Engine/Graphics/Renderer.hpp"
 #include "../Engine/Time.hpp"
 #include "HWObject.hpp"
 
