@@ -26,7 +26,7 @@ public:
     return AMaestro::get().components[typeid(AC)];
   }
 
-  void update() {
+  void update(const float& dt) {
     for (auto& component : getComponents()) {
       component->update(1000.);
     }

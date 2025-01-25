@@ -1,5 +1,6 @@
 #include <btBulletDynamicsCommon.h>
 #include "Physics.hpp"
+#include "../Object3D.hpp"
 #include "PhysicsComponent.hpp"
 // #include "../../util/LOG.hpp"
 #include "../../util/random.hpp"
@@ -62,14 +63,29 @@ bool PhysicsComponent::init (Params& params) {
 }
 
 PhysicsComponent::~PhysicsComponent () {
-  physics.dynamicsWorld->removeRigidBody(rigidBody);
+  // physics.dynamicsWorld->removeRigidBody(rigidBody);
 
-  delete params.shape;
-  // no need to delete inertia as it is not dynamically allocated
-  delete inertia;
-  delete rigidBody;
+  // delete params.shape;
+  // // no need to delete inertia as it is not dynamically allocated
+  // delete inertia;
+  // delete rigidBody;
+}
+
+glm::mat4 PhysicsComponent::getGlmTMat4 () {
+  return Physics::toGlmTMat4(rigidBody);
 }
 
 void PhysicsComponent::update (float dt) {
+  getOwner()->setMatrix(getGlmTMat4());
+}
 
+void PhysicsComponent::applyForce (glm::vec3 force, glm::vec3 pos) {
+  rigidBody->applyForce(
+    btVector3(force.x, force.y, force.z),
+    btVector3(pos.x, pos.y, pos.z));
+}
+
+void PhysicsComponent::applyTorque (glm::vec3 force) {
+  rigidBody->applyTorque(
+    btVector3(force.x, force.y, force.z));
 }

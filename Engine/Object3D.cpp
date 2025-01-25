@@ -13,9 +13,9 @@ void Object3D::init () {
 
 }
 
-void Object3D::attach(const Object3D& child) {
-  attach(std::make_shared<Object3D>(child));
-}
+// void Object3D::attach(const Object3D& child) {
+//   attach(std::make_shared<Object3D>(child));
+// }
 
 void Object3D::attach(const std::shared_ptr<Object3D>& child) {
   child->parent = shared_from_this();

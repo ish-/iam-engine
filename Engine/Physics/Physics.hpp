@@ -2,8 +2,10 @@
 #include <btBulletDynamicsCommon.h>
 #include <glm/mat4x4.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include "../ACS/ASystem.hpp"
+#include "PhysicsComponent.hpp"
 
-class Physics {
+class Physics : public ASystem<PhysicsComponent> {
 public:
   static Physics& get() { static Physics instance; return instance; } // singleton
 
@@ -32,7 +34,7 @@ public:
 
   bool init ();
 
-  bool update ();
+  bool update (const float& dt);
 
   void deinit ();
 };

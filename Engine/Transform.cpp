@@ -6,7 +6,7 @@
 
 using namespace glm;
 
-mat4 Transform::getTransformMatrix() const {
+mat4 Transform::getTransformMatrix() const{
   return matrix;
 }
 
@@ -104,3 +104,5 @@ void Transform::rotateEulLocal(const vec3& eulerAngs) {
 quat Transform::getForward() const {
   return quat_cast(mat3(matrix));
 }
+
+void Transform::setMatrix(const mat4& _matrix) { matrix = _matrix; }

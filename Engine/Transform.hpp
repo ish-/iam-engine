@@ -17,7 +17,7 @@ public:
   Transform (const vec3& pos, const vec3& rot) { setPosition(pos); setRotation(rot); }
   Transform (const vec3& pos, const vec3& rot, const vec3& _scale) { scale(_scale); setPosition(pos); setRotation(rot); }
 
-  virtual mat4 getTransformMatrix() const;
+  virtual mat4 getTransformMatrix () const;
   quat getForward() const;
 
   vec3 position = vec3(0.);
@@ -52,6 +52,8 @@ public:
 
   // mat4 getTransform() const;
   // mat4 getAbsTransform() const;
+
+  void setMatrix(const mat4& _matrix);
 protected:
   mat4 matrix = I_MAT;
 };

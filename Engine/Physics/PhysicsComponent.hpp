@@ -1,6 +1,8 @@
 #pragma once
 #include "LinearMath/btVector3.h"
 #include "../ACS/AComponent.hpp"
+#include <glm/mat4x4.hpp>
+#include <glm/vec3.hpp>
 
 class Physics;
 class btConvexInternalShape;
@@ -12,7 +14,7 @@ class btBoxShape;
 class PhysicsComponent : public AComponent {
 public:
   struct Params {
-    btBoxShape* shape;
+    btConvexInternalShape* shape;
     btVector3 pos;
     btVector3 size;
     btVector3 intertia {0,0,0};
@@ -38,4 +40,9 @@ public:
   // template<typename Shape = btBoxShape>
   bool init (Params& params);
   virtual void update(float dt) override;
+
+  glm::mat4 getGlmTMat4 ();
+
+  void applyForce (glm::vec3 force, glm::vec3 pos = {0,0,0});
+  void applyTorque (glm::vec3 force);
 };
