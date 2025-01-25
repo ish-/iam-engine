@@ -86,6 +86,7 @@ void Renderer::render (shared_ptr<Camera> camera, shared_ptr<Light> light, share
     setMVP(wfShader, mvp);
     // setUniform("wireColor", glm::vec3(1, 1, 1));
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    mesh->draw();
   }
 
   mesh->shader->setUniform("wireColor", vec3(0,0,0));

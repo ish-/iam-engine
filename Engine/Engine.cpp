@@ -68,7 +68,7 @@ void Engine::run(const std::shared_ptr<Scene>& scene) {
     if (ctx.inputs.btnRel[SDLK_P] > 0) pause = !pause;
     if (ctx.inputs.btnRel[SDLK_F] > 0) {
       ctx.window.toggleFullscreen();
-      scene->camera->update(80, (float)ctx.window.width / (float)ctx.window.height, 0.1, 1000);
+      scene->camera->setRatio((float)ctx.window.width / (float)ctx.window.height);
     }
 
     if (ctx.inputs.btnRel[SDLK_TAB] > 0) {

@@ -8,7 +8,6 @@
 #include "../Engine/Camera.hpp"
 #include "../Engine/Graphics/Window.hpp"
 #include "../Engine/Light.hpp"
-#include "../Engine/Graphics/BoxGeo.hpp"
 #include "../Engine/Graphics/Mesh.hpp"
 #include "../Engine/Graphics/MeshComponent.hpp"
 #include "../Engine/Graphics/PhongShader.hpp"
@@ -47,31 +46,20 @@ bool HWScene::load () {
   Window& w = Window::get();
   physics.init();
 
-  movementCtrl = make_shared<MovementCtrl>();
-  movementCtrl->inertia = 0.1;
-  movementCtrl->angularInertia = 0.1;
-  movementCtrl->drag = 2.9;
-  movementCtrl->angularDrag = 2.6;
+  // movementCtrl = make_shared<MovementCtrl>();
+  // movementCtrl->inertia = 0.1;
+  // movementCtrl->angularInertia = 0.1;
+  // movementCtrl->drag = 2.9;
+  // movementCtrl->angularDrag = 2.6;
 
-  // cameraOrigin = make_shared<Object3D>();
   shared_ptr<HWPlayer> player = maestro.newActor<HWPlayer>(vec3(0, 0, 5));
 
-  camera = make_shared<Camera>(80, (float)w.width / (float)w.height, 0.1, 1000);
-  // camera->setPosition(vec3(0, 0, 5));
-  cameraOrigin = camera;
-
+  camera = make_shared<Camera>((Camera::Conf){
+    .ratio = (float)w.width / (float)w.height, .fov = 80.,
+    .near = 0.1, .far = 1000 });
   player->attach(camera);
-  // cameraOrigin->attach(camera);
 
-  // camera->setRotation(vec3(60, 0, 0)); doest work
   light = make_shared<Light>(vec3(1, 2, 3), vec3(1, 1, .7));
-
-  boxGeo = make_shared<BoxGeo>();
-
-  // cube = maestro.newActor();
-  // auto meshComp = maestro.addComponent<MeshComponent>(cube);
-  // meshComp->shader = PhongShader::getPtr();
-  // meshComp->geo = boxGeo;
 
   for (uint i = 0; i < 100; i++) {
     auto cube = maestro.newActor<ACube>(
