@@ -1,4 +1,5 @@
 #pragma once
+#include <memory>
 #include "LinearMath/btVector3.h"
 #include "../ACS/AComponent.hpp"
 #include <glm/mat4x4.hpp>
@@ -16,13 +17,12 @@ public:
   struct Params {
     btConvexInternalShape* shape;
     btVector3 pos;
-    btVector3 size;
-    btVector3 intertia {0,0,0};
-    btVector3 initialImpulse {0,0,0};
-    btVector3 initialImpulsePos {0,0,0};
     float mass = 1.;
-    float restitution = 0.5;
-    float friction = 0.5;
+    btVector3 initialImpulse {0,0,0};
+    btVector3 intertia {0,0,0};
+    // btVector3 initialImpulsePos {0,0,0};
+    // float restitution = 0.5;
+    // float friction = 0.5;
   };
 
   Params& params;

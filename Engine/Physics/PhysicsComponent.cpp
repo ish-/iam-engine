@@ -22,43 +22,23 @@ bool PhysicsComponent::init (Params& params) {
   // // } else {
   // //   return false;
   // // }
-
-  // btTransform transform;
-  // transform.setIdentity();
-  // transform.setOrigin(params.pos);
-  // motionState = new btDefaultMotionState(transform);
-
-  // btVector3 inertia(0, 0, 0);
-  // params.shape->calculateLocalInertia(1., inertia);
-
-  // btRigidBody::btRigidBodyConstructionInfo rigidBodyCI(params.mass, motionState, params.shape, inertia);
-  // // btRigidBody::btRigidBodyConstructionInfo rigidBodyCI(params.mass, motionState, params.shape, params.intertia);
-  // rigidBody = new btRigidBody(rigidBodyCI);
-  // physics.dynamicsWorld->addRigidBody(rigidBody);
-  // rigidBody->setActivationState(DISABLE_DEACTIVATION);
-  // rigidBody->applyForce(
-  //   params.initialImpulse,
-  //   params.initialImpulsePos);
-  //   Physics& physics = Physics::get();
-
-  // btCollisionShape* shape = new btBoxShape(btVector3(.5, .5, .5)); // 10x1x10
-  btCollisionShape* shape = params.shape; // 10x1x10
+  // btCollisionShape* shape = params.shape;
 
   btTransform transform;
   transform.setIdentity();
   transform.setOrigin(params.pos);
   btDefaultMotionState* motionState = new btDefaultMotionState(transform);
 
-  inertia = new btVector3(.8, .8, .8);
-  shape->calculateLocalInertia(1., *inertia);
+  // inertia = new btVector3(.8, .8, .8);
+  params.shape->calculateLocalInertia(1., params.intertia);
 
-  btRigidBody::btRigidBodyConstructionInfo rigidBodyCI(1., motionState, shape, *inertia);
+  btRigidBody::btRigidBodyConstructionInfo rigidBodyCI(1., motionState, params.shape, params.intertia);
   rigidBody = new btRigidBody(rigidBodyCI);
   physics.dynamicsWorld->addRigidBody(rigidBody);
   rigidBody->setActivationState(DISABLE_DEACTIVATION);
-  rigidBody->applyForce(
-    btVector3(rd::in(-10,10), rd::in(-10,10), rd::in(-10,10)),
-    btVector3(.1,.1,.1));
+
+  if (params.initialImpulse != btVector3_ZERO)
+    rigidBody->applyCentralForce(params.initialImpulse);
 
   return true;
 }

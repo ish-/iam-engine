@@ -64,10 +64,6 @@ bool HWScene::load () {
   PhysicsComponent::Params icospherePhysicsParams({
     .shape = new btSphereShape(.6),
     .pos = btVector3(2, 0, 0),
-    .size = btVector3(1, 1, 1),
-    .mass = 1,
-    .restitution = 0.5,
-    .friction = 0.5
   });
   maestro.addComponent<PhysicsComponent>(icosphere, icospherePhysicsParams);
 

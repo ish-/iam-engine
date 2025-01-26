@@ -27,7 +27,6 @@ void ACube::init () {
     .shape = new btBoxShape(btVector3(.5, .5, .5)),
     .pos = btVector3(posMat[3][0], posMat[3][1], posMat[3][2]),
     // TODO: calc from matrix's scale
-    .size = btVector3(.5, .5, .5),
     .initialImpulse = btVector3(rd::in(-10,10), rd::in(-10,10), rd::in(-10,10)),
   };
   phyComp = AMaestro::get().addComponent<PhysicsComponent>(shared_from_this(), createParams);

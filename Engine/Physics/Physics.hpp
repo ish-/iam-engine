@@ -5,6 +5,8 @@
 #include "../ACS/ASystem.hpp"
 #include "PhysicsComponent.hpp"
 
+const btVector3 btVector3_ZERO = btVector3(0, 0, 0);
+
 class Physics : public ASystem<PhysicsComponent> {
 public:
   static Physics& get() { static Physics instance; return instance; } // singleton
