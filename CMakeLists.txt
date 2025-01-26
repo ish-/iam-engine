@@ -79,7 +79,7 @@ add_executable(${PROJECT_NAME} ${SAMPLE_DIR}/${SAMPLE_NAME}.cpp ${SOURCES} ${SAM
 #     ${PROJECT_SOURCE_DIR}/shaders
 # )
 add_custom_target(copy_resources ALL
-    COMMAND ${CMAKE_COMMAND} -E copy_directory ${PROJECT_SOURCE_DIR}/shaders ${CMAKE_BINARY_DIR}/resources/shaders
+    COMMAND ${CMAKE_COMMAND} -E copy_directory ${PROJECT_SOURCE_DIR}/resources ${CMAKE_BINARY_DIR}/resources
     # COMMAND ${CMAKE_COMMAND} -E copy ${PROJECT_SOURCE_DIR}/config.json ${CMAKE_BINARY_DIR}/resources/config.json
     DEPENDS ${RESOURCE_FILES}
     COMMENT "Copying resource files to build directory"
@@ -181,12 +181,23 @@ target_link_libraries(${PROJECT_NAME} imgui)
 
 # add_subdirectory(${CMAKE_SOURCE_DIR}/ext/bullet3/build_cmake/src)
 # add_subdirectory(${CMAKE_SOURCE_DIR}/ext/bullet3/build_cmake/src/Bullet3Common)
-
 # set(BULLET_ROOT ${CMAKE_SOURCE_DIR}/ext/bullet3)
 # set(BULLET_INCLUDE_DIR ${BULLET_ROOT}/src)
 # set(BULLET_LIBRARIES ${BULLET_ROOT}/lib)
 
+# brew install bullet
 find_package(Bullet REQUIRED)
-
 include_directories(${BULLET_INCLUDE_DIRS})
 target_link_libraries(${PROJECT_NAME} ${BULLET_LIBRARIES})
+
+# !!!!!! ASSIMP
+# brew install assimp@5.4.3
+find_package(assimp REQUIRED)
+message(
+    STATUS "ASSIMP_INCLUDE_DIRS: ${ASSIMP_INCLUDE_DIRS}\n"
+    "ASSIMP_LIBRARIES: ${assimp_LIBRARIES}\n"
+    "ASSIMP_VERSION: ${assimp_VERSION}"
+) # check assimp version
+include_directories(${ASSIMP_INCLUDE_DIRS})
+target_link_libraries(${PROJECT_NAME} ${ASSIMP_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} assimp::assimp)
