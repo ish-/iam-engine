@@ -1,9 +1,9 @@
 #pragma once
-// #include "AActor.hpp"
-#include "AComponent.hpp"
-#include "AMaestro.hpp"
 #include <vector>
 #include <memory>
+#include "AComponent.hpp"
+#include "AMaestro.hpp"
+#include "../../util/Symbol.hpp"
 using namespace std;
 
 // #define SINGLETON(classname) \
@@ -21,9 +21,17 @@ public:
     return instance;
   }
 
+  virtual Symbol getASystemType () {
+    static Symbol symbol { "<ASystem>" };
+    return symbol;
+  }
+
   vector<shared_ptr<AComponent>> getComponents () {
     static_assert(std::is_base_of<AComponent, AC>::value, "ASystem: AC must derive from AComponent");
-    return AMaestro::get().components[typeid(AC)];
+    // auto& allComps = AMaestro::get().components;
+    // auto sysType = getASystemType().name();
+    // auto& comps = allComps[getASystemType()];
+    return AMaestro::get().components[getASystemType()];
   }
 
   void update(const float& dt) {

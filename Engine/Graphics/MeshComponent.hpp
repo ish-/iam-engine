@@ -22,7 +22,7 @@ public:
   bool shaded = true;
   bool wireframe = false;
 
-  void draw() {
+  virtual void draw() {
     glBindVertexArray(geo->vertexArrayId);
     shader->setUniform("tintColor", tint);
 

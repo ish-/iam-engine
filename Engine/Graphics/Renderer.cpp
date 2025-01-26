@@ -8,6 +8,7 @@
 
 #include "Renderer.hpp"
 #include "MeshComponent.hpp"
+#include "PhongShader.hpp"
 #include "Shader.hpp"
 #include "../Camera.hpp"
 #include "../Light.hpp"
@@ -73,10 +74,14 @@ void Renderer::render (shared_ptr<Camera> camera, shared_ptr<Light> light, share
     .viewPos = Transform(camera->getAbsTransformMatrix()).getPosition()
   };
 
+  auto shader = mesh->shader;
+  if (!shader)
+    shader = PhongShader::getPtr();
+
   if (mesh->shaded) {
-    glUseProgram(mesh->shader->shaderId);
-    setMVP(mesh->shader, mvp);
-    setLight(mesh->shader, light);
+    glUseProgram(shader->shaderId);
+    setMVP(shader, mvp);
+    setLight(shader, light);
     mesh->draw();
   }
 
@@ -89,7 +94,7 @@ void Renderer::render (shared_ptr<Camera> camera, shared_ptr<Light> light, share
     mesh->draw();
   }
 
-  mesh->shader->setUniform("wireColor", vec3(0,0,0));
+  // shader->setUniform("wireColor", vec3(0,0,0));
 }
 
 void Renderer::setMVP(shared_ptr<Shader> shader, const MVP& mvp) {

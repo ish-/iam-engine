@@ -51,13 +51,13 @@ bool HWScene::load () {
 
   light = make_shared<Light>(vec3(1, 2, 3), vec3(1, 1, .7));
 
-  // for (uint i = 0; i < 100; i++) {
-  //   auto cube = maestro.newActor<ACube>(
-  //     vec3( rd::in(-5., 5.), rd::in(-5., 5.), rd::in(-5., 5.))
-  //   );
-  // }
+  for (uint i = 0; i < 100; i++) {
+    auto cube = maestro.newActor<ACube>(
+      vec3( rd::in(-5., 5.), rd::in(-5., 5.), rd::in(-5., 5.))
+    );
+  }
 
-  auto icosphere = maestro.newActor(vec3(0, 0, 0));
+  auto icosphere = maestro.newActor(vec3(2, 0, 0));
   maestro.addComponent<MeshModelComp>(icosphere,
     (MeshModelComp::Conf){ .path = "resources/models/icosphere.s3.obj" });
 
