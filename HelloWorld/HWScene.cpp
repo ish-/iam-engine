@@ -8,9 +8,6 @@
 #include "../Engine/Camera.hpp"
 #include "../Engine/Graphics/Window.hpp"
 #include "../Engine/Light.hpp"
-#include "../Engine/Graphics/Mesh.hpp"
-#include "../Engine/Graphics/MeshComponent.hpp"
-#include "../Engine/Graphics/PhongShader.hpp"
 #include "../Engine/Physics/Physics.hpp"
 #include "../Engine/GUI.hpp"
 #include "../util/LOG.hpp"
@@ -18,14 +15,11 @@
 #include "../util/random.hpp"
 #include "ACube.hpp"
 #include "HWPlayer.hpp"
-#include "SDL3/SDL_keycode.h"
-#include "glm/ext/vector_float3.hpp"
-#include "../Engine/Engine.hpp"
-#include "../Engine/MovementCtrl.hpp"
-#include "imgui.h"
 #include "../Engine/Graphics/Renderer.hpp"
 #include "../Engine/Time.hpp"
 #include "../Engine/ACS/AMaestro.hpp"
+
+#include "../Engine/Graphics/MeshModelComp.hpp"
 
 // TODO: tmp for debug
 
@@ -57,11 +51,15 @@ bool HWScene::load () {
 
   light = make_shared<Light>(vec3(1, 2, 3), vec3(1, 1, .7));
 
-  for (uint i = 0; i < 100; i++) {
-    auto cube = maestro.newActor<ACube>(
-      vec3( rd::in(-5., 5.), rd::in(-5., 5.), rd::in(-5., 5.))
-    );
-  }
+  // for (uint i = 0; i < 100; i++) {
+  //   auto cube = maestro.newActor<ACube>(
+  //     vec3( rd::in(-5., 5.), rd::in(-5., 5.), rd::in(-5., 5.))
+  //   );
+  // }
+
+  auto icosphere = maestro.newActor(vec3(0, 0, 0));
+  maestro.addComponent<MeshModelComp>(icosphere,
+    (MeshModelComp::Conf){ .path = "resources/models/icosphere.s3.obj" });
 
   inputs.mouseLock(Bool::TRUE);
 
