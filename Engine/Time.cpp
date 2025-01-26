@@ -13,6 +13,7 @@ double Time::update () {
 
 double Time::endFrame () {
   double now = SDL_GetTicks() / 1000.;
+  frameDur = now - eT;
   frameDelay = 1. / rate - (now - eT);
   return frameDelay;
 }

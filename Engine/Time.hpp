@@ -12,6 +12,7 @@ public:
     double eT = 0;
     double dT = 0;
     double frameDelay = 0;
+    double frameDur = 0;
 
     unsigned int frame = 0;
 

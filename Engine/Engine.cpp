@@ -88,7 +88,10 @@ void Engine::run(const std::shared_ptr<Scene>& scene) {
       scene->update(time.dT);
 
       ImGui::Begin("iam-engine");
-        ImGui::Text("FPS: %i + %i", int(1. / time.dT), int(1. / time.frameDelay));
+        ImGui::Text("Perf: %i + %i ~ %ims",
+          int(1. / time.dT),
+          int((1. / time.rate) / time.frameDur * time.rate),
+          int(time.frameDur * 1000.));
         ImGui::Checkbox("Engine pause (P)", &pause);
         ImGui::Checkbox("Wireframes", &renderer.wireframes);
       ImGui::End();
