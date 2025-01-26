@@ -41,7 +41,8 @@ bool PhysicsComponent::init (Params& params) {
   //   params.initialImpulsePos);
   //   Physics& physics = Physics::get();
 
-  btCollisionShape* shape = new btBoxShape(btVector3(.5, .5, .5)); // 10x1x10
+  // btCollisionShape* shape = new btBoxShape(btVector3(.5, .5, .5)); // 10x1x10
+  btCollisionShape* shape = params.shape; // 10x1x10
 
   btTransform transform;
   transform.setIdentity();

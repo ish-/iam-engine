@@ -50,16 +50,26 @@ bool HWScene::load () {
   player->attach(camera);
 
   light = make_shared<Light>(vec3(1, 2, 3), vec3(1, 1, .7));
+  // player->attach(light);
 
-  for (uint i = 0; i < 100; i++) {
+  for (uint i = 0; i < 1000; i++) {
     auto cube = maestro.newActor<ACube>(
-      vec3( rd::in(-5., 5.), rd::in(-5., 5.), rd::in(-5., 5.))
+      vec3( rd::in(-10., 10.), rd::in(-10., 10.), rd::in(-10., 10.))
     );
   }
 
   auto icosphere = maestro.newActor(vec3(2, 0, 0));
   maestro.addComponent<MeshModelComp>(icosphere,
     (MeshModelComp::Conf){ .path = "resources/models/icosphere.s3.obj" });
+  PhysicsComponent::Params icospherePhysicsParams({
+    .shape = new btSphereShape(.6),
+    .pos = btVector3(2, 0, 0),
+    .size = btVector3(1, 1, 1),
+    .mass = 1,
+    .restitution = 0.5,
+    .friction = 0.5
+  });
+  maestro.addComponent<PhysicsComponent>(icosphere, icospherePhysicsParams);
 
   inputs.mouseLock(Bool::TRUE);
 
