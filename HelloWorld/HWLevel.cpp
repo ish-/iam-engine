@@ -19,17 +19,17 @@ void HWLevel::init () {
   meshComp = maestro.addComponent<MeshModelComp>(shared_from_this(),
     (MeshModelComp::Conf){
       // .path = (std::string)"resources/models/try_lvl.obj",
-      .path = (std::string)"resources/models/2tris.obj",
+      .path = (std::string)"resources/models/1tri.obj",
       .merge = true,
       .exposeData = true
     });
 
-  // auto* meshShape = Collisions::createTriMeshShape(meshComp->geo->data);
+  auto* meshShape = Collisions::createTriMeshShape(meshComp->geo->data);
 
-  // auto* compoundShape = Collisions::createCompauntConvexShape(meshComp->geo->data);
+  // auto* meshShape = Collisions::createCompauntConvexShape(meshComp->geo->data);
 
-  // PhysicsComponent::Params phyPars{ compoundShape };
-  // maestro.addComponent<PhysicsComponent>(shared_from_this(), phyPars);
+  PhysicsComponent::Params phyPars{ meshShape };
+  maestro.addComponent<PhysicsComponent>(shared_from_this(), phyPars);
 
   // meshComp->geo->clearData();
 }

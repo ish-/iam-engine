@@ -7,7 +7,7 @@ public:
     // TODO: clear?
     btTriangleMesh *triangleMesh = new btTriangleMesh();
 
-    for (size_t i = 0; i < data.indices.size(); i += data.stride) {
+    for (size_t i = 0; i < data.indices.size(); i += 3) {
       btVector3 vertex0(data.vertices[data.indices[i] * data.stride + 0],
                         data.vertices[data.indices[i] * data.stride + 1],
                         data.vertices[data.indices[i] * data.stride + 2]);
