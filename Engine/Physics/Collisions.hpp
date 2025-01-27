@@ -25,4 +25,20 @@ public:
 
     return new btBvhTriangleMeshShape(triangleMesh, true);
   }
+
+  static btCompoundShape* createCompauntConvexShape(const Geo::Data& data) {
+    btCompoundShape* compoundShape = new btCompoundShape();
+    for (size_t i = 0; i < data.meshesOffsets.size(); i++) {
+      auto& offset = data.meshesOffsets[i];
+      auto& vertices = data.vertices;
+
+      btConvexHullShape* convexShape = new btConvexHullShape();
+      // TODO: layout!!
+      for (size_t j = i * data.stride; j < vertices.size(); j += 8) {
+          convexShape->addPoint(btVector3(vertices[j + 0], vertices[j + 1], vertices[j + 2]));
+      }
+
+      compoundShape->addChildShape(btTransform::getIdentity(), compoundShape);
+    }
+  }
 };

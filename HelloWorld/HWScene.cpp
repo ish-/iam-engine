@@ -21,6 +21,8 @@
 
 #include "../Engine/Graphics/MeshModelComp.hpp"
 #include "HWLevel.hpp"
+#include "glm/fwd.hpp"
+#include "imgui.h"
 
 // TODO: tmp for debug
 
@@ -50,7 +52,7 @@ bool HWScene::load () {
     .near = 0.1, .far = 1000 });
   player->attach(camera);
 
-  light = make_shared<Light>(vec3(1, 2, 3), vec3(1, 1, .7));
+  light = make_shared<Light>(vec3(0, 3.5, 1.5), vec3(1, 1, .7));
   // player->attach(light);
 
   // for (uint i = 0; i < 1000; i++) {
@@ -91,4 +93,8 @@ void HWScene::update (float dt) {
 void HWScene::drawGui () {
   ImGui::SliderFloat("Slider", &params.slider, 0.0f, 1.0f);
   ImGui::ColorEdit4("Color Picker", (float *)&params.color);
+
+  // vec3 lightPos = light->getPosition();
+  // ImGui::SliderFloat3("Light position", (float *)&lightPos, -10, 10);
+  // light->setPosition(lightPos);
 }
