@@ -3,7 +3,28 @@
 
 class Collisions {
 public:
-  static btBvhTriangleMeshShape *createTriMeshShape(Geo::Data &data) {
+  static btCompoundShape *createTriMeshShapeCompaund(const Geo::Data &data) {
+    btCompoundShape* compoundShape = new btCompoundShape();
+    for (size_t i = 0; i < data.meshesOffsets.size(); i++) {
+      auto& offset = data.meshesOffsets[i];
+      auto& vertices = data.vertices;
+
+      btTriangleMesh *triangleMesh = new btTriangleMesh();
+      for (size_t j = i * data.stride; j < data.indices.size(); j += data.stride) {
+        btVector3 vertex0(vertices[j + 0], vertices[j + 1], vertices[j + 2]);
+        btVector3 vertex1(vertices[j + 3], vertices[j + 4], vertices[j + 5]);
+        btVector3 vertex2(vertices[j + 6], vertices[j + 7], vertices[j + 8]);
+        triangleMesh->addTriangle(vertex0, vertex1, vertex2);
+      }
+
+      btBvhTriangleMeshShape* trimeshShape = new btBvhTriangleMeshShape(triangleMesh, true);
+      compoundShape->addChildShape(btTransform::getIdentity(), trimeshShape);
+    }
+
+    return compoundShape;
+  }
+
+  static btBvhTriangleMeshShape *createTriMeshShape(const Geo::Data &data) {
     // TODO: clear?
     btTriangleMesh *triangleMesh = new btTriangleMesh();
 
@@ -34,11 +55,13 @@ public:
 
       btConvexHullShape* convexShape = new btConvexHullShape();
       // TODO: layout!!
-      for (size_t j = i * data.stride; j < vertices.size(); j += 8) {
+      for (size_t j = i * data.stride; j < data.indices.size(); j += data.stride) {
           convexShape->addPoint(btVector3(vertices[j + 0], vertices[j + 1], vertices[j + 2]));
       }
 
       compoundShape->addChildShape(btTransform::getIdentity(), compoundShape);
     }
+
+    return compoundShape;
   }
 };

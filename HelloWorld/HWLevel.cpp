@@ -25,6 +25,7 @@ void HWLevel::init () {
     });
 
   auto* meshShape = Collisions::createTriMeshShape(meshComp->geo->data);
+  // auto* meshShape = Collisions::createCompauntConvexShape(meshComp->geo->data);
 
   // auto* meshShape = Collisions::createCompauntConvexShape(meshComp->geo->data);
 
