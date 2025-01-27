@@ -38,7 +38,9 @@ public:
 
   void logChildren (const aiNode* node, int level = 0) {
     for (unsigned int i = 0; i < node->mNumChildren; i++) {
-      LOG("Child", node->mChildren[i]->mName.C_Str());
+      auto name = std::string(node->mChildren[i]->mName.C_Str());
+      if (name == "off") continue;
+      LOG("Child", name);
       logChildren(node->mChildren[i], level + 1);
     }
   }
@@ -63,8 +65,6 @@ public:
 
     for (unsigned int i = 0; i < scene->mNumMeshes; i++) {
         aiMesh* mesh = scene->mMeshes[i];
-
-        LOG("Mesh", mesh->mName.C_Str() , i);
 
         // Process vertices
         for (unsigned int j = 0; j < mesh->mNumVertices; j++) {
@@ -95,8 +95,6 @@ public:
         indicesOffset += mesh->mNumVertices;
     }
 
-    indicesNum = indices.size();
-
     for (unsigned int i = 0; i < scene->mNumMaterials; i++) {
         aiMaterial* material = scene->mMaterials[i];
 
@@ -120,8 +118,4 @@ public:
 
     return true;
   }
-
-private:
-  GLuint VAO, VBO, EBO;
-  GLint indicesNum;
 };

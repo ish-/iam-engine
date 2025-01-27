@@ -8,5 +8,7 @@ public:
     return instance;
   }
 
+  glm::vec2 size = glm::vec2(0, 0);
+
   BoxGeo(float _size = 1.);
 };

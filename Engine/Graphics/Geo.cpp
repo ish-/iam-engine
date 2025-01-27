@@ -35,47 +35,15 @@ void Geo::bindBuffers(const Data& data) {
   glBindVertexArray(0);
 }
 
-void Geo::bindBuffers(const std::vector<GLfloat>& vertices,
-                   const std::vector<GLint>& elements,
-                   const std::vector<GLfloat>& normals)
-{
-  vertexCount = elements.size();
-
-  glGenVertexArrays(1, &VAO);
-  glBindVertexArray(VAO);
-
-  glGenBuffers(1, &vertexBuffer);
-  glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
-  glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(GLfloat), vertices.data(), GL_STATIC_DRAW);
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
-  glEnableVertexAttribArray(0);
-
-  glGenBuffers(1, &elementBuffer);
-  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementBuffer);
-  glBufferData(GL_ELEMENT_ARRAY_BUFFER, elements.size() * sizeof(GLint), elements.data(), GL_STATIC_DRAW);
-
-  glGenBuffers(1, &normalBuffer);
-  glBindBuffer(GL_ARRAY_BUFFER, normalBuffer);
-  glBufferData(GL_ARRAY_BUFFER, normals.size() * sizeof(GLfloat), normals.data(), GL_STATIC_DRAW);
-  glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
-  glEnableVertexAttribArray(1);
-
-  glBindVertexArray(0);
-}
-
 Geo::~Geo()
 {
-  // TODO: VAO erase vectors
-  if (VBO) {
-    glDeleteBuffers(1, &VBO);
-    glDeleteBuffers(1, &EBO);
-  }
-
-  if (normalBuffer) {
-    glDeleteBuffers(1, &normalBuffer);
-    glDeleteBuffers(1, &vertexBuffer);
-    glDeleteBuffers(1, &elementBuffer);
-  }
-
+  glDeleteBuffers(1, &VBO);
+  glDeleteBuffers(1, &EBO);
   glDeleteVertexArrays(1, &VAO);
+}
+
+void Geo::clearData() {
+  data.vertices.clear();
+  data.indices.clear();
+  data.layout.clear();
 }
