@@ -82,6 +82,33 @@ BoxGeo::BoxGeo(float _size)
       16, 17, 18, 18, 19, 16,
       20, 21, 22, 22, 23, 20,
     };
+
+    std::vector<GLint> texCoors = {
+      0, 0,
+      1, 0,
+      1, 1,
+      0, 1,
+      0, 0,
+      1, 0,
+      1, 1,
+      0, 1,
+      0, 0,
+      1, 0,
+      1, 1,
+      0, 1,
+      0, 0,
+      1, 0,
+      1, 1,
+      0, 1,
+      0, 0,
+      1, 0,
+      1, 1,
+      0, 1,
+      0, 0,
+      1, 0,
+      1, 1,
+      0, 1,
+    };
     // clang-format on
 
     bindBuffers(vertices, indices, normals);

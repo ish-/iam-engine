@@ -5,25 +5,18 @@
 #include <glad/glad.h>
 #include "../../util/LOG.hpp"
 #include <assimp/Importer.hpp>
-#include <assimp/Logger.hpp>
-#include <assimp/LogStream.hpp>
-#include <assimp/DefaultLogger.hpp>
+// #include <assimp/Logger.hpp>
+// #include <assimp/LogStream.hpp>
+// #include <assimp/DefaultLogger.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
-
-// Example stream
-class myStream : public Assimp::LogStream {
-public:
-    // Write something using your own functionality
-    void write(const char* message) {
-        ::printf("%s\n", message);
-    }
-};
 
 class MeshModelComp : public MeshComponent {
 public:
   struct Conf {
     string path = "";
+    bool merge = false;
+    bool expose = false;
   };
 
   virtual Symbol getASystemType () override {
@@ -36,14 +29,6 @@ public:
   MeshModelComp() = default;
   MeshModelComp (const Conf&& _conf): conf(_conf) {
     shader = PhongShader::getPtr();
-
-
-
-    // Select the kinds of messages you want to receive on this log stream
-    const unsigned int severity = Assimp::Logger::Debugging|Assimp::Logger::Info|Assimp::Logger::Err|Assimp::Logger::Warn;
-
-    // Attaching it to the default logger
-    Assimp::DefaultLogger::get()->attachStream( new myStream, severity );
 
     if (conf.path.length() > 0)
       load(conf.path);

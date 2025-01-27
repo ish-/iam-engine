@@ -15,7 +15,11 @@ void HWLevel::init () {
   AMaestro& maestro = AMaestro::get();
 
   meshComp = maestro.addComponent<MeshModelComp>(shared_from_this(),
-    (MeshModelComp::Conf){ .path = (std::string)"resources/models/try_lvl.obj" });
+    (MeshModelComp::Conf){
+      .path = (std::string)"resources/models/try_lvl.obj",
+      .merge = true,
+      .expose = true
+    });
 
 }
 

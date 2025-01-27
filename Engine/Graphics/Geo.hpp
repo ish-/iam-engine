@@ -4,7 +4,7 @@
 #include <vector>
 
 class Geo {
-  public:
+public:
   GLuint vertexCount;
   GLuint vertexArrayId;
   GLuint vertexBuffer;
