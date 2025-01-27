@@ -1,5 +1,6 @@
 #pragma once
 #include <SDL3/SDL_filesystem.h>
+#include <cstdlib>
 #include <glad/glad.h>
 #include "../../util/file.hpp"
 #include "../../util/LOG.hpp"
@@ -28,6 +29,9 @@ public:
 
     LOG("--- Loading shader");
     shaderId = loadShader(vertShaderCode, fragShaderCode);
+    if (!shaderId) {
+      exit(EXIT_FAILURE);
+    }
     LOG("--- Shader loaded", shaderId);
 
     // setUniform("invertNormals", invertNormals);

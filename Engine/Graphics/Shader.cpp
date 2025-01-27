@@ -50,7 +50,11 @@ GLuint Shader::loadShader(std::string& vertexShaderCode, std::string& fragmentSh
   if (InfoLogLength > 0) {
     std::string ProgramErrorMessage("", InfoLogLength + 1);
     glGetProgramInfoLog(ProgramID, InfoLogLength, NULL, ProgramErrorMessage.data());
-    printf("%s\n", ProgramErrorMessage.c_str());
+    auto* errMsg = ProgramErrorMessage.c_str();
+    printf("%s\n", errMsg);
+    std::string errCheckStr = "ERROR:";
+    if (strncmp(errMsg, errCheckStr.c_str(), errCheckStr.size()) == 0)
+      return 0;
   }
 
   {
@@ -89,12 +93,6 @@ GLuint Shader::loadShader(std::string& vertexShaderCode, std::string& fragmentSh
 
   glDeleteShader(VertexShaderID);
   glDeleteShader(FragmentShaderID);
-
-  if (!ProgramID) {
-    SDL_Log("loadShaders() == 0");
-    std::printf("loading vert(%s) frag(%s)", "vertex", "fragment");
-    return EXIT_FAILURE;
-  }
 
   return ProgramID;
 }
