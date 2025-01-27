@@ -107,3 +107,8 @@ quat Transform::getForward() const {
 
 void Transform::setMatrix(const mat4& _matrix) { matrix = _matrix; }
 void Transform::setMatrix(const mat4&& _matrix) { matrix = _matrix; }
+
+std::string Transform::transformStr() const {
+  vec3 pos = getPosition();
+  return "Transform { " + std::to_string(pos.x) + ", " + std::to_string(pos.y) + ", " + std::to_string(pos.z) + " }";
+};

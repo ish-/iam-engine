@@ -1,4 +1,5 @@
 #pragma once
+#include <string>
 #include "glm/fwd.hpp"
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/quaternion.hpp>
@@ -54,6 +55,8 @@ public:
 
   void setMatrix(const mat4& _matrix);
   void setMatrix(const mat4&& _matrix);
+
+  std::string transformStr() const;
 protected:
   mat4 matrix = I_MAT;
 };
