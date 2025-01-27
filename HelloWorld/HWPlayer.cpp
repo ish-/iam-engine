@@ -25,7 +25,7 @@ void HWPlayer::init () {
   PhysicsComponent::Params createParams {
     .shape = new btSphereShape(.5),
     .pos = btVector3(posMat[3][0], posMat[3][1], posMat[3][2]),
-    // TODO: calc from matrix's scale
+    .mass = 1.,
     .initialImpulse = btVector3(rd::in(-10,10), rd::in(-10,10), rd::in(-10,10)),
   };
   phyComp = AMaestro::get().addComponent<PhysicsComponent>(shared_from_this(), createParams);

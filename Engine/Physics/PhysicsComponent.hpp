@@ -16,9 +16,9 @@ class btBoxShape;
 class PhysicsComponent : public AComponent {
 public:
   struct Params {
-    btConvexInternalShape* shape;
-    btVector3 pos;
-    float mass = 1.;
+    btCollisionShape* shape;
+    btVector3 pos {0,0,0};
+    float mass = 0.;
     btVector3 initialImpulse {0,0,0};
     btVector3 intertia {0,0,0};
     // btVector3 initialImpulsePos {0,0,0};

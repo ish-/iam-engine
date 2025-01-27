@@ -53,11 +53,11 @@ bool HWScene::load () {
   light = make_shared<Light>(vec3(1, 2, 3), vec3(1, 1, .7));
   // player->attach(light);
 
-  for (uint i = 0; i < 1000; i++) {
-    auto cube = maestro.newActor<ACube>(
-      vec3( rd::in(-20., 20.), rd::in(-20., 20.), rd::in(-20., 20.))
-    );
-  }
+  // for (uint i = 0; i < 1000; i++) {
+  //   auto cube = maestro.newActor<ACube>(
+  //     vec3( rd::in(-20., 20.), rd::in(-20., 20.), rd::in(-20., 20.))
+  //   );
+  // }
 
   // auto icosphere = maestro.newActor(vec3(2, 0, 0));
   // maestro.addComponent<MeshModelComp>(icosphere,

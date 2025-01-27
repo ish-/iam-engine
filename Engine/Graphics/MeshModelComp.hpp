@@ -18,7 +18,7 @@ public:
   struct Conf {
     string path = "";
     bool merge = false;
-    bool expose = false;
+    bool exposeData = false;
   };
 
   virtual Symbol getASystemType () override {
@@ -61,10 +61,12 @@ public:
     // Extract
     std::vector<GLfloat> vertices;
     std::vector<GLint> indices;
+    std::vector<GLint> meshesOffsets;
     GLint indicesOffset = 0;
 
     for (unsigned int i = 0; i < scene->mNumMeshes; i++) {
         aiMesh* mesh = scene->mMeshes[i];
+        meshesOffsets.push_back(indicesOffset);
 
         // Process vertices
         for (unsigned int j = 0; j < mesh->mNumVertices; j++) {
@@ -111,7 +113,9 @@ public:
     }
 
     // auto modelGeo
-    geo = std::make_shared<Geo>(Geo::Data{vertices, indices, {3,3,2}});
+    geo = std::make_shared<Geo>(Geo::Data{vertices, indices, {3,3,2}, 8, meshesOffsets});
+    if (!conf.exposeData)
+      geo->clearData();
 
     // if (conf.expose)
       // geo = modelGeo;

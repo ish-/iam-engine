@@ -10,7 +10,8 @@ public:
     std::vector<GLfloat> vertices;
     std::vector<GLint> indices;
     std::vector<GLint> layout = { 3, 3, 2 }; // vertex, normal, uv
-    // std::vector<GLint> meshesOffsets; // if mesh is split into multiple parts
+    size_t stride = 8;
+    std::vector<GLint> meshesOffsets; // if mesh is split into multiple parts
   };
 
   GLuint VAO = 0;

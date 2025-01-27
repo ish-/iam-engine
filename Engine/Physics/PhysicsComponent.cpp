@@ -30,9 +30,9 @@ bool PhysicsComponent::init (Params& params) {
   btDefaultMotionState* motionState = new btDefaultMotionState(transform);
 
   // inertia = new btVector3(.8, .8, .8);
-  params.shape->calculateLocalInertia(1., params.intertia);
+  params.shape->calculateLocalInertia(params.mass, params.intertia);
 
-  btRigidBody::btRigidBodyConstructionInfo rigidBodyCI(1., motionState, params.shape, params.intertia);
+  btRigidBody::btRigidBodyConstructionInfo rigidBodyCI(params.mass, motionState, params.shape, params.intertia);
   rigidBody = new btRigidBody(rigidBodyCI);
   physics.dynamicsWorld->addRigidBody(rigidBody);
   rigidBody->setActivationState(DISABLE_DEACTIVATION);
