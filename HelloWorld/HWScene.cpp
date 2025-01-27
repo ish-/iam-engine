@@ -20,6 +20,7 @@
 #include "../Engine/ACS/AMaestro.hpp"
 
 #include "../Engine/Graphics/MeshModelComp.hpp"
+#include "HWLevel.hpp"
 
 // TODO: tmp for debug
 
@@ -58,14 +59,19 @@ bool HWScene::load () {
     );
   }
 
-  auto icosphere = maestro.newActor(vec3(2, 0, 0));
-  maestro.addComponent<MeshModelComp>(icosphere,
-    (MeshModelComp::Conf){ .path = "resources/models/icosphere.s3.obj" });
-  PhysicsComponent::Params icospherePhysicsParams({
-    .shape = new btSphereShape(.6),
-    .pos = btVector3(2, 0, 0),
-  });
-  maestro.addComponent<PhysicsComponent>(icosphere, icospherePhysicsParams);
+  // auto icosphere = maestro.newActor(vec3(2, 0, 0));
+  // maestro.addComponent<MeshModelComp>(icosphere,
+  //   (MeshModelComp::Conf){ .path = "resources/models/icosphere.s3.obj" });
+  // PhysicsComponent::Params icospherePhysicsParams({
+  //   .shape = new btSphereShape(.6),
+  //   .pos = btVector3(2, 0, 0),
+  // });
+  // maestro.addComponent<PhysicsComponent>(icosphere, icospherePhysicsParams);
+
+  auto lvl = maestro.newActor<HWLevel>();
+  // auto lvl = maestro.newActor(vec3(2, 0, 0));
+  // maestro.addComponent<MeshModelComp>(lvl,
+  //   (MeshModelComp::Conf){ .path = "resources/models/try_lvl.obj" });
 
   inputs.mouseLock(Bool::TRUE);
 

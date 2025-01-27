@@ -26,7 +26,7 @@ public:
     // float friction = 0.5;
   };
 
-  virtual Symbol getASystemType () {
+  virtual Symbol getASystemType () override {
       static Symbol symbol { "Physics" };
       return symbol;
   }

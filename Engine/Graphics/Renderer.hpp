@@ -26,7 +26,7 @@ public:
     return instance;
   }
 
-  virtual Symbol getASystemType () {
+  virtual Symbol getASystemType () override {
       static Symbol symbol { "Renderer" };
       return symbol;
   }

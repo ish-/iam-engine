@@ -18,7 +18,7 @@ public:
   shared_ptr<Shader> shader;
   shared_ptr<Geo> geo;
 
-  virtual Symbol getASystemType () {
+  virtual Symbol getASystemType () override {
       static Symbol symbol { "Renderer" };
       return symbol;
   }

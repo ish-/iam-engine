@@ -3,25 +3,61 @@
 #include "MeshComponent.hpp"
 #include <iostream>
 #include <glad/glad.h>
+#include "../../util/LOG.hpp"
 #include <assimp/Importer.hpp>
+#include <assimp/Logger.hpp>
+#include <assimp/LogStream.hpp>
+#include <assimp/DefaultLogger.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
+
+// Example stream
+class myStream : public Assimp::LogStream {
+public:
+    // Write something using your own functionality
+    void write(const char* message) {
+        ::printf("%s\n", message);
+    }
+};
 
 class MeshModelComp : public MeshComponent {
 public:
   struct Conf {
-    char* path = nullptr;
+    string path = "";
   };
+
+  virtual Symbol getASystemType () override {
+      static Symbol symbol { "Renderer" };
+      return symbol;
+  }
+
   Conf conf;
 
   MeshModelComp() = default;
   MeshModelComp (const Conf&& _conf): conf(_conf) {
     shader = PhongShader::getPtr();
-    if (conf.path)
+
+
+
+    // Select the kinds of messages you want to receive on this log stream
+    const unsigned int severity = Assimp::Logger::Debugging|Assimp::Logger::Info|Assimp::Logger::Err|Assimp::Logger::Warn;
+
+    // Attaching it to the default logger
+    Assimp::DefaultLogger::get()->attachStream( new myStream, severity );
+
+    if (conf.path.length() > 0)
       load(conf.path);
   };
 
-  bool load (const char* path) {
+  void logChildren (const aiNode* node, int level = 0) {
+    for (unsigned int i = 0; i < node->mNumChildren; i++) {
+      LOG("Child", node->mChildren[i]->mName.C_Str());
+      logChildren(node->mChildren[i], level + 1);
+    }
+  }
+
+  bool load (const string& path) {
+    std::cout << "Loading model: " << path << std::endl;
     Assimp::Importer importer;
     const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs);
 
@@ -29,13 +65,19 @@ public:
       std::cerr << "Error: " << importer.GetErrorString() << std::endl;
       return -1;
     }
+    LOG("Model loaded", "Meshes: ", scene->mNumMeshes, "Materials: ", scene->mNumMaterials, "Textures: ", scene->mNumTextures, "Lights: ", scene->mNumLights, "Cameras: ", scene->mNumCameras);
+    LOG("Root node", scene->mRootNode->mName.C_Str());
+    logChildren(scene->mRootNode);
 
     // Extract
     std::vector<GLfloat> vertices;
     std::vector<GLint> indices;
+    GLint indicesOffset = 0;
 
     for (unsigned int i = 0; i < scene->mNumMeshes; i++) {
         aiMesh* mesh = scene->mMeshes[i];
+
+        LOG("Mesh", mesh->mName.C_Str() , i);
 
         // Process vertices
         for (unsigned int j = 0; j < mesh->mNumVertices; j++) {
@@ -60,9 +102,10 @@ public:
         for (unsigned int j = 0; j < mesh->mNumFaces; j++) {
             aiFace face = mesh->mFaces[j];
             for (unsigned int k = 0; k < face.mNumIndices; k++) {
-                indices.push_back(face.mIndices[k]);
+                indices.push_back(indicesOffset + face.mIndices[k]);
             }
         }
+        indicesOffset += mesh->mNumVertices;
     }
 
     indicesNum = indices.size();

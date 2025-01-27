@@ -9,6 +9,7 @@
 #include "../Object3D.hpp"
 #include "../../util/MACRO.hpp"
 #include "../../util/Symbol.hpp"
+#include "../../util/LOG.hpp"
 #include "AComponent.hpp"
 using namespace std;
 
@@ -33,7 +34,9 @@ public:
   template <typename T, typename... Args>
   std::shared_ptr<T> addComponent(shared_ptr<Object3D> actor, Args&&... args) {
     auto component = std::make_shared<T>(std::forward<Args>(args)...);
-    components[component->getASystemType()].push_back(component);
+    auto sysType = component->getASystemType();
+    LOG("Maestro::addComponent", typeid(T).name(), "sysType", sysType.name());
+    components[sysType].push_back(component);
     component->setOwner(actor);
     return component;
   }
