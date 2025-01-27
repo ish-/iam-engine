@@ -1,4 +1,5 @@
 #include "Window.hpp"
+#include "SDL3/SDL_error.h"
 #include "SDL3/SDL_video.h"
 
 #include <SDL3/SDL_init.h>
@@ -9,7 +10,11 @@ using std::string;
 void Window::Init(const char* title) {
     SDL_Init(SDL_INIT_VIDEO);
 
-    sdlWindow = SDL_CreateWindow(title, width, height, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
+    sdlWindow = SDL_CreateWindow(title, width, height,
+        SDL_WINDOW_OPENGL
+        // | SDL_WINDOW_RESIZABLE
+        // | SDL_WINDOW_HIGH_PIXEL_DENSITY
+    );
 }
 
 void Window::setFullscreen(bool value) {

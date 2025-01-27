@@ -1,5 +1,6 @@
 #include <cstddef>
 #include <glad/glad.h>
+#include <stdexcept>
 #include <vector>
 
 #include <glm/gtc/matrix_transform.hpp>
@@ -27,6 +28,9 @@ void Renderer::init (SDL_Window* sdlWindow) {
   SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
   SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_DEBUG_FLAG);
 
+  if (!SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 8))
+    LOG("SDL_GL_SetAttribute", SDL_GetError());
+
   SDL_GLContext _context = SDL_GL_CreateContext(sdlWindow);
   context = &_context;
   // gladLoadGLLoader(SDL_GL_GetProcAddress);
@@ -49,7 +53,10 @@ void Renderer::init (SDL_Window* sdlWindow) {
   // glEnable(GL_LINE_SMOOTH); glEnable(GL_POLYGON_SMOOTH); glEnable(GL_POINT_SMOOTH);
 
   glEnable(GL_MULTISAMPLE);
+  glEnable(GL_SAMPLE_SHADING);
   glMinSampleShading(8);
+  if (auto err = glGetError())
+    LOG("GL ERROR: ", err);
 
   defaultShader = PhongShader::getPtr();
   glUseProgram(defaultShader->shaderId);
