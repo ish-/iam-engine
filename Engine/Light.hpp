@@ -10,7 +10,7 @@ public:
     glm::vec3 pos = {0, 0, 0},
     glm::vec3 color = {1.0f, 1.0f, 1.0f},
     glm::vec2 atteniation = {8.f, 21.f}
-  ) : color(color), atteniation(atteniation) {
+  ) : color(color), atteniation(atteniation), Object3D(pos) {
 
   }
 
