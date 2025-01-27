@@ -4,6 +4,7 @@
 #include "../ACS/AComponent.hpp"
 #include <glm/mat4x4.hpp>
 #include <glm/vec3.hpp>
+#include "../../util/Symbol.hpp"
 
 class Physics;
 class btConvexInternalShape;
@@ -24,6 +25,11 @@ public:
     // float restitution = 0.5;
     // float friction = 0.5;
   };
+
+  virtual Symbol getASystemType () {
+      static Symbol symbol { "Physics" };
+      return symbol;
+  }
 
   Params& params;
 

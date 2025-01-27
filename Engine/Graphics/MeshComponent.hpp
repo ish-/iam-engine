@@ -4,6 +4,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/vec3.hpp>
 #include "../Object3D.hpp"
+#include "../../util/Symbol.hpp"
 
 #include <glad/glad.h>
 #include "Shader.hpp"
@@ -16,6 +17,11 @@ class MeshComponent : public AComponent, public Object3D {
 public:
   shared_ptr<Shader> shader;
   shared_ptr<Geo> geo;
+
+  virtual Symbol getASystemType () {
+      static Symbol symbol { "Renderer" };
+      return symbol;
+  }
 
   glm::vec3 tint = glm::vec3(1.);
   bool visible = true;

@@ -28,10 +28,11 @@ public:
 
   vector<shared_ptr<AComponent>> getComponents () {
     static_assert(std::is_base_of<AComponent, AC>::value, "ASystem: AC must derive from AComponent");
-    // auto& allComps = AMaestro::get().components;
-    // auto sysType = getASystemType().name();
-    // auto& comps = allComps[getASystemType()];
-    return AMaestro::get().components[getASystemType()];
+    auto& allComps = AMaestro::get().components;
+    auto sysType = getASystemType().name();
+    auto& comps = allComps[getASystemType()];
+    return comps;
+    // return AMaestro::get().components[getASystemType()];
   }
 
   void update(const float& dt) {

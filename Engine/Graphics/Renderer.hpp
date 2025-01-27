@@ -7,6 +7,7 @@
 #include <glm/vec3.hpp>
 #include <glm/mat4x4.hpp>
 #include "../ACS/ASystem.hpp"
+#include "../../util/Symbol.hpp"
 #include "MeshComponent.hpp"
 using namespace std;
 using namespace glm;
@@ -23,6 +24,11 @@ public:
   static Renderer& get() {
     static Renderer instance;
     return instance;
+  }
+
+  virtual Symbol getASystemType () {
+      static Symbol symbol { "Renderer" };
+      return symbol;
   }
 
   struct RenderSceneOpts {

@@ -4,12 +4,17 @@
 #include <glm/gtc/type_ptr.hpp>
 #include "../ACS/ASystem.hpp"
 #include "PhysicsComponent.hpp"
+#include "../../util/Symbol.hpp"
 
 const btVector3 btVector3_ZERO = btVector3(0, 0, 0);
 
 class Physics : public ASystem<PhysicsComponent> {
 public:
   static Physics& get() { static Physics instance; return instance; } // singleton
+  virtual Symbol getASystemType () {
+      static Symbol symbol { "Physics" };
+      return symbol;
+  }
 
   static btVector3 toBtVec3(const glm::vec3& v) {
     return btVector3(v.x, v.y, v.z);
