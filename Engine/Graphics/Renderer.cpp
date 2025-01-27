@@ -1,3 +1,4 @@
+#include <cstddef>
 #include <glad/glad.h>
 #include <vector>
 
@@ -104,8 +105,18 @@ void Renderer::setMVP(shared_ptr<Shader> shader, const MVP& mvp) {
   shader->setUniform("viewPos", mvp.viewPos);
 }
 
+// struct ShaderLight {
+//   vec3 pos;
+//   vec3 color;
+//   vec2 atteniationSq;
+// };
 void Renderer::setLight(shared_ptr<Shader> shader, vector<shared_ptr<Light>> lights) {
-  shader->setUniform("lightPos", Transform(lights[0]->getAbsTransformMatrix()).getPosition());
-  shader->setUniform("lightColor", lights[0]->color);
-  shader->setUniform("lightAttenuationSq", lights[0]->atteniation * lights[0]->atteniation);
+  shader->setUniform("lightsNum", (int)lights.size());
+
+  for (size_t i = 0; i < lights.size(); i++) {
+    std::string base = "lights[" + std::to_string(i) + "]";
+    shader->setUniform((base+".pos").c_str(), Transform(lights[i]->getAbsTransformMatrix()).getPosition());
+    shader->setUniform((base+".color").c_str(), lights[i]->color);
+    shader->setUniform((base+".atten").c_str(), lights[i]->atteniation * lights[i]->atteniation);
+  }
 }

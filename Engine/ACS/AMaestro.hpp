@@ -35,7 +35,7 @@ public:
   std::shared_ptr<T> addComponent(shared_ptr<Object3D> actor, Args&&... args) {
     auto component = std::make_shared<T>(std::forward<Args>(args)...);
     auto sysType = component->getASystemType();
-    LOG("Maestro::addComponent", typeid(T).name(), "sysType", sysType.name());
+    // LOG("Maestro::addComponent", typeid(T).name(), "sysType", sysType.name());
     components[sysType].push_back(component);
     component->setOwner(actor);
     return component;

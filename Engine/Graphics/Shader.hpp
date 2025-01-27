@@ -41,6 +41,7 @@ public:
   void setUniform(const char* name, const glm::vec3& value) { glUniform3fv(glGetUniformLocation(shaderId, name), 1, glm::value_ptr(value)); }
   void setUniform(const char* name, const glm::vec2& value) { glUniform2fv(glGetUniformLocation(shaderId, name), 1, glm::value_ptr(value)); }
   void setUniform(const char* name, const float& value) { glUniform1fv(glGetUniformLocation(shaderId, name), 1, &value); }
+  void setUniform(const char* name, const int& value) { glUniform1iv(glGetUniformLocation(shaderId, name), 1, &value); }
   // void setUniform(const char* name, const bool& value) { glUniform1ui(glGetUniformLocation(shaderId, name), 1, &value); }
 
   GLuint loadShader (string& vertShaderCode, string& fragShaderCode);

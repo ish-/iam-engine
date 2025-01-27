@@ -57,6 +57,7 @@ bool HWScene::load () {
   lights.push_back(make_shared<Light>(vec3(0.f, 0.f, 0.f), vec3(1.f, 1.f, .7f) / vec3(2.f), vec2(3.f, 8.f)));
   player->attach(lights.back());
 
+
   for (uint i = 0; i < 1000; i++) {
     auto cube = maestro.newActor<ACube>(
       vec3( rd::in(-20., 20.), rd::in(-20., 20.), rd::in(-20., 20.))
