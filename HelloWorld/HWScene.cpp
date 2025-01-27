@@ -55,7 +55,7 @@ bool HWScene::load () {
 
   for (uint i = 0; i < 1000; i++) {
     auto cube = maestro.newActor<ACube>(
-      vec3( rd::in(-10., 10.), rd::in(-10., 10.), rd::in(-10., 10.))
+      vec3( rd::in(-20., 20.), rd::in(-20., 20.), rd::in(-20., 20.))
     );
   }
 

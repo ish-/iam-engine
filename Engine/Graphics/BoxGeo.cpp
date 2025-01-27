@@ -9,69 +9,36 @@ BoxGeo::BoxGeo(float _size)
 
     // clang-format off
     std::vector<GLfloat> vertices = {
-      // -z
-      -s, s, -s,
-      s, s, -s,
-      s, -s, -s,
-      -s, -s, -s,
-      // z
-      -s, s, s,
-      s, s, s,
-      s, -s, s,
-      -s, -s, s,
-      // x
-      s, -s, s,
-      s, s, s,
-      s, s, -s,
-      s, -s, -s,
-      // -x
-      -s, -s, s,
-      -s, s, s,
-      -s, s, -s,
-      -s, -s, -s,
-      // y
-        s, s, -s,
-        s, s, s,
-      -s, s, s,
-      -s, s, -s,
-
-      // -y
-        s, -s, -s,
-        s, -s, s,
-      -s, -s, s,
-      -s, -s, -s,
-    };
-
-    std::vector<GLfloat> normals = {
-      0.f, 0.f, -1.f,
-      0.f, 0.f, -1.f,
-      0.f, 0.f, -1.f,
-      0.f, 0.f, -1.f,
-
-      0.f, 0.f, 1.f,
-      0.f, 0.f, 1.f,
-      0.f, 0.f, 1.f,
-      0.f, 0.f, 1.f,
-
-      1.f, 0.f, 0.f,
-      1.f, 0.f, 0.f,
-      1.f, 0.f, 0.f,
-      1.f, 0.f, 0.f,
-
-      -1.f, 0.f, 0.f,
-      -1.f, 0.f, 0.f,
-      -1.f, 0.f, 0.f,
-      -1.f, 0.f, 0.f,
-
-      0.f, 1.f, 0.f,
-      0.f, 1.f, 0.f,
-      0.f, 1.f, 0.f,
-      0.f, 1.f, 0.f,
-
-      0.f, -1.f, 0.f,
-      0.f, -1.f, 0.f,
-      0.f, -1.f, 0.f,
-      0.f, -1.f, 0.f,
+// -z
+      -s, s, -s, 0.f, 0.f, -1.f,    0.f, 0.f,
+      s, s, -s, 0.f, 0.f, -1.f,   1.f, 0.f,
+      s, -s, -s, 0.f, 0.f, -1.f,    1.f, 1.f,
+      -s, -s, -s, 0.f, 0.f, -1.f,   0.f, 1.f,
+// z
+      -s, s, s, 0.f, 0.f, 1.f,    0.f, 0.f,
+      s, s, s, 0.f, 0.f, 1.f,   1.f, 0.f,
+      s, -s, s, 0.f, 0.f, 1.f,    1.f, 1.f,
+      -s, -s, s, 0.f, 0.f, 1.f,   0.f, 1.f,
+// x
+      s, -s, s, 1.f, 0.f, 0.f,    0.f, 0.f,
+      s, s, s, 1.f, 0.f, 0.f,   1.f, 0.f,
+      s, s, -s, 1.f, 0.f, 0.f,    1.f, 1.f,
+      s, -s, -s, 1.f, 0.f, 0.f,   0.f, 1.f,
+// -x
+      -s, -s, s, -1.f, 0.f, 0.f,    0.f, 0.f,
+      -s, s, s, -1.f, 0.f, 0.f,   1.f, 0.f,
+      -s, s, -s, -1.f, 0.f, 0.f,    1.f, 1.f,
+      -s, -s, -s, -1.f, 0.f, 0.f,   0.f, 1.f,
+// y
+        s, s, -s, 0.f, 1.f, 0.f,    0.f, 0.f,
+        s, s, s, 0.f, 1.f, 0.f,   1.f, 0.f,
+      -s, s, s, 0.f, 1.f, 0.f,    1.f, 1.f,
+      -s, s, -s, 0.f, 1.f, 0.f,   0.f, 1.f,
+// -y
+        s, -s, -s, 0.f, -1.f, 0.f,    0.f, 0.f,
+        s, -s, s, 0.f, -1.f, 0.f,   1.f, 0.f,
+      -s, -s, s, 0.f, -1.f, 0.f,    1.f, 1.f,
+      -s, -s, -s, 0.f, -1.f, 0.f,   0.f, 1.f,
     };
 
     std::vector<GLint> indices = {
@@ -82,34 +49,7 @@ BoxGeo::BoxGeo(float _size)
       16, 17, 18, 18, 19, 16,
       20, 21, 22, 22, 23, 20,
     };
-
-    std::vector<GLint> texCoors = {
-      0, 0,
-      1, 0,
-      1, 1,
-      0, 1,
-      0, 0,
-      1, 0,
-      1, 1,
-      0, 1,
-      0, 0,
-      1, 0,
-      1, 1,
-      0, 1,
-      0, 0,
-      1, 0,
-      1, 1,
-      0, 1,
-      0, 0,
-      1, 0,
-      1, 1,
-      0, 1,
-      0, 0,
-      1, 0,
-      1, 1,
-      0, 1,
-    };
     // clang-format on
 
-    bindBuffers(vertices, indices, normals);
+    bindBuffers({vertices, indices, {3, 3, 2}});
   }

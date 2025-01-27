@@ -3,7 +3,7 @@
 #include <sys/types.h>
 
 void Geo::bindBuffers(const Data& data) {
-  GLuint VBO, EBO;
+  // GLuint VBO, EBO;
 
   glGenVertexArrays(1, &VAO);
   glGenBuffers(1, &VBO);
@@ -21,6 +21,7 @@ void Geo::bindBuffers(const Data& data) {
   GLuint stride = 0;
   for (auto& layout : data.layout)
     stride += layout;
+  vertexCount = data.indices.size();
   stride *= sizeof(GLfloat);
 
   GLuint VAOffset = 0;
