@@ -51,7 +51,7 @@ public:
 
   // TODO: pass by ref
   void setMVP(shared_ptr<Shader> shader, const MVP& mvp);
-  void setLight(shared_ptr<Shader> shader, vector<shared_ptr<Light>> lights);
+  void setLight(shared_ptr<Shader> shader, vector<shared_ptr<Light>> lights, shared_ptr<MeshComponent> mesh);
   // void render(const Scene& _scene, const RenderSceneOpts& opts);
 
 // utils

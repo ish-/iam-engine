@@ -82,7 +82,7 @@ void Renderer::render (shared_ptr<Camera> camera, vector<shared_ptr<Light>> ligh
   if (mesh->shaded) {
     glUseProgram(shader->shaderId);
     setMVP(shader, mvp);
-    setLight(shader, lights);
+    setLight(shader, lights, mesh);
     mesh->draw();
   }
 
@@ -110,13 +110,22 @@ void Renderer::setMVP(shared_ptr<Shader> shader, const MVP& mvp) {
 //   vec3 color;
 //   vec2 atteniationSq;
 // };
-void Renderer::setLight(shared_ptr<Shader> shader, vector<shared_ptr<Light>> lights) {
-  shader->setUniform("lightsNum", (int)lights.size());
+void Renderer::setLight(shared_ptr<Shader> shader, vector<shared_ptr<Light>> lights, shared_ptr<MeshComponent> mesh) {
 
+  size_t curIdx = 0;
   for (size_t i = 0; i < lights.size(); i++) {
-    std::string base = "lights[" + std::to_string(i) + "]";
-    shader->setUniform((base+".pos").c_str(), Transform(lights[i]->getAbsTransformMatrix()).getPosition());
-    shader->setUniform((base+".color").c_str(), lights[i]->color);
-    shader->setUniform((base+".atten").c_str(), lights[i]->atteniation * lights[i]->atteniation);
+    auto& light = lights[i];
+    vec3 lightPos = Transform(lights[i]->getAbsTransformMatrix()).getPosition();
+    vec3 toLight = lightPos - Transform(mesh->getAbsTransformMatrix()).getPosition();
+    if (length(toLight) > light->atteniation[1])
+      continue;
+
+    std::string base = "lights[" + std::to_string(curIdx) + "]";
+    shader->setUniform((base+".pos").c_str(), lightPos);
+    shader->setUniform((base+".color").c_str(), light->color);
+    shader->setUniform((base+".atten").c_str(), light->atteniation * light->atteniation);
+    curIdx++;
   }
+
+  shader->setUniform("lightsNum", (int)curIdx);
 }
