@@ -30,7 +30,7 @@ public:
 
   MeshModelComp() = default;
   MeshModelComp (const Conf&& _conf): conf(_conf) {
-    shader = PhongShader::getPtr();
+    // shader = PhongShader::getPtr();
 
     if (conf.path.length() > 0)
       load(conf.path);

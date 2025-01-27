@@ -12,10 +12,12 @@
 #include "PhongShader.hpp"
 #include "Shader.hpp"
 #include "../Camera.hpp"
+#include "../Time.hpp"
 #include "../Light.hpp"
 #include "../Scene.hpp"
 #include "WireframeShader.hpp"
 #include "../Transform.hpp"
+#include "glm/ext/quaternion_common.hpp"
 
 using namespace glm;
 
@@ -48,10 +50,27 @@ void Renderer::init (SDL_Window* sdlWindow) {
 
   glEnable(GL_MULTISAMPLE);
   glMinSampleShading(8);
+
+  defaultShader = PhongShader::getPtr();
+  glUseProgram(defaultShader->shaderId);
 }
 
 
 void Renderer::renderComponents (shared_ptr<Camera> camera, vector<shared_ptr<Light>> lights) {
+  auto nowFrame = Time::get().frame;
+
+  if (frameCache.frame < nowFrame) {
+    mat4 cameraMat = camera->getAbsTransformMatrix();
+    frameCache = {
+      .frame = nowFrame,
+      .view = glm::inverse(cameraMat),
+      .projection = camera->projection,
+      .viewPos = Transform(cameraMat).getPosition()
+    };
+    setViewProjection(defaultShader, frameCache);
+    setLight(defaultShader, lights);
+  }
+
   auto comps = getComponents();
   for (auto& comp : comps) {
     shared_ptr<MeshComponent> meshComp = dynamic_pointer_cast<MeshComponent>(comp);
@@ -67,42 +86,32 @@ void Renderer::render (shared_ptr<Camera> camera, vector<shared_ptr<Light>> ligh
 
   glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
-  mat4 cameraMat = camera->getAbsTransformMatrix();
-  MVP mvp = {
-    .model = mesh->getAbsTransformMatrix(),
-    .view = glm::inverse(cameraMat),
-    .projection = camera->projection,
-    .viewPos = Transform(camera->getAbsTransformMatrix()).getPosition()
-  };
-
-  auto shader = mesh->shader;
-  if (!shader)
-    shader = PhongShader::getPtr();
+  auto& shader = mesh->shader ? mesh->shader : defaultShader;
+  mat4 model = mesh->getAbsTransformMatrix();
 
   if (mesh->shaded) {
-    glUseProgram(shader->shaderId);
-    setMVP(shader, mvp);
-    setLight(shader, lights, mesh);
+    // glUseProgram(mesh->shader->shaderId);
+    shader->setUniform("model", model);
+    shader->setUniform("tintColor", mesh->tint);
+    shader->setUniform("wireframes", 0.f);
+
     mesh->draw();
   }
 
   if (wireframes || mesh->wireframe) {
-    shared_ptr<Shader> wfShader = WireframeShader::get();
-    glUseProgram(wfShader->shaderId);
-    setMVP(wfShader, mvp);
-    // setUniform("wireColor", glm::vec3(1, 1, 1));
+    shader->setUniform("wireframes", 1.f);
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
     mesh->draw();
   }
 
   // shader->setUniform("wireColor", vec3(0,0,0));
 }
 
-void Renderer::setMVP(shared_ptr<Shader> shader, const MVP& mvp) {
-  shader->setUniform("model", mvp.model);
-  shader->setUniform("view", mvp.view);
-  shader->setUniform("projection", mvp.projection);
-  shader->setUniform("viewPos", mvp.viewPos);
+void Renderer::setViewProjection(shared_ptr<Shader> shader, const FrameCache& frameCache) {
+  shader->setUniform("view", frameCache.view);
+  shader->setUniform("projection", frameCache.projection);
+  shader->setUniform("viewPos", frameCache.viewPos);
 }
 
 // struct ShaderLight {
@@ -110,15 +119,15 @@ void Renderer::setMVP(shared_ptr<Shader> shader, const MVP& mvp) {
 //   vec3 color;
 //   vec2 atteniationSq;
 // };
-void Renderer::setLight(shared_ptr<Shader> shader, vector<shared_ptr<Light>> lights, shared_ptr<MeshComponent> mesh) {
+void Renderer::setLight(shared_ptr<Shader> shader, vector<shared_ptr<Light>> lights) {
 
   size_t curIdx = 0;
   for (size_t i = 0; i < lights.size(); i++) {
     auto& light = lights[i];
     vec3 lightPos = Transform(lights[i]->getAbsTransformMatrix()).getPosition();
-    vec3 toLight = lightPos - Transform(mesh->getAbsTransformMatrix()).getPosition();
-    if (length(toLight) > light->atteniation[1])
-      continue;
+    // vec3 toLight = lightPos - Transform(mesh->getAbsTransformMatrix()).getPosition();
+    // if (length(toLight) > light->atteniation[1])
+    //   continue;
 
     std::string base = "lights[" + std::to_string(curIdx) + "]";
     shader->setUniform((base+".pos").c_str(), lightPos);
@@ -126,6 +135,11 @@ void Renderer::setLight(shared_ptr<Shader> shader, vector<shared_ptr<Light>> lig
     shader->setUniform((base+".atten").c_str(), light->atteniation * light->atteniation);
     curIdx++;
   }
-
   shader->setUniform("lightsNum", (int)curIdx);
+
+
+  // vec3 lightPos = Transform(lights[0]->getAbsTransformMatrix()).getPosition();
+  // shader->setUniform(("lightTest.pos"), lightPos);
+  // shader->setUniform(("lightTest.color"), lights[0]->color);
+  // shader->setUniform(("lightTest.atten"), lights[0]->atteniation * lights[0]->atteniation);
 }

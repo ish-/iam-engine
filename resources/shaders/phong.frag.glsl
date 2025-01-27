@@ -12,10 +12,12 @@ struct Light {
   vec2 atten;
 };
 
-#define MAX_LIGHTS 3
+#define MAX_LIGHTS 5
 uniform Light lights[MAX_LIGHTS];
+// uniform Light lightTest;
 // uniform Light lights[MAX_LIGHTS];
 uniform int lightsNum;
+uniform float wireframes;
 // uniform vec3 lightPos;
 // uniform vec3 lightColor;
 uniform vec3 viewPos;
@@ -61,7 +63,8 @@ void main()
 
     vec3 LIGHTING = vec3(0.0);
 
-    for (int i = 0; i < lightsNum; i++) {
+    // for (int i = 0; i < lightsNum; i++) {
+    int i = 0;
       // Diffuse
       // vec3 norm = normalize(vNormal);
       vec3 norm = vNormal;
@@ -79,12 +82,13 @@ void main()
 
       // vec3 result = (ambient + diffuse + specular) * texture(texture1, TexCoords).rgb;
       LIGHTING += (diffuse + specular) * tintColor;
-    }
+    // }
 
     LIGHTING += (ambient * tintColor);
 		// if inside a mesh
 		// float inside = 1 - step(0, dot(viewDir, norm));
     // FragColor = vec4(result, inside * .3);
+    LIGHTING = mix(LIGHTING, vec3(1.), wireframes);
     FragColor = vec4(LIGHTING, 1.);
     // FragColor = vec4(lightsNum / vec3(3), 1.);
 		// FragColor = vec4(1.0);

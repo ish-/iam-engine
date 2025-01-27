@@ -34,15 +34,17 @@ public:
   struct RenderSceneOpts {
     bool wireframe = false;
   };
-  struct MVP {
-    mat4 model;
+  struct FrameCache {
+    unsigned int frame;
     mat4 view;
     mat4 projection;
     vec3 viewPos;
   };
   // virtual ~Renderer() = default;
   // shared_ptr<Scene> scene;
+  shared_ptr<class Shader> defaultShader;
   SDL_GLContext* context;
+  FrameCache frameCache;
 
   void init (SDL_Window* sdlWindow);
   // void setScene(shared_ptr<Scene> scene);
@@ -50,8 +52,8 @@ public:
   void renderComponents(shared_ptr<Camera> camera, vector<shared_ptr<Light>> lights);
 
   // TODO: pass by ref
-  void setMVP(shared_ptr<Shader> shader, const MVP& mvp);
-  void setLight(shared_ptr<Shader> shader, vector<shared_ptr<Light>> lights, shared_ptr<MeshComponent> mesh);
+  void setViewProjection(shared_ptr<Shader> shader, const FrameCache& frameCache);
+  void setLight(shared_ptr<Shader> shader, vector<shared_ptr<Light>> lights);
   // void render(const Scene& _scene, const RenderSceneOpts& opts);
 
 // utils
