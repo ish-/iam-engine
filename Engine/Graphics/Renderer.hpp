@@ -9,6 +9,7 @@
 #include "../ACS/ASystem.hpp"
 #include "../../util/Symbol.hpp"
 #include "MeshComponent.hpp"
+
 using namespace std;
 using namespace glm;
 
@@ -34,8 +35,9 @@ public:
   struct RenderSceneOpts {
     bool wireframe = false;
   };
+
   struct FrameCache {
-    unsigned int frame;
+    unsigned int frame = 0;
     mat4 view;
     mat4 projection;
     vec3 viewPos;
@@ -43,22 +45,30 @@ public:
   // virtual ~Renderer() = default;
   // shared_ptr<Scene> scene;
   shared_ptr<class Shader> defaultShader;
+  shared_ptr<class Shader> shader;
+  shared_ptr<class Scene> scene;
   SDL_GLContext* context;
   FrameCache frameCache;
 
   void init (SDL_Window* sdlWindow);
   // void setScene(shared_ptr<Scene> scene);
-  void render(shared_ptr<Camera> camera, vector<shared_ptr<Light>> lights, shared_ptr<MeshComponent> mesh);
-  void renderComponents(shared_ptr<Camera> camera, vector<shared_ptr<Light>> lights);
+  void render(shared_ptr<MeshComponent> mesh);
+  void renderComponents();
 
   // TODO: pass by ref
-  void setViewProjection(shared_ptr<Shader> shader, const FrameCache& frameCache);
-  void setLight(shared_ptr<Shader> shader, vector<shared_ptr<Light>> lights);
+  void setShaderViewProjection(shared_ptr<Shader> shader);
+  void setShaderLight(shared_ptr<Shader> shader);
   // void render(const Scene& _scene, const RenderSceneOpts& opts);
+
+  void setScene (shared_ptr<Scene> scene);
+  void setShader (shared_ptr<class Shader> shader);
+  void setDefaultShader ();
+  void setFrameData ();
 
 // utils
   // shared_ptr<class WireframeShader> wireframeShader;
 
 // settings
   bool wireframes = false;
+  bool shading = true;
 };

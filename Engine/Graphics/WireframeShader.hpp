@@ -1,3 +1,4 @@
+#pragma once
 #include "Shader.hpp"
 #include <memory>
 
@@ -10,4 +11,6 @@ public:
     });
     return wfShader;
   };
+
+  virtual string getName () override { static string name = "WireframeShader"; return name; }
 };

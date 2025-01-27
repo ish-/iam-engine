@@ -21,10 +21,15 @@ public:
     string fragPath;
   };
 
+  virtual string getName () { static string name = "ShaderBase"; return name; }
+
+  Opts opts;
+
   GLuint shaderId;
   bool invertNormals = false;
+  unsigned int frame = 0;
 
-  Shader (const Shader::Opts& opts) {
+  Shader (const Shader::Opts& opts): opts(opts) {
     string vertShaderCode = loadFile("resources/" + opts.vertPath);
     string fragShaderCode = loadFile("resources/" + opts.fragPath);
 

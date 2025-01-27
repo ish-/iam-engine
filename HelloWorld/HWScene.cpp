@@ -73,7 +73,7 @@ bool HWScene::load () {
   // });
   // maestro.addComponent<PhysicsComponent>(icosphere, icospherePhysicsParams);
 
-  auto lvl = maestro.newActor<HWLevel>();
+  // auto lvl = maestro.newActor<HWLevel>(vec3(10.f,0.f,0.f));
   // auto lvl = maestro.newActor(vec3(2, 0, 0));
   // maestro.addComponent<MeshModelComp>(lvl,
   //   (MeshModelComp::Conf){ .path = "resources/models/try_lvl.obj" });
@@ -90,7 +90,8 @@ void HWScene::update (float dt) {
     actor->update();
 
   physics.update(dt);
-  renderer.renderComponents(camera, lights);
+  renderer.setDefaultShader();
+  renderer.renderComponents();
 }
 
 void HWScene::drawGui () {

@@ -11,6 +11,11 @@ bool Physics::init () {
   dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConfig);
   // dynamicsWorld->setGravity(btVector3(0, -9.8, 0));
   dynamicsWorld->setGravity(btVector3(0, 0, 0));
+
+  debugDrawer = new DebugDrawer();
+  dynamicsWorld->setDebugDrawer(debugDrawer);
+  debugDrawer->setDebugMode(btIDebugDraw::DBG_DrawWireframe | btIDebugDraw::DBG_DrawConstraints);
+
   return true;
 }
 

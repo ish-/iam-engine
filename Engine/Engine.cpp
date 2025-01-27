@@ -6,9 +6,11 @@
 #include <SDL3/SDL_timer.h>
 
 #include "Engine.hpp"
+#include "Graphics/WireframeShader.hpp"
 #include "Inputs/Inputs.hpp"
 #include "Graphics/Window.hpp"
 #include "Graphics/Renderer.hpp"
+// #include "Graphics/WireframeShader.hpp"
 #include "Physics/Physics.hpp"
 #include "SDL3/SDL_keycode.h"
 #include "Time.hpp"
@@ -84,7 +86,7 @@ void Engine::run(const std::shared_ptr<Scene>& scene) {
       glViewport(0, 0, window.width, window.height);
       glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 
-
+      renderer.setScene(scene);
       scene->update(time.dT);
 
       ImGui::Begin("iam-engine");
@@ -92,15 +94,22 @@ void Engine::run(const std::shared_ptr<Scene>& scene) {
           int(1. / time.dT),
           int((1. / time.rate) / time.frameDur * time.rate),
           int(time.frameDur * 1000.));
-        ImGui::Checkbox("Engine pause (P)", &pause);
         ImGui::Checkbox("Wireframes", &renderer.wireframes);
+        ImGui::Checkbox("Shading", &renderer.shading);
       ImGui::End();
+
+      physics.dynamicsWorld->debugDrawWorld();
+      renderer.setShader(WireframeShader::get());
+      physics.debugDrawer->render();
 
       scene->drawGui();
 
       ImGui::Render();
       ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
       SDL_GL_SwapWindow(window.sdlWindow);
+
+      if (auto err = glGetError())
+        LOG("GL ERROR", err);
     }
 
     // physicsManager.update();

@@ -59,45 +59,34 @@ void Renderer::init (SDL_Window* sdlWindow) {
     LOG("GL ERROR: ", err);
 
   defaultShader = PhongShader::getPtr();
-  glUseProgram(defaultShader->shaderId);
+  setShader(defaultShader);
 }
 
 
-void Renderer::renderComponents (shared_ptr<Camera> camera, vector<shared_ptr<Light>> lights) {
-  auto nowFrame = Time::get().frame;
-
-  if (frameCache.frame < nowFrame) {
-    mat4 cameraMat = camera->getAbsTransformMatrix();
-    frameCache = {
-      .frame = nowFrame,
-      .view = glm::inverse(cameraMat),
-      .projection = camera->projection,
-      .viewPos = Transform(cameraMat).getPosition()
-    };
-    setViewProjection(defaultShader, frameCache);
-    setLight(defaultShader, lights);
-  }
+void Renderer::renderComponents () {
+  // LOG("Renderer::renderComponents");
+  setFrameData();
 
   auto comps = getComponents();
   for (auto& comp : comps) {
     shared_ptr<MeshComponent> meshComp = dynamic_pointer_cast<MeshComponent>(comp);
     if (meshComp) {
-      render(camera, lights, meshComp);
+      render(meshComp);
     }
   }
 }
 
-void Renderer::render (shared_ptr<Camera> camera, vector<shared_ptr<Light>> lights, shared_ptr<MeshComponent> mesh) {
+void Renderer::render (shared_ptr<MeshComponent> mesh) {
+
   if (!mesh->visible)
     return;
 
   glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
-  auto& shader = mesh->shader ? mesh->shader : defaultShader;
+  setShader(mesh->shader ? mesh->shader : shader);
   mat4 model = mesh->getAbsTransformMatrix();
 
-  if (mesh->shaded) {
-    // glUseProgram(mesh->shader->shaderId);
+  if (shading && mesh->shaded) {
     shader->setUniform("model", model);
     shader->setUniform("tintColor", mesh->tint);
     shader->setUniform("wireframes", 0.f);
@@ -111,11 +100,10 @@ void Renderer::render (shared_ptr<Camera> camera, vector<shared_ptr<Light>> ligh
 
     mesh->draw();
   }
-
-  // shader->setUniform("wireColor", vec3(0,0,0));
 }
 
-void Renderer::setViewProjection(shared_ptr<Shader> shader, const FrameCache& frameCache) {
+void Renderer::setShaderViewProjection(shared_ptr<Shader> shader) {
+  // LOG("Renderer::setShaderViewProjection");
   shader->setUniform("view", frameCache.view);
   shader->setUniform("projection", frameCache.projection);
   shader->setUniform("viewPos", frameCache.viewPos);
@@ -126,12 +114,12 @@ void Renderer::setViewProjection(shared_ptr<Shader> shader, const FrameCache& fr
 //   vec3 color;
 //   vec2 atteniationSq;
 // };
-void Renderer::setLight(shared_ptr<Shader> shader, vector<shared_ptr<Light>> lights) {
-
+void Renderer::setShaderLight(shared_ptr<Shader> shader) {
+  // LOG("Renderer::setShaderLight");
   size_t curIdx = 0;
-  for (size_t i = 0; i < lights.size(); i++) {
-    auto& light = lights[i];
-    vec3 lightPos = Transform(lights[i]->getAbsTransformMatrix()).getPosition();
+  for (size_t i = 0; i < scene->lights.size(); i++) {
+    auto& light = scene->lights[i];
+    vec3 lightPos = Transform(scene->lights[i]->getAbsTransformMatrix()).getPosition();
     // vec3 toLight = lightPos - Transform(mesh->getAbsTransformMatrix()).getPosition();
     // if (length(toLight) > light->atteniation[1])
     //   continue;
@@ -143,10 +131,40 @@ void Renderer::setLight(shared_ptr<Shader> shader, vector<shared_ptr<Light>> lig
     curIdx++;
   }
   shader->setUniform("lightsNum", (int)curIdx);
+}
 
+void Renderer::setScene (shared_ptr<Scene> scene) {
+  this->scene = scene;
+}
 
-  // vec3 lightPos = Transform(lights[0]->getAbsTransformMatrix()).getPosition();
-  // shader->setUniform(("lightTest.pos"), lightPos);
-  // shader->setUniform(("lightTest.color"), lights[0]->color);
-  // shader->setUniform(("lightTest.atten"), lights[0]->atteniation * lights[0]->atteniation);
+void Renderer::setDefaultShader () {
+  setShader(defaultShader);
+}
+
+void Renderer::setShader (shared_ptr<Shader> _shader) {
+  if (_shader != shader) {
+    shader = _shader;
+    glUseProgram(shader->shaderId);
+  }
+  if (shader->frame < frameCache.frame) {
+    setShaderViewProjection(shader);
+    setShaderLight(shader);
+    shader->frame = frameCache.frame;
+  }
+}
+
+void Renderer::setFrameData () {
+  auto nowFrame = Time::get().frame;
+
+  if (frameCache.frame < nowFrame) {
+    mat4 cameraMat = scene->camera->getAbsTransformMatrix();
+    frameCache = {
+      .frame = nowFrame,
+      .view = glm::inverse(cameraMat),
+      .projection = scene->camera->projection,
+      .viewPos = Transform(cameraMat).getPosition()
+    };
+  }
+
+  // setShader(shader);
 }
