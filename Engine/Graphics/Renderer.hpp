@@ -46,12 +46,12 @@ public:
 
   void init (SDL_Window* sdlWindow);
   // void setScene(shared_ptr<Scene> scene);
-  void render(shared_ptr<Camera> camera, shared_ptr<Light> light, shared_ptr<MeshComponent> mesh);
-  void renderComponents(shared_ptr<Camera> camera, shared_ptr<Light> light);
+  void render(shared_ptr<Camera> camera, vector<shared_ptr<Light>> lights, shared_ptr<MeshComponent> mesh);
+  void renderComponents(shared_ptr<Camera> camera, vector<shared_ptr<Light>> lights);
 
   // TODO: pass by ref
   void setMVP(shared_ptr<Shader> shader, const MVP& mvp);
-  void setLight(shared_ptr<Shader> shader, shared_ptr<Light> light);
+  void setLight(shared_ptr<Shader> shader, vector<shared_ptr<Light>> lights);
   // void render(const Scene& _scene, const RenderSceneOpts& opts);
 
 // utils

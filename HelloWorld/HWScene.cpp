@@ -52,14 +52,16 @@ bool HWScene::load () {
     .near = 0.1, .far = 1000 });
   player->attach(camera);
 
-  light = make_shared<Light>(vec3(0, 3.5, 1.5), vec3(1, 1, .7));
-  // player->attach(light);
+  lights.push_back(make_shared<Light>(vec3(0, 3.5, 1.5), vec3(1, 1, .7)));
 
-  // for (uint i = 0; i < 1000; i++) {
-  //   auto cube = maestro.newActor<ACube>(
-  //     vec3( rd::in(-20., 20.), rd::in(-20., 20.), rd::in(-20., 20.))
-  //   );
-  // }
+  lights.push_back(make_shared<Light>(vec3(0.f, 0.f, 0.f), vec3(1.f, 1.f, .7f) / vec3(2.f), vec2(3.f, 8.f)));
+  player->attach(lights.back());
+
+  for (uint i = 0; i < 1000; i++) {
+    auto cube = maestro.newActor<ACube>(
+      vec3( rd::in(-20., 20.), rd::in(-20., 20.), rd::in(-20., 20.))
+    );
+  }
 
   // auto icosphere = maestro.newActor(vec3(2, 0, 0));
   // maestro.addComponent<MeshModelComp>(icosphere,
@@ -87,7 +89,7 @@ void HWScene::update (float dt) {
     actor->update();
 
   physics.update(dt);
-  renderer.renderComponents(camera, light);
+  renderer.renderComponents(camera, lights);
 }
 
 void HWScene::drawGui () {

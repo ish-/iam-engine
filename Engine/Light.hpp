@@ -7,9 +7,9 @@ class Light : public Object3D {
 public:
   Light() = default;
   Light(
-    glm::vec3 pos = {0, 0, 0},
-    glm::vec3 color = {1.0f, 1.0f, 1.0f},
-    glm::vec2 atteniation = {8.f, 21.f}
+    const glm::vec3& pos = {0, 0, 0},
+    const glm::vec3& color = {1.0f, 1.0f, 1.0f},
+    const glm::vec2& atteniation = {8.f, 21.f}
   ) : color(color), atteniation(atteniation), Object3D(pos) {
 
   }

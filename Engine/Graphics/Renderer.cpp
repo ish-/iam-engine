@@ -1,5 +1,5 @@
 #include <glad/glad.h>
-// #include <SDL3/SDL_video.h>
+#include <vector>
 
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/matrix_inverse.hpp>
@@ -50,17 +50,17 @@ void Renderer::init (SDL_Window* sdlWindow) {
 }
 
 
-void Renderer::renderComponents (shared_ptr<Camera> camera, shared_ptr<Light> light) {
+void Renderer::renderComponents (shared_ptr<Camera> camera, vector<shared_ptr<Light>> lights) {
   auto comps = getComponents();
   for (auto& comp : comps) {
     shared_ptr<MeshComponent> meshComp = dynamic_pointer_cast<MeshComponent>(comp);
     if (meshComp) {
-      render(camera, light, meshComp);
+      render(camera, lights, meshComp);
     }
   }
 }
 
-void Renderer::render (shared_ptr<Camera> camera, shared_ptr<Light> light, shared_ptr<MeshComponent> mesh) {
+void Renderer::render (shared_ptr<Camera> camera, vector<shared_ptr<Light>> lights, shared_ptr<MeshComponent> mesh) {
   if (!mesh->visible)
     return;
 
@@ -81,7 +81,7 @@ void Renderer::render (shared_ptr<Camera> camera, shared_ptr<Light> light, share
   if (mesh->shaded) {
     glUseProgram(shader->shaderId);
     setMVP(shader, mvp);
-    setLight(shader, light);
+    setLight(shader, lights);
     mesh->draw();
   }
 
@@ -104,8 +104,8 @@ void Renderer::setMVP(shared_ptr<Shader> shader, const MVP& mvp) {
   shader->setUniform("viewPos", mvp.viewPos);
 }
 
-void Renderer::setLight(shared_ptr<Shader> shader, shared_ptr<Light> light) {
-  shader->setUniform("lightPos", Transform(light->getAbsTransformMatrix()).getPosition());
-  shader->setUniform("lightColor", light->color);
-  shader->setUniform("lightAttenuationSq", light->atteniation * light->atteniation);
+void Renderer::setLight(shared_ptr<Shader> shader, vector<shared_ptr<Light>> lights) {
+  shader->setUniform("lightPos", Transform(lights[0]->getAbsTransformMatrix()).getPosition());
+  shader->setUniform("lightColor", lights[0]->color);
+  shader->setUniform("lightAttenuationSq", lights[0]->atteniation * lights[0]->atteniation);
 }

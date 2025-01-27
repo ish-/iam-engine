@@ -12,7 +12,7 @@ public:
   // Scene (WContext& ctx) : WObject(ctx) {}
 
   std::shared_ptr<Camera> camera;
-  std::shared_ptr<Light> light;
+  std::vector<std::shared_ptr<Light>> lights;
   // std::vector<std::shared_ptr<Object3D>> children;
   // std::vector<std::shared_ptr<Object3D>> children;
 
