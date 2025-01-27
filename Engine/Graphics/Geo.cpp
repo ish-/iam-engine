@@ -64,8 +64,17 @@ void Geo::bindBuffers(const std::vector<GLfloat>& vertices,
 
 Geo::~Geo()
 {
-  glDeleteBuffers(1, &normalBuffer);
-  glDeleteBuffers(1, &vertexBuffer);
-  glDeleteBuffers(1, &elementBuffer);
+  // TODO: VAO erase vectors
+  if (VBO) {
+    glDeleteBuffers(1, &VBO);
+    glDeleteBuffers(1, &EBO);
+  }
+
+  if (normalBuffer) {
+    glDeleteBuffers(1, &normalBuffer);
+    glDeleteBuffers(1, &vertexBuffer);
+    glDeleteBuffers(1, &elementBuffer);
+  }
+
   glDeleteVertexArrays(1, &VAO);
 }

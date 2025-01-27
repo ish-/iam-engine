@@ -13,14 +13,16 @@ public:
     // std::vector<GLint> meshesOffsets; // if mesh is split into multiple parts
   };
 
-  GLuint VAO;
+  GLuint VAO = 0;
+  GLuint VBO = 0;
+  GLuint EBO = 0;
   Data data;
   // std::vector<std::shared_ptr<Geo>> parts;
 
-  GLuint vertexCount;
-  GLuint vertexBuffer;
-  GLuint normalBuffer;
-  GLuint elementBuffer;
+  GLuint vertexCount = 0;
+  GLuint vertexBuffer = 0;
+  GLuint normalBuffer = 0;
+  GLuint elementBuffer = 0;
   glm::vec2 size = glm::vec2(0, 0);
 
   Geo () {}

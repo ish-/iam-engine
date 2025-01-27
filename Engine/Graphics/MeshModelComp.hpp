@@ -1,6 +1,7 @@
 #pragma once
 #include "PhongShader.hpp"
 #include "MeshComponent.hpp"
+#include "Geo.hpp"
 #include <iostream>
 #include <glad/glad.h>
 #include "../../util/LOG.hpp"
@@ -10,6 +11,7 @@
 // #include <assimp/DefaultLogger.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
+#include <memory>
 
 class MeshModelComp : public MeshComponent {
 public:
@@ -110,47 +112,13 @@ public:
         }
     }
 
-    // bind
+    // auto modelGeo
+    geo = std::make_shared<Geo>(Geo::Data{vertices, indices, {3,3,2}});
 
-    glGenVertexArrays(1, &VAO);
-    glGenBuffers(1, &VBO);
-    glGenBuffers(1, &EBO);
-
-    // Bind and upload vertex data
-    glBindVertexArray(VAO);
-
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(GLfloat), vertices.data(), GL_STATIC_DRAW);
-
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(GLint), indices.data(), GL_STATIC_DRAW);
-
-    // Position attribute
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void*)0);
-    glEnableVertexAttribArray(0);
-
-    // Normal attribute
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void*)(3 * sizeof(GLfloat)));
-    glEnableVertexAttribArray(1);
-
-    // Texture coordinate attribute
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void*)(6 * sizeof(GLfloat)));
-    glEnableVertexAttribArray(2);
-
-    glBindVertexArray(0);
+    // if (conf.expose)
+      // geo = modelGeo;
 
     return true;
-  }
-
-  virtual void draw () override {
-    // glUseProgram(shaderID);
-    shader->setUniform("tintColor", tint);
-    // Bind texture if applicable
-    // glBindTexture(GL_TEXTURE_2D, textureID);
-
-    glBindVertexArray(VAO);
-    glDrawElements(GL_TRIANGLES, indicesNum, GL_UNSIGNED_INT, 0);
-    glBindVertexArray(0);
   }
 
 private:
