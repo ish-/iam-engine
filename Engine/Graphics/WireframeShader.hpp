@@ -11,6 +11,4 @@ public:
     });
     return wfShader;
   };
-
-  virtual string getName () override { static string name = "WireframeShader"; return name; }
 };

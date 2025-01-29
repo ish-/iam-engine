@@ -11,6 +11,7 @@
 #include "Renderer.hpp"
 #include "MeshComponent.hpp"
 #include "PhongShader.hpp"
+#include "SDL3/SDL_video.h"
 #include "Shader.hpp"
 #include "../Camera.hpp"
 #include "../Time.hpp"
@@ -19,8 +20,51 @@
 #include "WireframeShader.hpp"
 #include "../Transform.hpp"
 #include "glm/ext/quaternion_common.hpp"
+#include <map>
 
 using namespace glm;
+
+void GLAPIENTRY GLDebugMessageCallback(GLenum Source,
+    GLenum Type,
+    GLuint Id,
+    GLenum Severity,
+    GLsizei Length,
+    const GLchar* Message,
+    const void* UserParam)
+{
+    static std::map<GLenum, const GLchar*> Sources =
+    {
+        {GL_DEBUG_SOURCE_API, "API"},
+        {GL_DEBUG_SOURCE_WINDOW_SYSTEM, "WINDOW_SYSTEM"},
+        {GL_DEBUG_SOURCE_SHADER_COMPILER, "SHADER_COMPILER"},
+        {GL_DEBUG_SOURCE_THIRD_PARTY, "THIRD_PARTY"},
+        {GL_DEBUG_SOURCE_APPLICATION, "APPLICATION"},
+        {GL_DEBUG_SOURCE_OTHER, "OTHER"}
+    };
+
+    static std::map<GLenum, const GLchar*> Severities =
+    {
+        {GL_DEBUG_SEVERITY_HIGH, "HIGH"},
+        {GL_DEBUG_SEVERITY_MEDIUM, "MEDIUM"},
+        {GL_DEBUG_SEVERITY_LOW, "LOW"},
+        {GL_DEBUG_SEVERITY_NOTIFICATION, "NOTIFICATION"}
+    };
+
+    static std::map<GLenum, const GLchar*> Types =
+    {
+        {GL_DEBUG_TYPE_ERROR, "ERROR"},
+        {GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR, "DEPRECATED_BEHAVIOR"},
+        {GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR, "UNDEFINED_BEHAVIOR"},
+        {GL_DEBUG_TYPE_PORTABILITY, "PORTABILITY"},
+        {GL_DEBUG_TYPE_PERFORMANCE, "PERFORMANCE"},
+        {GL_DEBUG_TYPE_MARKER, "MARKER"},
+        {GL_DEBUG_TYPE_PUSH_GROUP, "PUSH_GROUP"},
+        {GL_DEBUG_TYPE_POP_GROUP, "POP_GROUP"},
+        {GL_DEBUG_TYPE_OTHER, "OTHER"}
+    };
+
+    printf("[OpenGL %s] - SEVERITY: %s, SOURCE: %s, ID: %d: %s\n", Types[Type], Severities[Severity], Sources[Source], Id, Message);
+}
 
 void Renderer::init (SDL_Window* sdlWindow) {
   SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
@@ -39,6 +83,9 @@ void Renderer::init (SDL_Window* sdlWindow) {
     return;
   }
 
+  // glEnable(GL_DEBUG_OUTPUT);
+  // glDebugMessageCallback(GLDebugMessageCallback, 0);
+
   glEnable(GL_DEPTH_TEST);
   glDepthFunc(GL_LESS);
   // TODO: enable culling
@@ -46,7 +93,7 @@ void Renderer::init (SDL_Window* sdlWindow) {
   glClearDepthf(1.0f);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-  glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+  // glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
   // glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
 
   // deprecated
@@ -56,7 +103,7 @@ void Renderer::init (SDL_Window* sdlWindow) {
   glEnable(GL_SAMPLE_SHADING);
   glMinSampleShading(8);
   if (auto err = glGetError())
-    LOG("GL ERROR: ", err);
+    LOG("INIT GL ERROR: ", err);
 
   defaultShader = PhongShader::getPtr();
   setShader(defaultShader);
@@ -86,19 +133,27 @@ void Renderer::render (shared_ptr<MeshComponent> mesh) {
   setShader(mesh->shader ? mesh->shader : shader);
   mat4 model = mesh->getAbsTransformMatrix();
 
+  if (auto err = glGetError()) LOG("GL ERROR: before shading", err);
   if (shading && mesh->shaded) {
     shader->setUniform("model", model);
+    if (auto err = glGetError()) LOG("GL ERROR: model", err);
     shader->setUniform("tintColor", mesh->tint);
+    if (auto err = glGetError()) LOG("GL ERROR: tintColor", err);
     shader->setUniform("wireframes", 0.f);
+    if (auto err = glGetError()) LOG("GL ERROR: wireframes", err);
 
     mesh->draw();
+    if (auto err = glGetError()) LOG("GL ERROR: draw", err);
   }
 
   if (wireframes || mesh->wireframe) {
     shader->setUniform("wireframes", 1.f);
+    if (auto err = glGetError()) LOG("GL ERROR: wireframes2", err);
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    if (auto err = glGetError()) LOG("GL ERROR: glPolygonMode", err);
 
     mesh->draw();
+    if (auto err = glGetError()) LOG("GL ERROR: draw2", err);
   }
 }
 

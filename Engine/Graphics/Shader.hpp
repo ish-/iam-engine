@@ -21,8 +21,6 @@ public:
     string fragPath;
   };
 
-  virtual string getName () { static string name = "ShaderBase"; return name; }
-
   Opts opts;
 
   GLuint shaderId;

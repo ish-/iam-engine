@@ -9,7 +9,6 @@ public:
     return instance;
   }
 
-  virtual string getName () override { static string name = "PhongShader"; return name; }
 
   static std::shared_ptr<PhongShader> getPtr() {
     static std::shared_ptr<PhongShader> instancePtr(&get(), [](PhongShader*) {

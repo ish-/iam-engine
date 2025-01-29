@@ -41,6 +41,7 @@ public:
   btDiscreteDynamicsWorld* dynamicsWorld = nullptr;
 
   DebugDrawer* debugDrawer = nullptr;
+  bool drawDebug = false;
 
   bool init ();
 

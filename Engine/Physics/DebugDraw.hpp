@@ -21,14 +21,15 @@ public:
         // glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Line), (void*)offsetof(Line, start));
         // glEnableVertexAttribArray(1);
         // glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Line), (void*)offsetof(Line, end));
+        mesh = std::make_shared<DebugDrawMeshComponent>();
     }
 
-    std::shared_ptr<DebugDrawMeshComponent> mesh = std::make_shared<DebugDrawMeshComponent>();
+    std::shared_ptr<DebugDrawMeshComponent> mesh;
 
     void drawLine(const btVector3& from, const btVector3& to, const btVector3& color) override {
-        lines.push_back(DebugDrawGeo::Line{ glm::vec3(from.x(), from.y(), from.z()),
-                              glm::vec3(to.x(), to.y(), to.z()),
-                              glm::vec3(color.x(), color.y(), color.z()) });
+        mesh->lines.push_back(DebugDrawGeo::Line{ glm::vec3(from.x(), from.y(), from.z()) });
+        mesh->lines.push_back(DebugDrawGeo::Line{ glm::vec3(to.x(), to.y(), to.z()) });
+                            //   glm::vec3(color.x(), color.y(), color.z()) });
     }
 
     void drawContactPoint(const btVector3& pointOnB, const btVector3& normalOnB, btScalar distance, int lifeTime, const btVector3& color) override {
@@ -59,9 +60,9 @@ public:
         // glDrawArrays(GL_LINES, 0, lines.size() * 2); // 2 vertices per line
         // glBindVertexArray(0);
 
-        mesh->draw(lines);
+        // mesh->draw();
 
-        lines.clear();
+        // lines.clear();
     }
 
 private:
@@ -70,6 +71,6 @@ private:
     //     glm::vec3 end;
     //     glm::vec3 color;
     // };
-    std::vector<DebugDrawGeo::Line> lines {};
+    // std::vector<DebugDrawGeo::Line> lines {};
     int debugMode;
 };

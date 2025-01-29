@@ -95,12 +95,14 @@ void Engine::run(const std::shared_ptr<Scene>& scene) {
           int(time.frameComputing * 1000.));
         ImGui::Checkbox("Wireframes", &renderer.wireframes);
         ImGui::Checkbox("Shading", &renderer.shading);
+        ImGui::Checkbox("Collisions", &physics.drawDebug);
       ImGui::End();
 
       physics.dynamicsWorld->debugDrawWorld();
       renderer.setShader(WireframeShader::get());
-      renderer.render(physics.debugDrawer->mesh);
-      physics.debugDrawer->render();
+
+      if (physics.drawDebug)
+        renderer.render(physics.debugDrawer->mesh);
 
       scene->drawGui();
 
