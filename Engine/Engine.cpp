@@ -62,7 +62,7 @@ void Engine::run(const std::shared_ptr<Scene>& scene) {
 
   while (true)
   {
-    time.update();
+    time.startFrame();
     SDL_PollEvent(&event);
     ImGui_ImplSDL3_ProcessEvent(&event);
     inputs.update(event);
@@ -90,16 +90,16 @@ void Engine::run(const std::shared_ptr<Scene>& scene) {
       scene->update(time.dT);
 
       ImGui::Begin("iam-engine");
-        ImGui::Text("Perf: %i + %i ~ %ims",
-          int(1. / time.dT),
-          int((1. / time.rate) / time.frameDur * time.rate),
-          int(time.frameDur * 1000.));
+        ImGui::Text("Perf: %i ~ %ims",
+          int(1. / time.frameDur),
+          int(time.frameComputing * 1000.));
         ImGui::Checkbox("Wireframes", &renderer.wireframes);
         ImGui::Checkbox("Shading", &renderer.shading);
       ImGui::End();
 
       physics.dynamicsWorld->debugDrawWorld();
       renderer.setShader(WireframeShader::get());
+      renderer.render(physics.debugDrawer->mesh);
       physics.debugDrawer->render();
 
       scene->drawGui();
@@ -125,8 +125,9 @@ void Engine::run(const std::shared_ptr<Scene>& scene) {
     // if (bExit)
     //   break;
 
-    time.endFrame();
+    time.beforeDelay();
     if (time.frameDelay > 0)
       SDL_Delay(time.frameDelay * 1000);
+    time.endFrame();
   }
 }

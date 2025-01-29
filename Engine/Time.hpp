@@ -4,24 +4,26 @@ class Time {
 public:
     static Time& get() {
         static Time instance;
-        instance.update();
         return instance;
     }
 
     double rate = 60; //
     double eT = 0;
     double dT = 0;
+    double fps = 0;
+    double meanDelta = 0;
+    double meanDeltaBf[30];
     double frameDelay = 0;
+    double frameComputing = 0;
     double frameDur = 0;
 
     unsigned int frame = 0;
 
-    double update ();
-
+    double startFrame ();
     double endFrame ();
 
-    long long getSystemTime () {
-        auto chronoNow = std::chrono::system_clock::now();
-        return static_cast<long long>(std::chrono::system_clock::to_time_t(chronoNow));
-    }
+    long long getSystemTime ();
+
+    void updateMeanDelta (const double& dT);
+    double beforeDelay ();
 };
