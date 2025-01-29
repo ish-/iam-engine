@@ -9,7 +9,6 @@
 #include "../Engine/Physics/Collisions.hpp"
 #include "../Engine/Graphics/MeshModelComp.hpp"
 #include "../Engine/GUI.hpp"
-// TODO: clear bullet includes
 using namespace std;
 using namespace glm;
 
@@ -18,21 +17,17 @@ void HWLevel::init () {
 
   meshComp = maestro.addComponent<MeshModelComp>(shared_from_this(),
     (MeshModelComp::Conf){
-      // .path = (std::string)"resources/models/try_lvl.obj",
-      .path = (std::string)"resources/models/1tri.obj",
+      .path = (std::string)"resources/models/torus_lvl.obj",
       .merge = true,
       .exposeData = true
     });
 
   auto* meshShape = Collisions::createTriMeshShape(meshComp->geo->data);
-  // auto* meshShape = Collisions::createCompauntConvexShape(meshComp->geo->data);
-
-  // auto* meshShape = Collisions::createCompauntConvexShape(meshComp->geo->data);
 
   PhysicsComponent::Params phyPars{ meshShape };
   maestro.addComponent<PhysicsComponent>(shared_from_this(), phyPars);
 
-  // meshComp->geo->clearData();
+  meshComp->geo->clearData();
 }
 
 void HWLevel::update () {

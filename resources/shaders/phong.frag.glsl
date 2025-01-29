@@ -63,8 +63,8 @@ void main()
 
     vec3 LIGHTING = vec3(0.0);
 
-    // for (int i = 0; i < lightsNum; i++) {
-    int i = 0;
+    for (int i = 0; i < lightsNum; i++) {
+    // int i = 0;
       // Diffuse
       // vec3 norm = normalize(vNormal);
       vec3 norm = vNormal;
@@ -82,7 +82,7 @@ void main()
 
       // vec3 result = (ambient + diffuse + specular) * texture(texture1, TexCoords).rgb;
       LIGHTING += (diffuse + specular) * tintColor;
-    // }
+    }
 
     LIGHTING += (ambient * tintColor);
 		// if inside a mesh

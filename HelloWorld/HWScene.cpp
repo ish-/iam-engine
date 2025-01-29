@@ -64,16 +64,17 @@ bool HWScene::load () {
     );
   }
 
-  // auto icosphere = maestro.newActor(vec3(2, 0, 0));
-  // maestro.addComponent<MeshModelComp>(icosphere,
-  //   (MeshModelComp::Conf){ .path = "resources/models/icosphere.s3.obj" });
-  // PhysicsComponent::Params icospherePhysicsParams({
-  //   .shape = new btSphereShape(.6),
-  //   .pos = btVector3(2, 0, 0),
-  // });
-  // maestro.addComponent<PhysicsComponent>(icosphere, icospherePhysicsParams);
+  auto icosphere = maestro.newActor(vec3(2, 0, 0));
+  maestro.addComponent<MeshModelComp>(icosphere,
+    (MeshModelComp::Conf){ .path = "resources/models/icosphere.s3.obj" });
+  PhysicsComponent::Params icospherePhysicsParams({
+    .shape = new btSphereShape(.6),
+    .pos = btVector3(2, 0, 0),
+    .mass = 1,
+  });
+  maestro.addComponent<PhysicsComponent>(icosphere, icospherePhysicsParams);
 
-  // auto lvl = maestro.newActor<HWLevel>(vec3(10.f,0.f,0.f));
+  auto lvl = maestro.newActor<HWLevel>(vec3(10.f,0.f,0.f));
   // auto lvl = maestro.newActor(vec3(2, 0, 0));
   // maestro.addComponent<MeshModelComp>(lvl,
   //   (MeshModelComp::Conf){ .path = "resources/models/try_lvl.obj" });

@@ -39,6 +39,7 @@ public:
   DebugDrawMeshComponent () {
     shader = WireframeShader::get();
     geo = std::make_shared<DebugDrawGeo>();
+    wireframe = true;
   }
 
   std::vector<DebugDrawGeo::Line> lines;
