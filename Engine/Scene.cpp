@@ -14,3 +14,8 @@ void Scene::update(float dt) {
   // }
   // return true;
 }
+
+
+void Scene::drawGui () {
+
+}

@@ -9,13 +9,13 @@ int main () {
   // Inputs inputs = Inputs::get();
   // WContext ctx {inputs};
   Engine& engine = Engine::get();
-  auto scene = std::make_shared<HWScene>();
   // Scene scene;
 
   LOG("Hello World!");
   // auto scene = std::make_shared<HWScene>();
-  engine.init(scene);
-  engine.run(scene);
+  engine.init();
+  engine.newScene<HWScene>();
+  engine.run();
   engine.exit();
   LOG("Exit!");
   return 0;

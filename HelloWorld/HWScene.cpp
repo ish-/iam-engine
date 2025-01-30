@@ -39,6 +39,8 @@ HWScene::HWScene ()
   auto globalTime = time.getSystemTime();
   LOG("Global Time", globalTime);
   rd::globalSeed(globalTime);
+
+  load();
 }
 
 bool HWScene::load () {

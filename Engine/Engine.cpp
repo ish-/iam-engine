@@ -30,7 +30,7 @@ Engine::Engine()
   LOG("Current path", std::filesystem::current_path().c_str());
 }
 
-void Engine::init(const std::shared_ptr<Scene>& scene) {
+void Engine::init() {
   if (!SDL_Init(SDL_INIT_VIDEO)) {
     LOG("SDL failed initialization. %s", SDL_GetError());
     // throw std::exception("Something Bad happened here");
@@ -45,8 +45,6 @@ void Engine::init(const std::shared_ptr<Scene>& scene) {
 
   if (auto err = glGetError()) {
     LOG("GL ERROR!", err); return; }
-
-  scene->load();
   // world = std::make_shared<World>(*this);
 }
 
@@ -55,8 +53,7 @@ void Engine::exit() {
   window.Close();
 }
 
-
-void Engine::run(const std::shared_ptr<Scene>& scene) {
+void Engine::run() {
   // gameplayManager.loadMap(startMap);
   SDL_Event event;
 

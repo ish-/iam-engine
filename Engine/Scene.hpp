@@ -6,7 +6,7 @@
 class Light;
 class Camera;
 
-class Scene : public Object3D {
+class Scene {
 public:
   // Scene (WContext& ctx) : WObject(ctx) {}
 
@@ -21,6 +21,6 @@ public:
 
   virtual void update(float dt);
 
-  virtual void drawGui () = 0;
+  virtual void drawGui ();
   // ~Scene() = default;
 };
