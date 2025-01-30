@@ -8,11 +8,11 @@
 PhysicsComponent::PhysicsComponent (Params& params)
   : physics(Physics::get()), params(params), AComponent()
 {
-  init(params);
+  // init(params);
 }
 
 // template<typename Shape>
-bool PhysicsComponent::init (Params& params) {
+bool PhysicsComponent::init () {
   // // if constexpr (std::is_same<Shape, btBoxShape>::value) {
   // //   shape = new btBoxShape(params.size);
   // // } else if constexpr (std::is_same<Shape, btSphereShape>::value) {

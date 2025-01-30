@@ -37,8 +37,9 @@ public:
     auto sysType = component->getASystemType();
     // LOG("Maestro::addComponent", typeid(T).name(), "sysType", sysType.name());
     component->setOwner(actor);
-    actor->components[typeid(component)] = component;
+    actor->components[typeid(T)] = component;
     components[sysType].push_back(component);
+    component->init();
     return component;
   }
 };
