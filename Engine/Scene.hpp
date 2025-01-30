@@ -1,6 +1,5 @@
 #pragma once
 #include "Object3D.hpp"
-#include "WObject.hpp"
 #include <memory>
 #include <vector>
 

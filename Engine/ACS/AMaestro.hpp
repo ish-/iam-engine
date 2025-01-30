@@ -7,9 +7,9 @@
 
 // #include "Object3D.hpp"
 #include "../Object3D.hpp"
-#include "../../util/MACRO.hpp"
-#include "../../util/Symbol.hpp"
-#include "../../util/LOG.hpp"
+#include "../common/MACRO.hpp"
+#include "../common/Symbol.hpp"
+#include "../common/LOG.hpp"
 #include "AComponent.hpp"
 using namespace std;
 

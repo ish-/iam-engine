@@ -1,5 +1,5 @@
 #include "AComponent.hpp"
-// #include "../util/LOG.hpp"
+// #include "common/LOG.hpp"
 
 void AComponent::setOwner(const std::shared_ptr<Object3D>& actor) {
     owner = actor;

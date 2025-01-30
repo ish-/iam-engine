@@ -7,7 +7,7 @@
 #include <glm/vec3.hpp>
 #include <glm/mat4x4.hpp>
 #include "../ACS/ASystem.hpp"
-#include "../../util/Symbol.hpp"
+#include "../common/Symbol.hpp"
 #include "MeshComponent.hpp"
 
 using namespace std;

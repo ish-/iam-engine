@@ -4,7 +4,7 @@
 #include "Geo.hpp"
 #include <iostream>
 #include <glad/glad.h>
-#include "../../util/LOG.hpp"
+#include "../common/LOG.hpp"
 #include <assimp/Importer.hpp>
 // #include <assimp/Logger.hpp>
 // #include <assimp/LogStream.hpp>

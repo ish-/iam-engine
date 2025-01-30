@@ -17,7 +17,7 @@
 #include "Scene.hpp"
 #include "Camera.hpp"
 #include "GUI.hpp"
-#include "../util/LOG.hpp"
+#include "common/LOG.hpp"
 #include "SDL3/SDL_opengl.h"
 #include "IEngine.hpp"
 // r

@@ -2,8 +2,8 @@
 #include "Physics.hpp"
 #include "../Object3D.hpp"
 #include "PhysicsComponent.hpp"
-// #include "../../util/LOG.hpp"
-#include "../../util/random.hpp"
+// #include "../common/LOG.hpp"
+#include "../common/random.hpp"
 
 PhysicsComponent::PhysicsComponent (Params& params)
   : physics(Physics::get()), params(params)

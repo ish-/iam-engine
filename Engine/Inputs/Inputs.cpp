@@ -2,7 +2,7 @@
 #include <SDL3/SDL_mouse.h>
 #include <objc/objc.h>
 #include "../Graphics/Window.hpp"
-#include "../../util/LOG.hpp"
+#include "../common/LOG.hpp"
 #include "SDL3/SDL_stdinc.h"
 
 void Inputs::processMouse(const SDL_Event& event) {

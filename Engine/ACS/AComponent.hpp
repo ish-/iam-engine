@@ -1,7 +1,7 @@
 #pragma once
 #include <memory>
 #include <iostream>
-#include "../../util/Symbol.hpp"
+#include "../common/Symbol.hpp"
 
 #define ASYSTEM_TYPE(TYPE) \
   virtual Symbol getASystemType() override { static Symbol symbol{#TYPE}; return symbol; }

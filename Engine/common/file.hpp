@@ -2,7 +2,7 @@
 #include <iostream>
 #include <sstream>
 #include <string>
-#include "../util/LOG.hpp"
+#include "LOG.hpp"
 
 inline std::string loadFile(std::string filePath)
 {

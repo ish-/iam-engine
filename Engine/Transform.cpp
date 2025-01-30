@@ -1,5 +1,5 @@
 #include "Transform.hpp"
-#include "../util/slerp.hpp"
+#include "common/slerp.hpp"
 #include "glm/gtc/quaternion.hpp"
 
 #include <glm/gtx/quaternion.hpp>

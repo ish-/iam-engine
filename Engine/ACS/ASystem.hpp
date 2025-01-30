@@ -3,7 +3,7 @@
 #include <memory>
 #include "AComponent.hpp"
 #include "AMaestro.hpp"
-#include "../../util/Symbol.hpp"
+#include "../common/Symbol.hpp"
 using namespace std;
 
 // #define SINGLETON(classname) \

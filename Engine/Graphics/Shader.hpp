@@ -2,8 +2,8 @@
 #include <SDL3/SDL_filesystem.h>
 #include <cstdlib>
 #include <glad/glad.h>
-#include "../../util/file.hpp"
-#include "../../util/LOG.hpp"
+#include "../common/file.hpp"
+#include "../common/LOG.hpp"
 #include <string>
 #include <glm/mat4x4.hpp>
 #include <glm/vec3.hpp>

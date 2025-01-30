@@ -4,7 +4,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/vec3.hpp>
 #include "../Object3D.hpp"
-#include "../../util/Symbol.hpp"
+#include "../common/Symbol.hpp"
 
 #include <glad/glad.h>
 #include "Shader.hpp"

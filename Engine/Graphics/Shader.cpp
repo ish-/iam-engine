@@ -2,7 +2,7 @@
 #include <string>
 #include <glad/glad.h>
 #include <SDL3/SDL_log.h>
-#include "../../util/LOG.hpp"
+#include "../common/LOG.hpp"
 
 GLuint Shader::loadShader(std::string& vertexShaderCode, std::string& fragmentShaderCode)
 {

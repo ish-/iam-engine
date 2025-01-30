@@ -4,7 +4,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include "../ACS/ASystem.hpp"
 #include "PhysicsComponent.hpp"
-#include "../../util/Symbol.hpp"
+#include "../common/Symbol.hpp"
 #include "DebugDraw.hpp"
 
 const btVector3 btVector3_ZERO = btVector3(0, 0, 0);

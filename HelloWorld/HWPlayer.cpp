@@ -6,9 +6,9 @@
 #include "../Engine/ACS/AMaestro.hpp"
 #include "../Engine/Physics/PhysicsComponent.hpp"
 #include "../Engine/Inputs/Inputs.hpp"
-#include "../util/random.hpp"
+#include "../Engine/common/random.hpp"
 #include "glm/ext/vector_float3.hpp"
-#include "../util/LOG.hpp"
+#include "../Engine/common/LOG.hpp"
 #include "../Engine/GUI.hpp"
 // TODO: clear bullet includes
 using namespace std;

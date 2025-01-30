@@ -5,7 +5,7 @@
 #include "../Engine/Physics/PhysicsComponent.hpp"
 #include "../Engine/Graphics/MeshComponent.hpp"
 #include "../Engine/Graphics/BoxGeo.hpp"
-#include "../util/random.hpp"
+#include "../Engine/common/random.hpp"
 // TODO: clear bullet includes
 #include <btBulletDynamicsCommon.h>
 using namespace std;

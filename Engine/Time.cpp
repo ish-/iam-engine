@@ -1,7 +1,7 @@
 #include <SDL3/SDL_timer.h>
 #include <chrono>
 #include "Time.hpp"
-#include "../util/LOG.hpp"
+#include "common/LOG.hpp"
 
 double Time::startFrame () {
   frame++;

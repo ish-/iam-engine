@@ -38,7 +38,7 @@ file(GLOB SOURCES
     ${PROJECT_SOURCE_DIR}/Engine/ACS/*.cpp
     ${PROJECT_SOURCE_DIR}/Engine/Inputs/*.cpp
     ${PROJECT_SOURCE_DIR}/Engine/Physics/*.cpp
-    ${PROJECT_SOURCE_DIR}/util/*.cpp
+    ${PROJECT_SOURCE_DIR}/Engine/common/*.cpp
 )
 
 set(SAMPLE_NAME "HelloWorld")

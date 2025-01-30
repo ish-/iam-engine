@@ -4,7 +4,7 @@
 #include "../ACS/AComponent.hpp"
 #include <glm/mat4x4.hpp>
 #include <glm/vec3.hpp>
-#include "../../util/Symbol.hpp"
+#include "../common/Symbol.hpp"
 
 class Physics;
 class btConvexInternalShape;
