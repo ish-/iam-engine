@@ -1,8 +1,8 @@
 #pragma once
-// #include "../Engine/Graphics/Mesh.hpp">
+// #include "Engine/Graphics/Mesh.hpp">
 #include <glm/mat4x4.hpp>
 #include <memory>
-#include "../Engine/Object3D.hpp"
+#include "Engine/Object3D.hpp"
 
 class PhysicsComponent;
 class btRigidBody;

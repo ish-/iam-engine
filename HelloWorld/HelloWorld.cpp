@@ -1,6 +1,6 @@
-#include "../Engine/Engine.hpp"
-#include "../Engine/Inputs/Inputs.hpp"
-#include "../Engine/common/LOG.hpp"
+#include "Engine/Engine.hpp"
+#include "Engine/Inputs/Inputs.hpp"
+#include "Engine/common/LOG.hpp"
 #include "HWScene.hpp"
 #include <memory>
 

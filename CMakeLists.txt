@@ -58,6 +58,7 @@ message(STATUS "SAMPLE_SOURCES: ${SAMPLE_SOURCES}")
 # )
 
 add_executable(${PROJECT_NAME} ${SAMPLE_DIR}/${SAMPLE_NAME}.cpp ${SOURCES} ${SAMPLE_SOURCES})
+target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR})
 
 # // ACS try lib
 # set(ACS_lib ACS)

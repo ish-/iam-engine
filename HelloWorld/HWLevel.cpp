@@ -4,11 +4,11 @@
 #include <string>
 #include <glm/vec3.hpp>
 #include <btBulletDynamicsCommon.h>
-#include "../Engine/ACS/AMaestro.hpp"
-#include "../Engine/Physics/PhysicsComponent.hpp"
-#include "../Engine/Physics/Collisions.hpp"
-#include "../Engine/Graphics/MeshModelComp.hpp"
-#include "../Engine/GUI.hpp"
+#include "Engine/ACS/AMaestro.hpp"
+#include "Engine/Physics/PhysicsComponent.hpp"
+#include "Engine/Physics/Collisions.hpp"
+#include "Engine/Graphics/MeshModelComp.hpp"
+#include "Engine/GUI.hpp"
 using namespace std;
 using namespace glm;
 

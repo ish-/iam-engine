@@ -1,6 +1,6 @@
 #pragma once
 #include <memory>
-#include "../Engine/Object3D.hpp"
+#include "Engine/Object3D.hpp"
 
 class PhysicsComponent;
 class PlayerCtrlComp;

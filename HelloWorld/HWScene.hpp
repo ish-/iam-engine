@@ -1,7 +1,7 @@
 #include <memory>
 #include <vector>
-#include "../Engine/Scene.hpp"
-#include "../Engine/Object3D.hpp"
+#include "Engine/Scene.hpp"
+#include "Engine/Object3D.hpp"
 #include "glm/fwd.hpp"
 #include "glm/vec3.hpp"
 #include "glm/vec4.hpp"

@@ -5,10 +5,10 @@
 #include <BulletCollision/CollisionShapes/btSphereShape.h>
 #include <SDL3/SDL_keycode.h>
 
-#include "../Engine/ACS/AMaestro.hpp"
-#include "../Engine/Physics/PhysicsComponent.hpp"
-#include "../Engine/PlayerCtrlComp.hpp"
-#include "../Engine/common/random.hpp"
+#include "Engine/ACS/AMaestro.hpp"
+#include "Engine/Physics/PhysicsComponent.hpp"
+#include "Engine/PlayerCtrlComp.hpp"
+#include "Engine/common/random.hpp"
 // TODO: clear bullet includes
 using namespace std;
 using namespace glm;
