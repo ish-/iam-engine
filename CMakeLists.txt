@@ -78,20 +78,26 @@ add_executable(${PROJECT_NAME} ${SAMPLE_DIR}/${SAMPLE_NAME}.cpp ${SOURCES} ${SAM
 # set(RESOURCE_FILES
 #     ${PROJECT_SOURCE_DIR}/shaders
 # )
-add_custom_target(copy_resources ALL
-    COMMAND ${CMAKE_COMMAND} -E copy_directory ${PROJECT_SOURCE_DIR}/resources ${CMAKE_BINARY_DIR}/resources
-    # COMMAND ${CMAKE_COMMAND} -E copy ${PROJECT_SOURCE_DIR}/config.json ${CMAKE_BINARY_DIR}/resources/config.json
-    DEPENDS ${RESOURCE_FILES}
-    COMMENT "Copying resource files to build directory"
-)
+set(CREATE_SYMLINKS OFF)
+if(NOT WIN32 AND CMAKE_BUILD_TYPE STREQUAL "Debug")
+    set(CREATE_SYMLINKS ON)
+endif()
 
-# if (${CMAKE_BUILD_TYPE} STREQUAL "Debug")
-#     add_custom_target(symlink_config ALL
-#         COMMAND ${CMAKE_COMMAND} -E rm resources/config.json
-#         COMMAND ${CMAKE_COMMAND} -E create_symlink ../../src/config.json resources/config.json
-#         COMMENT "Symlinking config.json"
-#     )
-# endif()
+if (CREATE_SYMLINKS)
+    add_custom_target(symlink_config ALL
+        # COMMAND ${CMAKE_COMMAND} -E rm resources/config.json
+        COMMAND ${CMAKE_COMMAND} -E create_symlink ${PROJECT_SOURCE_DIR}/resources ./resources
+        COMMENT "Symlinking config.json"
+    )
+else()
+    add_custom_target(copy_resources ALL
+        COMMAND ${CMAKE_COMMAND} -E copy_directory ${PROJECT_SOURCE_DIR}/resources ${CMAKE_BINARY_DIR}/resources
+        # COMMAND ${CMAKE_COMMAND} -E copy ${PROJECT_SOURCE_DIR}/config.json ${CMAKE_BINARY_DIR}/resources/config.json
+        DEPENDS ${RESOURCE_FILES}
+        COMMENT "Copying resource files to build directory"
+    )
+endif()
+
 
 # !!!!!! -- LIBS
 include(FetchContent)
