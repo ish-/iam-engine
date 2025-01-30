@@ -57,8 +57,12 @@ message(STATUS "SAMPLE_SOURCES: ${SAMPLE_SOURCES}")
 # ARCHIVE_OUTPUT_DIRECTORY "${LIBRARY_DIRECTORY}"
 # )
 
-add_executable(${PROJECT_NAME} ${SAMPLE_DIR}/${SAMPLE_NAME}.cpp ${SOURCES} ${SAMPLE_SOURCES})
+add_executable(${PROJECT_NAME} ${SAMPLE_DIR}/${SAMPLE_NAME}.cpp ${SAMPLE_SOURCES})
 target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR})
+
+add_library(Engine SHARED ${SOURCES})
+target_include_directories(Engine PUBLIC Engine)
+target_link_libraries(${PROJECT_NAME} Engine)
 
 # // ACS try lib
 # set(ACS_lib ACS)
@@ -101,7 +105,7 @@ if (NOT SDL3_FOUND) # If there's none, fetch and build SDL3
         FetchContent_MakeAvailable(SDL3)
     endif()
 endif()
-target_link_libraries(${PROJECT_NAME} SDL3::SDL3)
+target_link_libraries(Engine SDL3::SDL3)
 
 # GLM
 FetchContent_Declare(
@@ -110,12 +114,12 @@ FetchContent_Declare(
   GIT_TAG bf71a834948186f4097caa076cd2663c69a10e1e #refs/tags/1.0.1
 )
 FetchContent_MakeAvailable(glm)
-target_link_libraries(${PROJECT_NAME} glm::glm)
+target_link_libraries(Engine glm::glm)
 
-target_include_directories(${PROJECT_NAME} PRIVATE "${CMAKE_SOURCE_DIR}/ext/glad/include")
+target_include_directories(Engine PUBLIC "${CMAKE_SOURCE_DIR}/ext/glad/include")
 
 add_library(GLAD "ext/glad/src/glad.c")
-target_link_libraries(${PROJECT_NAME} GLAD)
+target_link_libraries(Engine GLAD)
 target_include_directories(GLAD PRIVATE "${CMAKE_SOURCE_DIR}/ext/glad/include")
 
 # # !!!!!! JSON
@@ -125,7 +129,7 @@ target_include_directories(GLAD PRIVATE "${CMAKE_SOURCE_DIR}/ext/glad/include")
 #     GIT_TAG        v3.11.3
 # )
 # FetchContent_MakeAvailable(nlohmann_json)
-# target_link_libraries(${PROJECT_NAME} PRIVATE nlohmann_json::nlohmann_json)
+# target_link_libraries(Engine PRIVATE nlohmann_json::nlohmann_json)
 
 # Fetch ImGui
 FetchContent_Declare(
@@ -145,7 +149,7 @@ add_library(imgui STATIC
     ${imgui_SOURCE_DIR}/backends/imgui_impl_opengl3.cpp
 )
 
-target_include_directories(${PROJECT_NAME} PUBLIC
+target_include_directories(Engine PUBLIC
     ${imgui_SOURCE_DIR}
     ${imgui_SOURCE_DIR}/backends
 )
@@ -161,7 +165,7 @@ target_include_directories(imgui PUBLIC
 
 target_link_libraries(imgui PUBLIC SDL3::SDL3 GLAD)
 
-target_link_libraries(${PROJECT_NAME} imgui)
+target_link_libraries(Engine imgui)
 
 # !!!!!! following libs installed with VCPKG or BREW
 # how to install it https://learn.microsoft.com/en-au/vcpkg/get_started/get-started?pivots=shell-cmd
@@ -170,9 +174,16 @@ target_link_libraries(${PROJECT_NAME} imgui)
 
 # !!!!!! Bullet
 # brew install bullet
+# set(BULLET_USE_SHARED_LIBS ON)
+# FetchContent_Declare(
+#     Bullet
+#     GIT_REPOSITORY https://github.com/bulletphysics/bullet3.git
+#     GIT_TAG master
+# )
+# FetchContent_MakeAvailable(Bullet)
 find_package(Bullet REQUIRED)
 include_directories(${BULLET_INCLUDE_DIRS})
-target_link_libraries(${PROJECT_NAME} ${BULLET_LIBRARIES})
+target_link_libraries(Engine ${BULLET_LIBRARIES})
 
 # !!!!!! ASSIMP
 # brew install assimp@5.4.3
@@ -206,7 +217,7 @@ else()
     add_custom_target(copy_resources ALL
         COMMAND ${CMAKE_COMMAND} -E copy_directory ${PROJECT_SOURCE_DIR}/resources ${CMAKE_BINARY_DIR}/resources
         # COMMAND ${CMAKE_COMMAND} -E copy ${PROJECT_SOURCE_DIR}/config.json ${CMAKE_BINARY_DIR}/resources/config.json
-        
+
         # Fix WIN32 SDL3 shared lib not found just run it twice (it will work after 1st try SDL3 build)
         COMMAND ${CMAKE_COMMAND} -E copy ${PROJECT_BINARY_DIR}/_deps/sdl3-build/CMakeFiles/SDL3-shared.dir/src/core/windows/version.rc.res.res ${PROJECT_BINARY_DIR}/_deps/sdl3-build/CMakeFiles/SDL3-shared.dir/src/core/windows/version.rc.res
 
@@ -214,3 +225,7 @@ else()
         COMMENT "Copying resource files to build directory"
     )
 endif()
+
+target_link_libraries(Engine ${ASSIMP_LIBRARIES})
+target_link_libraries(Engine assimp::assimp)
+
