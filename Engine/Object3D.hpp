@@ -31,7 +31,7 @@ public:
 
 // AActor
   // TODO:
-  std::string name = "Actor";
+  // std::string name = "Actor";
 
   std::unordered_map<std::type_index, std::shared_ptr<AComponent>> components;
 

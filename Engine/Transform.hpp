@@ -10,21 +10,30 @@ const static mat4 I_MAT = mat4(1.f);
 
 class Transform {
 public:
+  struct Conf {
+    vec3 pos = vec3(0);
+    vec3 rot = vec3(0);
+    vec3 scale = vec3(1);
+  };
+
+  Conf conf;
 
   Transform() = default;
   Transform (const mat4& matrix): matrix(matrix) {}
   Transform (const vec3& pos) { setPosition(pos); }
   Transform (const vec3& pos, const vec3& rot) { setPosition(pos); setRotation(rot); }
   Transform (const vec3& pos, const vec3& rot, const vec3& _scale) { scale(_scale); setPosition(pos); setRotation(rot); }
+  Transform (const Conf& _conf) { setConf(_conf); }
 
   virtual mat4 getTransformMatrix () const;
   quat getForward() const;
 
-  vec3 position = vec3(0.);
+  void setConf (const Conf& _conf);
+  Conf getConf() const;
 
-  void updateMat();
   void scale(const vec3& scale);
   void scale(float scale);
+  glm::vec3 getScale() const;
 
   void setPosition(const vec3& _position);
 
@@ -37,7 +46,7 @@ public:
   quat getRotation() const;
   vec3 getRotationEul() const;
 
-  void setRotation(const vec3& angles);
+  void setRotation(const vec3& angles, bool updateConf = true);
   void setRotationEul(const vec3& eulerAngles);
 
   void setRotationLocal(const vec3& angles);
