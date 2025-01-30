@@ -1,4 +1,8 @@
-#include <btBulletDynamicsCommon.h>
+// #include <btBulletDynamicsCommon.h>
+#include <BulletCollision/CollisionShapes/btCompoundShape.h>
+#include <BulletCollision/CollisionShapes/btTriangleMesh.h>
+#include <BulletCollision/CollisionShapes/btBvhTriangleMeshShape.h>
+#include <BulletCollision/CollisionShapes/btConvexHullShape.h>
 #include "../Graphics/Geo.hpp"
 
 class Collisions {

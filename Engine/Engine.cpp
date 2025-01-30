@@ -97,11 +97,12 @@ void Engine::run() {
         ImGui::Checkbox("Collisions", &physics.drawDebug);
       ImGui::End();
 
-      physics.dynamicsWorld->debugDrawWorld();
-      renderer.setShader(WireframeShader::get());
 
-      if (physics.drawDebug)
-        renderer.render(physics.debugDrawer->mesh);
+      if (physics.drawDebug) {
+        physics.debugDrawWorld();
+        renderer.setShader(WireframeShader::get());
+        renderer.render(physics.debugGetMesh());
+      }
 
       scene->drawGui();
 

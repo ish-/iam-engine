@@ -1,6 +1,22 @@
 #include "Physics.hpp"
+// #include <btBulletDynamicsCommon.h>
+#include "BulletDynamics/Dynamics/btDiscreteDynamicsWorld.h"
+#include "BulletDynamics/ConstraintSolver/btSequentialImpulseConstraintSolver.h"
+// #include <btBulletCollisionCommon.h>
+#include "BulletCollision/BroadphaseCollision/btDbvtBroadphase.h"
+#include "BulletCollision/CollisionDispatch/btDefaultCollisionConfiguration.h"
+#include "DebugDraw.hpp"
+#include "../Graphics/MeshComponent.hpp"
 
 Physics::Physics () {}
+
+glm::mat4 Physics::toGlmTMat4 (btRigidBody* body) {
+  btTransform transform;
+  body->getMotionState()->getWorldTransform(transform);
+  btScalar matrix[16];
+  transform.getOpenGLMatrix(matrix);
+  return glm::make_mat4(matrix);
+}
 
 bool Physics::init () {
   // Initialize Bullet
@@ -35,4 +51,14 @@ void Physics::deinit () {
   delete dispatcher;
   delete collisionConfig;
   delete broadphase;
+}
+
+void Physics::debugDrawWorld() {
+  if (drawDebug) {
+    dynamicsWorld->debugDrawWorld();
+  }
+}
+
+shared_ptr<MeshComponent> Physics::debugGetMesh() {
+  return debugDrawer->mesh;
 }

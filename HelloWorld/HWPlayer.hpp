@@ -1,5 +1,4 @@
 #pragma once
-#include <glm/mat4x4.hpp>
 #include <memory>
 #include "../Engine/Object3D.hpp"
 

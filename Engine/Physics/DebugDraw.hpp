@@ -1,10 +1,10 @@
 #pragma once
-#include <btBulletDynamicsCommon.h>
-#include <glad/glad.h> // Ensure GLAD or GLEW is properly initialized
-#include <glm/gtc/type_ptr.hpp>
 #include <memory>
 #include <vector>
 #include <iostream>
+#include <LinearMath/btIDebugDraw.h>
+#include <glad/glad.h> // Ensure GLAD or GLEW is properly initialized
+#include <glm/gtc/type_ptr.hpp>
 #include "DebugDrawMeshComponent.hpp"
 
 class DebugDrawer : public btIDebugDraw {

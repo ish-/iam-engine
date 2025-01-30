@@ -4,6 +4,7 @@
 #include "../ACS/AComponent.hpp"
 #include <glm/mat4x4.hpp>
 #include <glm/vec3.hpp>
+#include <glm/vec2.hpp>
 #include "../common/Symbol.hpp"
 
 class Physics;
@@ -19,6 +20,7 @@ public:
     btCollisionShape* shape;
     btVector3 pos {0,0,0};
     float mass = 0.;
+    glm::vec2 damping = {0.,0.};
     btVector3 initialImpulse {0,0,0};
     btVector3 intertia {0,0,0};
     // btVector3 initialImpulsePos {0,0,0};

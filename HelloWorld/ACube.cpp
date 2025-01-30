@@ -1,13 +1,13 @@
 #include "ACube.hpp"
 #include <memory>
+#include <BulletCollision/CollisionShapes/btBoxShape.h>
 #include "../Engine/ACS/AMaestro.hpp"
-#include "../Engine/Graphics/PhongShader.hpp"
 #include "../Engine/Physics/PhysicsComponent.hpp"
 #include "../Engine/Graphics/MeshComponent.hpp"
 #include "../Engine/Graphics/BoxGeo.hpp"
 #include "../Engine/common/random.hpp"
 // TODO: clear bullet includes
-#include <btBulletDynamicsCommon.h>
+// #include <btBulletDynamicsCommon.h>
 using namespace std;
 
 // ACube::ACube () {

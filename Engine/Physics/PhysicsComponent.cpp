@@ -40,6 +40,7 @@ bool PhysicsComponent::init () {
   if (params.initialImpulse != btVector3_ZERO)
     rigidBody->applyCentralForce(params.initialImpulse);
 
+  rigidBody->setDamping(params.damping.x, params.damping.y);
   return true;
 }
 
