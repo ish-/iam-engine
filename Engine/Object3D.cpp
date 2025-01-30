@@ -31,3 +31,14 @@ void Object3D::update() {
     component->update(-1.);
   }
 }
+
+Object3D::~Object3D() {
+  // std::cout << "~Object3D\n";
+  components.clear();
+  children.clear();
+}
+
+bool Object3D::removeComponent(std::shared_ptr<AComponent> comp) {
+  components[typeid(comp)] = nullptr;
+  return true;
+};

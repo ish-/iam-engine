@@ -47,14 +47,7 @@ public:
       return nullptr;
   }
 
-  bool removeComponent(std::shared_ptr<AComponent> comp) {
-    components[typeid(comp)] = nullptr;
-    return true;
-  };
+  bool removeComponent(std::shared_ptr<AComponent> comp);
 
-  ~Object3D() {
-    // std::cout << "~Object3D\n";
-    components.clear();
-    children.clear();
-  }
+  ~Object3D();
 };
