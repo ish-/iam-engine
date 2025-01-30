@@ -37,10 +37,10 @@ public:
 
   template <typename TScene = Scene>
   std::shared_ptr<TScene> newScene() {
-    auto newScene = std::make_shared<TScene>();
+    auto newScene = std::make_shared<TScene>(ctx);
     scene = newScene;
     return newScene;
-  }
+  };
 
   void exit();
 

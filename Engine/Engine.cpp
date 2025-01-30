@@ -10,6 +10,7 @@
 #include "Inputs/Inputs.hpp"
 #include "Graphics/Window.hpp"
 #include "Graphics/Renderer.hpp"
+#include "ACS/AMaestro.hpp"
 // #include "Graphics/WireframeShader.hpp"
 #include "Physics/Physics.hpp"
 #include "SDL3/SDL_keycode.h"
@@ -24,7 +25,7 @@
 
 Engine::Engine()
   : time(Time::get()), window(Window::get()), renderer(Renderer::get()), inputs(Inputs::get()), gui(GUI::get()), physics(Physics::get()),
-    ctx{Time::get(), Window::get(), Renderer::get(), Inputs::get(), GUI::get(), Physics::get()}
+    ctx{Time::get(), Window::get(), Renderer::get(), Inputs::get(), GUI::get(), Physics::get(), AMaestro::get()}
 {
   std::filesystem::current_path(BIN_TO_BUILD_PATH);
   LOG("Current path", std::filesystem::current_path().c_str());

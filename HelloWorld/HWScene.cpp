@@ -18,6 +18,7 @@
 #include "../Engine/Graphics/Renderer.hpp"
 #include "../Engine/Time.hpp"
 #include "../Engine/ACS/AMaestro.hpp"
+#include "../Engine/IEngine.hpp"
 
 #include "../Engine/Graphics/MeshModelComp.hpp"
 #include "HWLevel.hpp"
@@ -29,8 +30,8 @@
 using namespace std;
 using namespace glm;
 
-HWScene::HWScene ()
-    : inputs(Inputs::get()),
+HWScene::HWScene (IEngine& ctx)
+    : Scene(ctx), inputs(Inputs::get()),
       renderer(Renderer::get()),
       physics(Physics::get()),
       maestro(AMaestro::get()),

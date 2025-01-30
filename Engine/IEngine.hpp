@@ -10,6 +10,14 @@ public:
   class Inputs& inputs;
   class GUI& gui;
   class Physics& physics;
+  class AMaestro& maestro;
 
-  void exit();
+  // void exit();
+};
+
+class IHasCtx {
+public:
+  IHasCtx(IEngine& ctx) : _(ctx) {}
+
+  IEngine& _;
 };

@@ -22,6 +22,8 @@ class HWScene : public Scene {
 public:
   using Super = Scene;
 
+  HWScene (IEngine& ctx);
+
   HWScene();
   Inputs& inputs;
   Renderer& renderer;
@@ -42,7 +44,7 @@ public:
   shared_ptr<Object3D> cameraOrigin;
   shared_ptr<Object3D> cube;
   shared_ptr<BoxGeo> boxGeo;
-  vector<shared_ptr<Object3D>> children;
+  // vector<shared_ptr<Object3D>> children;
 
   virtual bool load () override;
   virtual void update (float dt) override;
