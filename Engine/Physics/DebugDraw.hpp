@@ -1,3 +1,4 @@
+#pragma once
 #include <btBulletDynamicsCommon.h>
 #include <glad/glad.h> // Ensure GLAD or GLEW is properly initialized
 #include <glm/gtc/type_ptr.hpp>
