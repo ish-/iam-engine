@@ -4,6 +4,7 @@
 #include <memory>
 #include <vector>
 #include <string>
+#include <iostream>
 #include <unordered_map>
 #include <typeindex>
 #include "Transform.hpp"
@@ -44,5 +45,21 @@ public:
           return std::dynamic_pointer_cast<T>(it->second);
       }
       return nullptr;
+  }
+
+  bool removeComponents() {
+    components.clear();
+    return true;
+  };
+
+  bool removeComponent(std::shared_ptr<AComponent> comp) {
+    components[typeid(comp)] = nullptr;
+    return true;
+  };
+
+  ~Object3D() {
+    // std::cout << "~Object3D\n";
+    removeComponents();
+    children.clear();
   }
 };

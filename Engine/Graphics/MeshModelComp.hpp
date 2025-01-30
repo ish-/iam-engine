@@ -28,7 +28,7 @@ public:
 
   Conf conf;
 
-  MeshModelComp() = default;
+  MeshModelComp() : MeshComponent() {};
   MeshModelComp (const Conf&& _conf): conf(_conf) {
     // shader = PhongShader::getPtr();
 

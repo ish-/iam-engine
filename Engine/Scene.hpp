@@ -1,6 +1,7 @@
 #pragma once
 #include "Object3D.hpp"
 #include "IEngine.hpp"
+#include "ACS/AMaestro.hpp"
 #include <memory>
 #include <vector>
 
@@ -18,9 +19,9 @@ public:
 
   template <typename AA = Object3D, typename... Args>
   std::shared_ptr<AA> newActor(Args&&... args) {
-    auto actor = std::make_shared<AA>(_, std::forward<Args>(args)...);
+    // auto actor = std::make_shared<AA>(_, std::forward<Args>(args)...);
+    auto actor = _.maestro.newActor<AA>(std::forward<Args>(args)...);
     children.push_back(actor);
-    actor->init();
     return actor;
   }
 
@@ -31,4 +32,5 @@ public:
 
   virtual void drawGui ();
   // ~Scene() = default;
+  // virtual void restart ();
 };

@@ -12,9 +12,12 @@ using namespace std;
 //     return instance; \
 //   }
 
+static const Symbol NO_SYSTEM { "<NO_SYSTEM>" };
+
 template<typename AC = AComponent>
 class ASystem {
 public:
+
   static ASystem& get() {
     throw "ASystem::get() is only a copy-paste template";
     static ASystem instance;
@@ -22,11 +25,10 @@ public:
   }
 
   virtual Symbol getASystemType () {
-    static Symbol symbol { "<ASystem>" };
-    return symbol;
+    return NO_SYSTEM;
   }
 
-  vector<shared_ptr<AComponent>> getComponents () {
+  vector<weak_ptr<AComponent>> getComponents () {
     static_assert(std::is_base_of<AComponent, AC>::value, "ASystem: AC must derive from AComponent");
     auto maestro = AMaestro::get();
     auto& allComps = maestro.components;

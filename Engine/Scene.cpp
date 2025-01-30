@@ -19,3 +19,4 @@ void Scene::update(float dt) {
 void Scene::drawGui () {
 
 }
+// void Scene::restart () {}

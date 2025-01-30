@@ -23,7 +23,8 @@ bool Physics::update (const float& dt) {
   dynamicsWorld->stepSimulation(1.0f / 60.0f, 10);
   auto comps = getComponents();
   for (auto& comp : comps) {
-    comp->update(dt);
+    if (auto aliveComp = comp.lock())
+      aliveComp->update(dt);
   }
   return true;
 }

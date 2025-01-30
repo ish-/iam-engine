@@ -48,7 +48,7 @@ bool HWScene::load () {
   Window& w = Window::get();
   physics.init();
 
-  shared_ptr<HWPlayer> player = maestro.newActor<HWPlayer>(vec3(0, 0, 5));
+  shared_ptr<HWPlayer> player = newActor<HWPlayer>(vec3(0, 0, 5));
 
   camera = make_shared<Camera>((Camera::Conf){
     .ratio = (float)w.width / (float)w.height, .fov = 80.,
@@ -62,22 +62,22 @@ bool HWScene::load () {
 
 
   for (uint i = 0; i < 1000; i++) {
-    auto cube = maestro.newActor<ACube>(
+    auto cube = newActor<ACube>(
       vec3( rd::in(-20., 20.), rd::in(-20., 20.), rd::in(-20., 20.))
     );
   }
 
-  auto icosphere = maestro.newActor(vec3(2, 0, 0));
-  maestro.addComponent<MeshModelComp>(icosphere,
-    (MeshModelComp::Conf){ .path = "resources/models/icosphere.s3.obj" });
-  PhysicsComponent::Params icospherePhysicsParams({
-    .shape = new btSphereShape(.6),
-    .pos = btVector3(2, 0, 0),
-    .mass = 1,
-  });
-  maestro.addComponent<PhysicsComponent>(icosphere, icospherePhysicsParams);
+  // auto icosphere = maestro.newActor(vec3(2, 0, 0));
+  // maestro.addComponent<MeshModelComp>(icosphere,
+  //   (MeshModelComp::Conf){ .path = "resources/models/icosphere.s3.obj" });
+  // PhysicsComponent::Params icospherePhysicsParams({
+  //   .shape = new btSphereShape(.6),
+  //   .pos = btVector3(2, 0, 0),
+  //   .mass = 1,
+  // });
+  // maestro.addComponent<PhysicsComponent>(icosphere, icospherePhysicsParams);
 
-  auto lvl = maestro.newActor<HWLevel>(vec3(10.f,0.f,0.f));
+  auto lvl = newActor<HWLevel>(vec3(10.f,0.f,0.f));
   // auto lvl = maestro.newActor(vec3(2, 0, 0));
   // maestro.addComponent<MeshModelComp>(lvl,
   //   (MeshModelComp::Conf){ .path = "resources/models/try_lvl.obj" });
@@ -90,7 +90,7 @@ bool HWScene::load () {
 void HWScene::update (float dt) {
   Window& w = Window::get();
 
-  for(auto& actor : maestro.actors)
+  for(auto& actor : children)
     actor->update();
 
   physics.update(dt);

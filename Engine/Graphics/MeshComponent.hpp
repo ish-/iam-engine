@@ -18,6 +18,8 @@ public:
   shared_ptr<Shader> shader;
   shared_ptr<Geo> geo;
 
+  MeshComponent(): AComponent() {}
+
   virtual Symbol getASystemType () override {
       static Symbol symbol { "Renderer" };
       return symbol;

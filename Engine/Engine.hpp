@@ -33,15 +33,6 @@ public:
   class GUI& gui;
   class Physics& physics;
 
-  std::shared_ptr<Scene> scene;
-
-  template <typename TScene = Scene>
-  std::shared_ptr<TScene> newScene() {
-    auto newScene = std::make_shared<TScene>(ctx);
-    scene = newScene;
-    return newScene;
-  };
-
   void exit();
 
   void init();
@@ -50,5 +41,23 @@ public:
 
   bool pause = false;
 
-// this
+// SCENE
+  std::shared_ptr<Scene> scene;
+
+  template <typename TScene = Scene>
+  std::shared_ptr<TScene> newScene() {
+    auto newScene = std::make_shared<TScene>(ctx);
+    return newScene;
+  };
+
+  template <typename TScene = Scene>
+  std::shared_ptr<TScene> setNewScene() {
+    auto nextScene = newScene<TScene>();
+    setScene(nextScene);
+    return nextScene;
+  };
+
+  void setScene(std::shared_ptr<Scene> nextScene) {
+    scene = nextScene;
+  }
 };

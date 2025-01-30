@@ -6,7 +6,7 @@
 #include "../common/random.hpp"
 
 PhysicsComponent::PhysicsComponent (Params& params)
-  : physics(Physics::get()), params(params)
+  : physics(Physics::get()), params(params), AComponent()
 {
   init(params);
 }

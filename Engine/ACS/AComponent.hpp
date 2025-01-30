@@ -16,11 +16,19 @@ public:
         return symbol;
     }
 
+    AComponent () {
+        // std::cout << "AComponent()\n";
+    }
+
     void setOwner(const std::shared_ptr<Object3D>& actor);
 
     std::shared_ptr<Object3D> getOwner() const;
 
     virtual void update(float dt) = 0;
+
+    ~AComponent () {
+        // std::cout << "~AComponent\n";
+    }
 
 private:
     std::weak_ptr<Object3D> owner;

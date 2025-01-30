@@ -116,9 +116,11 @@ void Renderer::renderComponents () {
 
   auto comps = getComponents();
   for (auto& comp : comps) {
-    shared_ptr<MeshComponent> meshComp = dynamic_pointer_cast<MeshComponent>(comp);
-    if (meshComp) {
-      render(meshComp);
+    if (auto aliveComp = comp.lock()) {
+      shared_ptr<MeshComponent> meshComp = dynamic_pointer_cast<MeshComponent>(aliveComp);
+      if (meshComp) {
+        render(meshComp);
+      }
     }
   }
 }

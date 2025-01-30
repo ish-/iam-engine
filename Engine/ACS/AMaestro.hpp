@@ -20,13 +20,13 @@ public:
   AMaestro() {}
 
   // vector<shared_ptr<AComponent>> components;
-  unordered_map<Symbol, vector<shared_ptr<AComponent>>> components;
+  unordered_map<Symbol, vector<weak_ptr<AComponent>>> components;
   vector<shared_ptr<Object3D>> actors;
 
   template <typename AA = Object3D, typename... Args>
   std::shared_ptr<AA> newActor(Args&&... args) {
     auto actor = std::make_shared<AA>(std::forward<Args>(args)...);
-    actors.push_back(actor);
+    // actors.push_back(actor);
     actor->init();
     return actor;
   }
@@ -36,17 +36,9 @@ public:
     auto component = std::make_shared<T>(std::forward<Args>(args)...);
     auto sysType = component->getASystemType();
     // LOG("Maestro::addComponent", typeid(T).name(), "sysType", sysType.name());
-    components[sysType].push_back(component);
     component->setOwner(actor);
+    actor->components[typeid(component)] = component;
+    components[sysType].push_back(component);
     return component;
   }
-
-  // template <typename T, typename... Args>
-  // void removeComponent(shared_ptr<Object3D> actor) {
-  //   auto component = actor->components[typeid(T)];
-  //   actor->components.erase(typeid(T));
-  //   auto& sysComps = components[typeid(T)];
-  //   sysComps.erase(std::remove(sysComps.begin(), sysComps.end(), component), sysComps.end());
-  //   component->setOwner(nullptr);
-  // }
 };

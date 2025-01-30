@@ -14,7 +14,7 @@ int main () {
   LOG("Hello World!");
   // auto scene = std::make_shared<HWScene>();
   engine.init();
-  engine.newScene<HWScene>();
+  engine.setNewScene<HWScene>();
   engine.run();
   engine.exit();
   LOG("Exit!");

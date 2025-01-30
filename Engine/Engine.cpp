@@ -68,6 +68,7 @@ void Engine::run() {
     if (event.type == SDL_EVENT_QUIT) return;
     if (inputs.btnRel[SDLK_ESCAPE] > 0) return;
     if (inputs.btn[SDLK_LSHIFT] && inputs.btnRel[SDLK_P] > 0) pause = !pause;
+    if (inputs.btn[SDLK_LCTRL] && inputs.btnRel[SDLK_R] > 0) setNewScene<Scene>();
     if (inputs.btnRel[SDLK_F] > 0) {
       window.toggleFullscreen();
       scene->camera->setRatio((float)window.width / (float)window.height);
