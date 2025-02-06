@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include <filesystem>
 
 #ifndef COUT_DISABLE
 	#define COUT_ENABLED
@@ -10,10 +11,23 @@
 
 	#define COUT(...) _COUT(__VA_ARGS__)
 
+	// < WIN32 FIX
 	template <typename T>
-	void print_arg(T&& arg) {
+	auto print_arg(T&& arg) -> decltype(std::cout << std::forward<T>(arg), void()) {
 		std::cout << std::forward<T>(arg) << " ";
 	}
+
+	inline void print_arg(const char* arg) {
+		std::cout << arg << " ";
+	}
+
+	inline void print_arg(const std::string& arg) {
+		std::cout << arg << " ";
+	}
+	inline void print_arg(const std::filesystem::path& arg) {
+		std::cout << arg.string() << " ";
+	}
+	// > WIN32 FIX
 
 	template <typename... T>
 	inline void _COUT(T&&... args) {

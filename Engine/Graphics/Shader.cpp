@@ -71,7 +71,7 @@ GLuint Shader::loadShader(std::string& vertexShaderCode, std::string& fragmentSh
     glGetProgramiv(ProgramID, GL_ACTIVE_ATTRIBUTES, &count);
     printf("Active Attributes: %d\n", count);
 
-    for (uint i = 0; i < count; i++)
+    for (int i = 0; i < count; i++)
     {
         glGetActiveAttrib(ProgramID, (GLuint)i, bufSize, &length, &size, &type, name);
 
@@ -81,7 +81,7 @@ GLuint Shader::loadShader(std::string& vertexShaderCode, std::string& fragmentSh
     glGetProgramiv(ProgramID, GL_ACTIVE_UNIFORMS, &count);
     printf("Active Uniforms: %d\n", count);
 
-    for (uint i = 0; i < count; i++)
+    for (int i = 0; i < count; i++)
     {
         glGetActiveUniform(ProgramID, (GLuint)i, bufSize, &length, &size, &type, name);
         printf("Uniform #%d Type: %u Size: %u Length: %u Name: %s\n", i, type, size, length, name);

@@ -25,7 +25,7 @@ void Geo::bindBuffers(const Data& data) {
   stride *= sizeof(GLfloat);
 
   GLuint VAOffset = 0;
-  for (uint i = 0; i < data.layout.size(); i++) {
+  for (int i = 0; i < data.layout.size(); i++) {
     if (data.layout[i] == 0) continue;
     glVertexAttribPointer(i, data.layout[i], GL_FLOAT, GL_FALSE, stride, (void*)(VAOffset * sizeof(GLfloat)));
     glEnableVertexAttribArray(i);

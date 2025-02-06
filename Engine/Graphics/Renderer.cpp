@@ -24,6 +24,11 @@
 
 using namespace glm;
 
+// Enable dedicated graphics for NVIDIA:
+extern "C" { __declspec(dllexport) unsigned long NvOptimusEnablement = 0x00000001; }
+// Enable dedicated graphics for AMD Radeon:
+extern "C" { __declspec(dllexport) int AmdPowerXpressRequestHighPerformance = 1; }
+
 void GLAPIENTRY GLDebugMessageCallback(GLenum Source,
     GLenum Type,
     GLuint Id,
@@ -71,6 +76,7 @@ void Renderer::init (SDL_Window* sdlWindow) {
   SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
   SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
   SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_DEBUG_FLAG);
+  // SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1);
 
   if (!SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 8))
     LOG("SDL_GL_SetAttribute", SDL_GetError());
@@ -99,11 +105,11 @@ void Renderer::init (SDL_Window* sdlWindow) {
   // deprecated
   // glEnable(GL_LINE_SMOOTH); glEnable(GL_POLYGON_SMOOTH); glEnable(GL_POINT_SMOOTH);
 
-  glEnable(GL_MULTISAMPLE);
-  glEnable(GL_SAMPLE_SHADING);
-  glMinSampleShading(8);
-  if (auto err = glGetError())
-    LOG("INIT GL ERROR: ", err);
+  // glEnable(GL_MULTISAMPLE);
+  // glEnable(GL_SAMPLE_SHADING);
+  // glMinSampleShading(8);
+  // if (auto err = glGetError())
+  //   LOG("INIT GL ERROR: ", err);
 
   defaultShader = PhongShader::getPtr();
   setShader(defaultShader);
