@@ -31,29 +31,33 @@ public:
   }
 
   MouseState mouse;
+  bool mouseLocked = false;
   MouseState mouseRel;
 
-  bool update (SDL_Event& event) {
+  void startFrame () {
     mouseRel = {0, 0, 0, 0};
-    SDL_Keycode& key = event.key.key;
+    for (auto btnKey : lastBtnKeys)
+      btnRel[btnKey] = 0;
+  }
 
-    if (lastBtnKey != SDLK_UNKNOWN)
-      btnRel[lastBtnKey] = 0;
+  bool update (SDL_Event& event) {
+    SDL_Keycode& key = event.key.key;
 
     switch (event.type) {
       case SDL_EVENT_MOUSE_MOTION:
       case SDL_EVENT_MOUSE_BUTTON_DOWN:
-        processMouse(event); break;
+        processMouse(event);
+        break;
 
       case SDL_EVENT_KEY_DOWN:
         btnRel[key] = 1;
         btn[key] = true;
-        lastBtnKey = key;
+        lastBtnKeys.push_back(key);
         break;
       case SDL_EVENT_KEY_UP:
         btnRel[key] = -1;
         btn[key] = false;
-        lastBtnKey = key;
+        lastBtnKeys.push_back(key);
         break;
     }
 
@@ -64,7 +68,7 @@ public:
   bool mouseLock(class SDL_Window* sdlWindow, bool lock);
   bool mouseLock(Bool lock);
 
-  SDL_Keycode lastBtnKey = SDLK_UNKNOWN;
+  std::vector<SDL_Keycode> lastBtnKeys;
   std::unordered_map<SDL_Keycode, bool> btn;
   std::unordered_map<SDL_Keycode, int8_t> btnRel;
 };

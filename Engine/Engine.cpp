@@ -61,9 +61,11 @@ void Engine::run() {
   while (true)
   {
     time.startFrame();
-    SDL_PollEvent(&event);
-    ImGui_ImplSDL3_ProcessEvent(&event);
-    inputs.update(event);
+    inputs.startFrame();
+    while(SDL_PollEvent(&event)) {
+      ImGui_ImplSDL3_ProcessEvent(&event);
+      inputs.update(event);
+    }
 
     if (event.type == SDL_EVENT_QUIT) return;
     if (inputs.btnRel[SDLK_ESCAPE] > 0) return;

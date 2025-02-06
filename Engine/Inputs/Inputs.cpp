@@ -1,6 +1,6 @@
 #include "Inputs.hpp"
 #include <SDL3/SDL_mouse.h>
-#include <objc/objc.h>
+// #include <objc/objc.h>
 #include "../Graphics/Window.hpp"
 #include "../common/LOG.hpp"
 #include "SDL3/SDL_stdinc.h"
@@ -13,8 +13,8 @@ void Inputs::processMouse(const SDL_Event& event) {
 
   mouseRel.lb = lb - mouse.lb;
   mouseRel.rb = rb - mouse.rb;
-  mouseRel.x = event.motion.xrel;
-  mouseRel.y = event.motion.yrel;
+  mouseRel.x += event.motion.xrel;
+  mouseRel.y += event.motion.yrel;
 
   mouse.lb = lb;
   mouse.rb = rb;
@@ -32,9 +32,13 @@ bool Inputs::mouseLock(SDL_Window* sdlWindow, bool lock) {
 
 bool Inputs::mouseLock(Bool lock) {
   if (GET == lock)
-    return SDL_GetWindowRelativeMouseMode(Window::get().sdlWindow);
+    return mouseLocked;
+
   bool _lock = bool(lock);
   if (TOGGLE == lock)
-    _lock = !SDL_GetWindowRelativeMouseMode(Window::get().sdlWindow);
-  return mouseLock(Window::get().sdlWindow, _lock);
+    _lock = !mouseLocked;
+    
+  if (mouseLock(Window::get().sdlWindow, _lock))
+    mouseLocked = _lock;
+  return mouseLocked;
 }
