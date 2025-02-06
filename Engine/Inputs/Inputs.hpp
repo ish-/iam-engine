@@ -5,6 +5,7 @@
 #include "SDL3/SDL_keycode.h"
 #include <SDL3/SDL_events.h>
 #include <unordered_map>
+#include <vector>
 
 class SDL_Window;
 

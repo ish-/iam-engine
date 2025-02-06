@@ -24,10 +24,12 @@
 
 using namespace glm;
 
-// Enable dedicated graphics for NVIDIA:
-extern "C" { __declspec(dllexport) unsigned long NvOptimusEnablement = 0x00000001; }
-// Enable dedicated graphics for AMD Radeon:
-extern "C" { __declspec(dllexport) int AmdPowerXpressRequestHighPerformance = 1; }
+#ifdef _WIN32
+  // Enable dedicated graphics for NVIDIA:
+  extern "C" { __declspec(dllexport) unsigned long NvOptimusEnablement = 0x00000001; }
+  // Enable dedicated graphics for AMD Radeon:
+  extern "C" { __declspec(dllexport) int AmdPowerXpressRequestHighPerformance = 1; }
+#endif
 
 void GLAPIENTRY GLDebugMessageCallback(GLenum Source,
     GLenum Type,
