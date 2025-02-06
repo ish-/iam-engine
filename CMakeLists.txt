@@ -1,8 +1,11 @@
 cmake_minimum_required(VERSION 3.20)
+# set(CMAKE_TOOLCHAIN_FILE "D:\\PROGS\\vcpkg\\scripts\\buildsystems\\vcpkg.cmake" CACHE STRING "Path to the vcpkg toolchain file")
 
 project(iam-engine VERSION 1.0)
 project(iam-engine VERSION 1.0 LANGUAGES CXX)
 message(STATUS "CMAKE_BUILD_TYPE: ${CMAKE_BUILD_TYPE}")
+# fix windows no shared dll sdl3
+set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 
 # if(NOT CMAKE_BUILD_TYPE)
 #     set(CMAKE_BUILD_TYPE Release)
@@ -74,49 +77,25 @@ add_executable(${PROJECT_NAME} ${SAMPLE_DIR}/${SAMPLE_NAME}.cpp ${SOURCES} ${SAM
 
 # target_compile_definitions(${PROJECT_NAME} PRIVATE IS_WIN=$<BOOL:${WIN32}> IS_MAC=$<BOOL:${APPLE}> IS_LINUX=$<BOOL:${LINUX}>)
 
-# !!!!!! copy resources
-# set(RESOURCE_FILES
-#     ${PROJECT_SOURCE_DIR}/shaders
-# )
-set(CREATE_SYMLINKS OFF)
-if(NOT WIN32 AND CMAKE_BUILD_TYPE STREQUAL "Debug")
-    set(CREATE_SYMLINKS ON)
-endif()
-
-if (CREATE_SYMLINKS)
-    add_custom_target(symlink_config ALL
-        # COMMAND ${CMAKE_COMMAND} -E rm resources/config.json
-        COMMAND ${CMAKE_COMMAND} -E create_symlink ${PROJECT_SOURCE_DIR}/resources ./resources
-        COMMENT "Symlinking config.json"
-    )
-else()
-    add_custom_target(copy_resources ALL
-        COMMAND ${CMAKE_COMMAND} -E copy_directory ${PROJECT_SOURCE_DIR}/resources ${CMAKE_BINARY_DIR}/resources
-        # COMMAND ${CMAKE_COMMAND} -E copy ${PROJECT_SOURCE_DIR}/config.json ${CMAKE_BINARY_DIR}/resources/config.json
-        DEPENDS ${RESOURCE_FILES}
-        COMMENT "Copying resource files to build directory"
-    )
-endif()
-
 
 # !!!!!! -- LIBS
 include(FetchContent)
 
 # SDL3
-set(SDL3_VERSION 3.1.6)
+set(SDL3_VERSION 3.2.2)
 find_package(SDL3 ${SDL3_VERSION} QUIET) # QUIET or REQUIRED
 if (NOT SDL3_FOUND) # If there's none, fetch and build SDL3
     include(FetchContent)
     if (UNIX)
         FetchContent_Declare(
                 SDL3
-                URL https://github.com/libsdl-org/SDL/archive/refs/tags/preview-${SDL3_VERSION}.tar.gz
+                URL https://github.com/libsdl-org/SDL/archive/refs/tags/release-${SDL3_VERSION}.tar.gz
         )
         FetchContent_MakeAvailable(SDL3)
     elseif (WIN32)
         FetchContent_Declare(
                 SDL3
-                URL https://github.com/libsdl-org/SDL/archive/refs/tags/preview-${SDL3_VERSION}.zip
+                URL https://github.com/libsdl-org/SDL/archive/refs/tags/release-${SDL3_VERSION}.zip
         )
         FetchContent_MakeAvailable(SDL3)
     endif()
@@ -183,14 +162,12 @@ target_link_libraries(imgui PUBLIC SDL3::SDL3 GLAD)
 
 target_link_libraries(${PROJECT_NAME} imgui)
 
+# !!!!!! following libs installed with VCPKG or BREW
+# how to install it https://learn.microsoft.com/en-au/vcpkg/get_started/get-started?pivots=shell-cmd
+# instead of adding environments manualy try to "vcpkg integrate install"
+# run in this folder: "vcpkg install" to install deps
+
 # !!!!!! Bullet
-
-# add_subdirectory(${CMAKE_SOURCE_DIR}/ext/bullet3/build_cmake/src)
-# add_subdirectory(${CMAKE_SOURCE_DIR}/ext/bullet3/build_cmake/src/Bullet3Common)
-# set(BULLET_ROOT ${CMAKE_SOURCE_DIR}/ext/bullet3)
-# set(BULLET_INCLUDE_DIR ${BULLET_ROOT}/src)
-# set(BULLET_LIBRARIES ${BULLET_ROOT}/lib)
-
 # brew install bullet
 find_package(Bullet REQUIRED)
 include_directories(${BULLET_INCLUDE_DIRS})
@@ -207,3 +184,32 @@ message(
 include_directories(${ASSIMP_INCLUDE_DIRS})
 target_link_libraries(${PROJECT_NAME} ${ASSIMP_LIBRARIES})
 target_link_libraries(${PROJECT_NAME} assimp::assimp)
+
+
+# !!!!!! copy resources
+# set(RESOURCE_FILES
+#     ${PROJECT_SOURCE_DIR}/shaders
+# )
+set(CREATE_SYMLINKS OFF)
+if(NOT WIN32 AND CMAKE_BUILD_TYPE STREQUAL "Debug")
+    set(CREATE_SYMLINKS ON)
+endif()
+
+if (CREATE_SYMLINKS)
+    add_custom_target(symlink_config ALL
+        # COMMAND ${CMAKE_COMMAND} -E rm resources/config.json
+        COMMAND ${CMAKE_COMMAND} -E create_symlink ${PROJECT_SOURCE_DIR}/resources ./resources
+        COMMENT "Symlinking config.json"
+    )
+else()
+    add_custom_target(copy_resources ALL
+        COMMAND ${CMAKE_COMMAND} -E copy_directory ${PROJECT_SOURCE_DIR}/resources ${CMAKE_BINARY_DIR}/resources
+        # COMMAND ${CMAKE_COMMAND} -E copy ${PROJECT_SOURCE_DIR}/config.json ${CMAKE_BINARY_DIR}/resources/config.json
+        
+        # Fix WIN32 SDL3 shared lib not found just run it twice (it will work after 1st try SDL3 build)
+        COMMAND ${CMAKE_COMMAND} -E copy ${PROJECT_BINARY_DIR}/_deps/sdl3-build/CMakeFiles/SDL3-shared.dir/src/core/windows/version.rc.res.res ${PROJECT_BINARY_DIR}/_deps/sdl3-build/CMakeFiles/SDL3-shared.dir/src/core/windows/version.rc.res
+
+        DEPENDS ${RESOURCE_FILES}
+        COMMENT "Copying resource files to build directory"
+    )
+endif()
