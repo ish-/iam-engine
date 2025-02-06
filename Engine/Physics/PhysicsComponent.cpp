@@ -30,7 +30,8 @@ bool PhysicsComponent::init () {
   btDefaultMotionState* motionState = new btDefaultMotionState(transform);
 
   // inertia = new btVector3(.8, .8, .8);
-  params.shape->calculateLocalInertia(params.mass, params.intertia);
+  if (params.mass > 0)
+    params.shape->calculateLocalInertia(params.mass, params.intertia);
 
   btRigidBody::btRigidBodyConstructionInfo rigidBodyCI(params.mass, motionState, params.shape, params.intertia);
   rigidBody = new btRigidBody(rigidBodyCI);
