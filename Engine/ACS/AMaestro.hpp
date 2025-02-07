@@ -10,7 +10,7 @@
 #include "../common/MACRO.hpp"
 #include "../common/Symbol.hpp"
 #include "../common/LOG.hpp"
-#include "AComponent.hpp"
+#include "AComp.hpp"
 using namespace std;
 
 class AMaestro {
@@ -19,8 +19,8 @@ public:
 
   AMaestro() {}
 
-  // vector<shared_ptr<AComponent>> components;
-  unordered_map<Symbol, vector<weak_ptr<AComponent>>> components;
+  // vector<shared_ptr<AComp>> components;
+  unordered_map<Symbol, vector<weak_ptr<AComp>>> components;
   vector<shared_ptr<Object3D>> actors;
 
   template <typename AA = Object3D, typename... Args>
@@ -32,10 +32,10 @@ public:
   }
 
   template <typename T, typename... Args>
-  std::shared_ptr<T> addComponent(shared_ptr<Object3D> actor, Args&&... args) {
+  std::shared_ptr<T> addComp(shared_ptr<Object3D> actor, Args&&... args) {
     auto component = std::make_shared<T>(std::forward<Args>(args)...);
     auto sysType = component->getASystemType();
-    // LOG("Maestro::addComponent", typeid(T).name(), "sysType", sysType.name());
+    // LOG("Maestro::addComp", typeid(T).name(), "sysType", sysType.name());
     component->setOwner(actor);
     actor->components[typeid(T)] = component;
     components[sysType].push_back(component);

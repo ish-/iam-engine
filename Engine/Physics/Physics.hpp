@@ -4,12 +4,12 @@
 #include <glm/mat4x4.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include "../ACS/ASystem.hpp"
-#include "PhysicsComponent.hpp"
+#include "PhysicsComp.hpp"
 #include "../common/Symbol.hpp"
 
 const btVector3 btVector3_ZERO = btVector3(0, 0, 0);
 
-class Physics : public ASystem<PhysicsComponent> {
+class Physics : public ASystem<PhysicsComp> {
 public:
   static Physics& get() { static Physics instance; return instance; } // singleton
   virtual Symbol getASystemType () override {
@@ -45,6 +45,6 @@ public:
 
   void debugDrawWorld();
 
-  shared_ptr<class MeshComponent> debugGetMesh();
+  shared_ptr<class MeshComp> debugGetMesh();
 };
 

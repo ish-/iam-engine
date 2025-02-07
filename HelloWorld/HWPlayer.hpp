@@ -2,7 +2,7 @@
 #include <memory>
 #include "Engine/Object3D.hpp"
 
-class PhysicsComponent;
+class PhysicsComp;
 class PlayerCtrlComp;
 class btRigidBody;
 class btVector3;
@@ -13,7 +13,7 @@ public:
   HWPlayer (Args&&... args):
     Object3D(std::forward<Args>(args)...) {}
 
-  std::shared_ptr<PhysicsComponent> phyComp;
+  std::shared_ptr<PhysicsComp> phyComp;
   std::shared_ptr<PlayerCtrlComp> ctrlComp;
 
   // mat4 getTransformMatrix() const override;

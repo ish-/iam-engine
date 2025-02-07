@@ -1,6 +1,6 @@
 #include "Object3D.hpp"
 #include <glm/gtx/quaternion.hpp>
-#include "ACS/AComponent.hpp"
+#include "ACS/AComp.hpp"
 
 mat4 Object3D::getAbsTransformMatrix() const {
   if (auto _parent = parent.lock()) {
@@ -38,7 +38,7 @@ Object3D::~Object3D() {
   children.clear();
 }
 
-bool Object3D::removeComponent(std::shared_ptr<AComponent> comp) {
+bool Object3D::removeComp(std::shared_ptr<AComp> comp) {
   components[typeid(comp)] = nullptr;
   return true;
 };

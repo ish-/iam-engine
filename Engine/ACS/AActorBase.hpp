@@ -18,13 +18,13 @@
 //   // TODO:
 //   std::string name = "Actor";
 
-//   std::unordered_map<std::type_index, std::shared_ptr<AComponent>> components;
+//   std::unordered_map<std::type_index, std::shared_ptr<AComp>> components;
 
 //   virtual void init();
 //   virtual void update();
 
 //   template <typename T>
-//   std::shared_ptr<T> getComponent() {
+//   std::shared_ptr<T> getComp() {
 //       auto it = components.find(typeid(T));
 //       if (it != components.end()) {
 //           return std::dynamic_pointer_cast<T>(it->second);

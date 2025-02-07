@@ -1,5 +1,5 @@
 #pragma once
-// #include "AComponent.hpp"
+// #include "AComp.hpp"
 #include "../Object3D.hpp"
 #include <memory>
 #include <glm/gtc/matrix_transform.hpp>

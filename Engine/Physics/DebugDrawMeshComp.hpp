@@ -1,7 +1,7 @@
 #pragma once
 #include <memory>
 #include <vector>
-#include "../Graphics/MeshComponent.hpp"
+#include "../Graphics/MeshComp.hpp"
 #include "../Graphics/Geo.hpp"
 
 class DebugDrawGeo : public Geo {
@@ -17,13 +17,13 @@ public:
   DebugDrawGeo ();
 };
 
-class DebugDrawMeshComponent : public MeshComponent {
+class DebugDrawMeshComp : public MeshComp {
 public:
-  DebugDrawMeshComponent ();
+  DebugDrawMeshComp ();
 
   std::vector<DebugDrawGeo::Line> lines;
 
   virtual void draw () override;
 
-  virtual ~DebugDrawMeshComponent() = default;
+  virtual ~DebugDrawMeshComp() = default;
 };;

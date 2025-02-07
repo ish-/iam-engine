@@ -5,7 +5,7 @@
 #include <glm/vec3.hpp>
 #include <btBulletDynamicsCommon.h>
 #include "Engine/ACS/AMaestro.hpp"
-#include "Engine/Physics/PhysicsComponent.hpp"
+#include "Engine/Physics/PhysicsComp.hpp"
 #include "Engine/Physics/Collisions.hpp"
 #include "Engine/Graphics/MeshModelComp.hpp"
 #include "Engine/GUI.hpp"
@@ -15,7 +15,7 @@ using namespace glm;
 void HWLevel::init () {
   AMaestro& maestro = AMaestro::get();
 
-  meshComp = maestro.addComponent<MeshModelComp>(shared_from_this(),
+  meshComp = maestro.addComp<MeshModelComp>(shared_from_this(),
     (MeshModelComp::Conf){
       .path = (std::string)"resources/models/torus_lvl.obj",
       .merge = true,
@@ -24,8 +24,8 @@ void HWLevel::init () {
 
   auto* meshShape = Collisions::createTriMeshShape(meshComp->geo->data);
 
-  PhysicsComponent::Params phyPars{ meshShape };
-  maestro.addComponent<PhysicsComponent>(shared_from_this(), phyPars);
+  PhysicsComp::Params phyPars{ meshShape };
+  maestro.addComp<PhysicsComp>(shared_from_this(), phyPars);
 
   meshComp->geo->clearData();
 }

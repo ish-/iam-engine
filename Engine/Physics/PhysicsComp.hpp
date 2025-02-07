@@ -1,7 +1,7 @@
 #pragma once
 #include <memory>
 #include "LinearMath/btVector3.h"
-#include "../ACS/AComponent.hpp"
+#include "../ACS/AComp.hpp"
 #include <glm/mat4x4.hpp>
 #include <glm/vec3.hpp>
 #include <glm/vec2.hpp>
@@ -14,7 +14,7 @@ class btCollisionShape;
 class btDefaultMotionState;
 class btBoxShape;
 
-class PhysicsComponent : public AComponent {
+class PhysicsComp : public AComp {
 public:
   struct Params {
     btCollisionShape* shape;
@@ -35,8 +35,8 @@ public:
 
   Params& params;
 
-  PhysicsComponent (Params& params);
-  ~PhysicsComponent ();
+  PhysicsComp (Params& params);
+  ~PhysicsComp ();
 
   Physics& physics;
 

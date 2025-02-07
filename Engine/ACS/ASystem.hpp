@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 #include <memory>
-#include "AComponent.hpp"
+#include "AComp.hpp"
 #include "AMaestro.hpp"
 #include "../common/Symbol.hpp"
 using namespace std;
@@ -14,7 +14,7 @@ using namespace std;
 
 static const Symbol NO_SYSTEM { "<NO_SYSTEM>" };
 
-template<typename AC = AComponent>
+template<typename AC = AComp>
 class ASystem {
 public:
 
@@ -28,8 +28,8 @@ public:
     return NO_SYSTEM;
   }
 
-  vector<weak_ptr<AComponent>> getComponents () {
-    static_assert(std::is_base_of<AComponent, AC>::value, "ASystem: AC must derive from AComponent");
+  vector<weak_ptr<AComp>> getComps () {
+    static_assert(std::is_base_of<AComp, AC>::value, "ASystem: AC must derive from AComp");
     auto maestro = AMaestro::get();
     auto& allComps = maestro.components;
     auto sysType = getASystemType().name();
@@ -39,7 +39,7 @@ public:
   }
 
   void update(const float& dt) {
-    for (auto& component : getComponents()) {
+    for (auto& component : getComps()) {
       component->update(1000.);
     }
   }

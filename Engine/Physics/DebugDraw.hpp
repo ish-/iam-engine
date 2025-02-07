@@ -5,7 +5,7 @@
 #include <LinearMath/btIDebugDraw.h>
 #include <glad/glad.h> // Ensure GLAD or GLEW is properly initialized
 #include <glm/gtc/type_ptr.hpp>
-#include "DebugDrawMeshComponent.hpp"
+#include "DebugDrawMeshComp.hpp"
 
 class DebugDrawer : public btIDebugDraw {
 public:
@@ -22,10 +22,10 @@ public:
         // glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Line), (void*)offsetof(Line, start));
         // glEnableVertexAttribArray(1);
         // glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Line), (void*)offsetof(Line, end));
-        mesh = std::make_shared<DebugDrawMeshComponent>();
+        mesh = std::make_shared<DebugDrawMeshComp>();
     }
 
-    std::shared_ptr<DebugDrawMeshComponent> mesh;
+    std::shared_ptr<DebugDrawMeshComp> mesh;
 
     void drawLine(const btVector3& from, const btVector3& to, const btVector3& color) override {
         mesh->lines.push_back(DebugDrawGeo::Line{ glm::vec3(from.x(), from.y(), from.z()) });

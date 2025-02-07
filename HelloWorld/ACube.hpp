@@ -4,7 +4,7 @@
 #include <memory>
 #include "Engine/Object3D.hpp"
 
-class PhysicsComponent;
+class PhysicsComp;
 class btRigidBody;
 class btVector3;
 
@@ -13,7 +13,7 @@ public:
   template<typename... Args>
   ACube (Args&&... args): Object3D(std::forward<Args>(args)...) {}
 
-  std::shared_ptr<PhysicsComponent> phyComp;
+  std::shared_ptr<PhysicsComp> phyComp;
 
   mat4 getTransformMatrix() const override;
 

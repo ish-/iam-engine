@@ -1,5 +1,5 @@
 #pragma once
-#include "../ACS/AComponent.hpp"
+#include "../ACS/AComp.hpp"
 #include <memory>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/vec3.hpp>
@@ -13,12 +13,12 @@
 class Shader;
 class Geo;
 
-class MeshComponent : public AComponent, public Object3D {
+class MeshComp : public AComp, public Object3D {
 public:
   shared_ptr<Shader> shader;
   shared_ptr<Geo> geo;
 
-  MeshComponent(): AComponent() {}
+  MeshComp(): AComp() {}
 
   virtual Symbol getASystemType () override {
       static Symbol symbol { "Renderer" };

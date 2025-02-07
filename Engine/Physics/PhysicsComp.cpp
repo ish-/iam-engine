@@ -1,18 +1,18 @@
 #include <btBulletDynamicsCommon.h>
 #include "Physics.hpp"
 #include "../Object3D.hpp"
-#include "PhysicsComponent.hpp"
+#include "PhysicsComp.hpp"
 // #include "../common/LOG.hpp"
 #include "../common/random.hpp"
 
-PhysicsComponent::PhysicsComponent (Params& params)
-  : physics(Physics::get()), params(params), AComponent()
+PhysicsComp::PhysicsComp (Params& params)
+  : physics(Physics::get()), params(params), AComp()
 {
   // init(params);
 }
 
 // template<typename Shape>
-bool PhysicsComponent::init () {
+bool PhysicsComp::init () {
   // // if constexpr (std::is_same<Shape, btBoxShape>::value) {
   // //   shape = new btBoxShape(params.size);
   // // } else if constexpr (std::is_same<Shape, btSphereShape>::value) {
@@ -45,7 +45,7 @@ bool PhysicsComponent::init () {
   return true;
 }
 
-PhysicsComponent::~PhysicsComponent () {
+PhysicsComp::~PhysicsComp () {
   // physics.dynamicsWorld->removeRigidBody(rigidBody);
 
   // delete params.shape;
@@ -54,21 +54,21 @@ PhysicsComponent::~PhysicsComponent () {
   // delete rigidBody;
 }
 
-glm::mat4 PhysicsComponent::getGlmTMat4 () {
+glm::mat4 PhysicsComp::getGlmTMat4 () {
   return Physics::toGlmTMat4(rigidBody);
 }
 
-void PhysicsComponent::update (float dt) {
+void PhysicsComp::update (float dt) {
   getOwner()->setMatrix(getGlmTMat4());
 }
 
-void PhysicsComponent::applyForce (glm::vec3 force, glm::vec3 pos) {
+void PhysicsComp::applyForce (glm::vec3 force, glm::vec3 pos) {
   rigidBody->applyForce(
     btVector3(force.x, force.y, force.z),
     btVector3(pos.x, pos.y, pos.z));
 }
 
-void PhysicsComponent::applyTorque (glm::vec3 force) {
+void PhysicsComp::applyTorque (glm::vec3 force) {
   rigidBody->applyTorque(
     btVector3(force.x, force.y, force.z));
 }

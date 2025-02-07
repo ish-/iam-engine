@@ -1,6 +1,6 @@
 #pragma once
 #include "PhongShader.hpp"
-#include "MeshComponent.hpp"
+#include "MeshComp.hpp"
 #include "Geo.hpp"
 #include <iostream>
 #include <glad/glad.h>
@@ -13,7 +13,7 @@
 #include <assimp/postprocess.h>
 #include <memory>
 
-class MeshModelComp : public MeshComponent {
+class MeshModelComp : public MeshComp {
 public:
   struct Conf {
     string path = "";
@@ -28,7 +28,7 @@ public:
 
   Conf conf;
 
-  MeshModelComp() : MeshComponent() {};
+  MeshModelComp() : MeshComp() {};
   MeshModelComp (const Conf&& _conf): conf(_conf) {
     // shader = PhongShader::getPtr();
 

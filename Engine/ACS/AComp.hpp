@@ -8,16 +8,16 @@
 
 class Object3D;
 
-// Base AComponent class
-class AComponent : public std::enable_shared_from_this<AComponent> {
+// Base AComp class
+class AComp : public std::enable_shared_from_this<AComp> {
 public:
     virtual Symbol getASystemType () {
         static Symbol symbol { "<ASystem>" };
         return symbol;
     }
 
-    AComponent () {
-        // std::cout << "AComponent()\n";
+    AComp () {
+        // std::cout << "AComp()\n";
     }
 
     void setOwner(const std::shared_ptr<Object3D>& actor);
@@ -26,8 +26,8 @@ public:
 
     virtual void update(float dt) = 0;
 
-    ~AComponent () {
-        // std::cout << "~AComponent\n";
+    ~AComp () {
+        // std::cout << "~AComp\n";
     }
 
 private:

@@ -2,8 +2,8 @@
 #include <memory>
 #include <BulletCollision/CollisionShapes/btBoxShape.h>
 #include "Engine/ACS/AMaestro.hpp"
-#include "Engine/Physics/PhysicsComponent.hpp"
-#include "Engine/Graphics/MeshComponent.hpp"
+#include "Engine/Physics/PhysicsComp.hpp"
+#include "Engine/Graphics/MeshComp.hpp"
 #include "Engine/Graphics/BoxGeo.hpp"
 #include "Engine/common/random.hpp"
 // TODO: clear bullet includes
@@ -16,19 +16,19 @@ using namespace std;
 
 void ACube::init () {
 
-  auto meshComp = AMaestro::get().addComponent<MeshComponent>(shared_from_this());
+  auto meshComp = AMaestro::get().addComp<MeshComp>(shared_from_this());
   meshComp->tint = vec3( rd::in(0, 1), rd::in(0, 1), rd::in(0, 1));
   meshComp->geo = BoxGeo::getPtr();
 
   auto posMat = meshComp->getAbsTransformMatrix();
 
-  PhysicsComponent::Params createParams {
+  PhysicsComp::Params createParams {
     .shape = new btBoxShape(btVector3(.5, .5, .5)),
     .pos = btVector3(posMat[3][0], posMat[3][1], posMat[3][2]),
     .mass = .8,
     .initialImpulse = btVector3(rd::in(-10,10), rd::in(-10,10), rd::in(-10,10)),
   };
-  phyComp = AMaestro::get().addComponent<PhysicsComponent>(shared_from_this(), createParams);
+  phyComp = AMaestro::get().addComp<PhysicsComp>(shared_from_this(), createParams);
 }
 
 mat4 ACube::getTransformMatrix() const{

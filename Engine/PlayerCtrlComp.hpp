@@ -1,6 +1,6 @@
 #pragma once
-#include "ACS/AComponent.hpp"
-#include "Physics/PhysicsComponent.hpp"
+#include "ACS/AComp.hpp"
+#include "Physics/PhysicsComp.hpp"
 // #include <glm/gtc/matrix_transform.hpp>
 #include <glm/vec3.hpp>
 using namespace glm;
@@ -8,7 +8,7 @@ using namespace glm;
 class Shader;
 class Geo;
 
-class PlayerCtrlComp : public AComponent {
+class PlayerCtrlComp : public AComp {
 public:
   struct Conf {
     vec3 moveForce {1};
@@ -17,7 +17,7 @@ public:
 
   Conf conf;
 
-  std::weak_ptr<PhysicsComponent> phyComp;
+  std::weak_ptr<PhysicsComp> phyComp;
 
   PlayerCtrlComp ();
   PlayerCtrlComp (Conf& conf);

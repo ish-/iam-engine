@@ -3,7 +3,7 @@
 #include <memory>
 #include "Engine/Object3D.hpp"
 
-class PhysicsComponent;
+class PhysicsComp;
 // class btRigidBodø
 
 class HWLevel : public Object3D {
@@ -12,7 +12,7 @@ public:
   HWLevel (Args&&... args):
     Object3D(std::forward<Args>(args)...) {}
 
-  std::shared_ptr<PhysicsComponent> phyComp;
+  std::shared_ptr<PhysicsComp> phyComp;
 
   // mat4 getTransformMatrix() const override;
   std::shared_ptr<class MeshModelComp> meshComp;

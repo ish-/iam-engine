@@ -8,19 +8,19 @@
 #include <glm/mat4x4.hpp>
 #include "../ACS/ASystem.hpp"
 #include "../common/Symbol.hpp"
-#include "MeshComponent.hpp"
+#include "MeshComp.hpp"
 
 using namespace std;
 using namespace glm;
 
 class Camera;
 class Light;
-class MeshComponent;
+class MeshComp;
 class Shader;
 class SDL_Window;
 // class SDL_GLContext;
 
-class Renderer : public ASystem<MeshComponent> {
+class Renderer : public ASystem<MeshComp> {
 public:
   static Renderer& get() {
     static Renderer instance;
@@ -52,8 +52,8 @@ public:
 
   void init (SDL_Window* sdlWindow);
   // void setScene(shared_ptr<Scene> scene);
-  void render(shared_ptr<MeshComponent> mesh);
-  void renderComponents();
+  void render(shared_ptr<MeshComp> mesh);
+  void renderComps();
 
   // TODO: pass by ref
   void setShaderViewProjection(shared_ptr<Shader> shader);

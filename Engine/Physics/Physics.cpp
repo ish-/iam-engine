@@ -6,7 +6,7 @@
 #include "BulletCollision/BroadphaseCollision/btDbvtBroadphase.h"
 #include "BulletCollision/CollisionDispatch/btDefaultCollisionConfiguration.h"
 #include "DebugDraw.hpp"
-#include "../Graphics/MeshComponent.hpp"
+#include "../Graphics/MeshComp.hpp"
 
 Physics::Physics () {}
 
@@ -37,7 +37,7 @@ bool Physics::init () {
 
 bool Physics::update (const float& dt) {
   dynamicsWorld->stepSimulation(1.0f / 60.0f, 10);
-  auto comps = getComponents();
+  auto comps = getComps();
   for (auto& comp : comps) {
     if (auto aliveComp = comp.lock())
       aliveComp->update(dt);
@@ -59,6 +59,6 @@ void Physics::debugDrawWorld() {
   }
 }
 
-shared_ptr<MeshComponent> Physics::debugGetMesh() {
+shared_ptr<MeshComp> Physics::debugGetMesh() {
   return debugDrawer->mesh;
 }

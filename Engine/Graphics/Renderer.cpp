@@ -9,7 +9,7 @@
 #include <glm/exponential.hpp>
 
 #include "Renderer.hpp"
-#include "MeshComponent.hpp"
+#include "MeshComp.hpp"
 #include "PhongShader.hpp"
 #include "SDL3/SDL_video.h"
 #include "Shader.hpp"
@@ -118,14 +118,14 @@ void Renderer::init (SDL_Window* sdlWindow) {
 }
 
 
-void Renderer::renderComponents () {
-  // LOG("Renderer::renderComponents");
+void Renderer::renderComps () {
+  // LOG("Renderer::renderComps");
   setFrameData();
 
-  auto comps = getComponents();
+  auto comps = getComps();
   for (auto& comp : comps) {
     if (auto aliveComp = comp.lock()) {
-      shared_ptr<MeshComponent> meshComp = dynamic_pointer_cast<MeshComponent>(aliveComp);
+      shared_ptr<MeshComp> meshComp = dynamic_pointer_cast<MeshComp>(aliveComp);
       if (meshComp) {
         render(meshComp);
       }
@@ -133,7 +133,7 @@ void Renderer::renderComponents () {
   }
 }
 
-void Renderer::render (shared_ptr<MeshComponent> mesh) {
+void Renderer::render (shared_ptr<MeshComp> mesh) {
 
   if (!mesh->visible)
     return;

@@ -3,22 +3,22 @@
 #include "Object3D.hpp"
 #include "common/LOG.hpp"
 
-PlayerCtrlComp::PlayerCtrlComp (): AComponent() {
+PlayerCtrlComp::PlayerCtrlComp (): AComp() {
   // std::cout << "PlayerCtrlComp()\n";
 }
-PlayerCtrlComp::PlayerCtrlComp (Conf& conf): conf(conf), AComponent() {
+PlayerCtrlComp::PlayerCtrlComp (Conf& conf): conf(conf), AComp() {
   // std::cout << "PlayerCtrlComp()\n";
 }
 
 void PlayerCtrlComp::init () {
-  phyComp = getOwner()->getComponent<PhysicsComponent>();
+  phyComp = getOwner()->getComp<PhysicsComp>();
 }
 
 void PlayerCtrlComp::update (float dt) {
   auto owner = getOwner();
   auto phyComp = this->phyComp.lock();
   if (!phyComp) {
-    LOG("PlayerCtrlComp::update() failed to get PhysicsComponent");
+    LOG("PlayerCtrlComp::update() failed to get PhysicsComp");
     exit(EXIT_FAILURE);
   }
 

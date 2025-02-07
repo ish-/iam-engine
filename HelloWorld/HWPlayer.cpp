@@ -6,7 +6,7 @@
 #include <SDL3/SDL_keycode.h>
 
 #include "Engine/ACS/AMaestro.hpp"
-#include "Engine/Physics/PhysicsComponent.hpp"
+#include "Engine/Physics/PhysicsComp.hpp"
 #include "Engine/PlayerCtrlComp.hpp"
 #include "Engine/common/random.hpp"
 // TODO: clear bullet includes
@@ -22,14 +22,14 @@ void HWPlayer::init () {
 
   auto posMat = getAbsTransformMatrix();
 
-  PhysicsComponent::Params createParams {
+  PhysicsComp::Params createParams {
     .shape = new btSphereShape(.5),
     .pos = btVector3(posMat[3][0], posMat[3][1], posMat[3][2]),
     .mass = 1.,
     .damping = vec2(.3, .3),
     .initialImpulse = btVector3(rd::in(-10,10), rd::in(-10,10), rd::in(-10,10)),
   };
-  phyComp = maestro.addComponent<PhysicsComponent>(shared_from_this(), createParams);
+  phyComp = maestro.addComp<PhysicsComp>(shared_from_this(), createParams);
 
-  ctrlComp = maestro.addComponent<PlayerCtrlComp>(shared_from_this());
+  ctrlComp = maestro.addComp<PlayerCtrlComp>(shared_from_this());
 }

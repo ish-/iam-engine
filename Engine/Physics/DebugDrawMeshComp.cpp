@@ -1,4 +1,4 @@
-#include "DebugDrawMeshComponent.hpp"
+#include "DebugDrawMeshComp.hpp"
 #include <glad/glad.h>
 #include "../Graphics/WireframeShader.hpp"
 
@@ -20,13 +20,13 @@ DebugDrawGeo::DebugDrawGeo () {
   glBindVertexArray(0);
 }
 
-DebugDrawMeshComponent::DebugDrawMeshComponent () {
+DebugDrawMeshComp::DebugDrawMeshComp () {
   shader = WireframeShader::get();
   geo = std::make_shared<DebugDrawGeo>();
   wireframe = true;
 }
 
-void DebugDrawMeshComponent::draw () {
+void DebugDrawMeshComp::draw () {
   glBindBuffer(GL_ARRAY_BUFFER, geo->VBO);
   // if (auto err = glGetError())
   //     LOG("GL ERROR: glBindBuffer", err);

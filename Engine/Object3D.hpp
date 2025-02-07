@@ -11,7 +11,7 @@
 // #include "ACS/AActor.hpp"
 using namespace glm;
 
-class AComponent;
+class AComp;
 
 class Object3D : public Transform, public std::enable_shared_from_this<Object3D> {
 // Object3D
@@ -33,13 +33,13 @@ public:
   // TODO:
   // std::string name = "Actor";
 
-  std::unordered_map<std::type_index, std::shared_ptr<AComponent>> components;
+  std::unordered_map<std::type_index, std::shared_ptr<AComp>> components;
 
   virtual void init();
   virtual void update();
 
   template <typename T>
-  std::shared_ptr<T> getComponent() {
+  std::shared_ptr<T> getComp() {
       auto it = components.find(typeid(T));
       if (it != components.end()) {
           return std::dynamic_pointer_cast<T>(it->second);
@@ -47,7 +47,7 @@ public:
       return nullptr;
   }
 
-  bool removeComponent(std::shared_ptr<AComponent> comp);
+  bool removeComp(std::shared_ptr<AComp> comp);
 
   ~Object3D();
 };
