@@ -1,0 +1,29 @@
+{
+  "type": "Light",
+  "transform": {
+    "pos": [0, 3.5, 1.5]
+  },
+  "conf": {
+    "color": [1, 1, 0.7]
+  }
+},
+{
+  "type": "Player",
+  "attach": ["player-camera", "player-light"],
+
+  "components": [
+    {
+      "type": "Physics",
+      "conf": {
+        "shape": { "type": "SPHERE", "radius": 0.5 },
+        "mass": 1,
+        "damping": [0.3, 0.3],
+        "friction": 0.5,
+        "restitution": 0.5
+      }
+    },
+    {
+      "type": "PlayerPhysicsCtrl"
+    }
+  ]
+}

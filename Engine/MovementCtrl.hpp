@@ -1,6 +1,6 @@
 #pragma once
 // TODO: glm deps
-#include "Object3D.hpp"
+#include "Actor.hpp"
 #include <glm/glm.hpp>
 using namespace glm;
 
@@ -32,7 +32,7 @@ public:
     }
 
     // Update the object's position and rotation based on the physics
-    void update(float deltaTime, Object3D* object) {
+    void update(float deltaTime, Actor* object) {
         // Compute acceleration
         glm::vec3 acceleration = appliedForce * (1.0f / mass);
 

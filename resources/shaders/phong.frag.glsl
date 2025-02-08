@@ -38,8 +38,8 @@ float remap (float origFrom, float origTo, float targetFrom, float targetTo, flo
 vec3 attenuateLight (Light light, vec3 fragPos) {
 	vec3 toLight = light.pos - vFragPos;
 	float distSq = dot(toLight, toLight);
-	float atteniation = clamp(remap(light.atten[0], light.atten[1], 1., 0. , distSq), 0., 1.);
-	return light.color * atteniation;
+	float attenuation = clamp(remap(light.atten[0], light.atten[1], 1., 0. , distSq), 0., 1.);
+	return light.color * attenuation;
 }
 
 void main()

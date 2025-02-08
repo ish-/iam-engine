@@ -6,7 +6,7 @@
 #define ASYSTEM_TYPE(TYPE) \
   virtual Symbol getASystemType() override { static Symbol symbol{#TYPE}; return symbol; }
 
-class Object3D;
+class Actor;
 
 // Base AComp class
 class AComp : public std::enable_shared_from_this<AComp> {
@@ -20,16 +20,16 @@ public:
         // std::cout << "AComp()\n";
     }
 
-    void setOwner(const std::shared_ptr<Object3D>& actor);
+    void setOwner(const std::shared_ptr<Actor>& actor);
 
-    std::shared_ptr<Object3D> getOwner() const;
+    std::shared_ptr<Actor> getOwner() const;
 
-    virtual void update(float dt) = 0;
+    virtual void update(float dt) {};
 
     ~AComp () {
         // std::cout << "~AComp\n";
     }
 
 private:
-    std::weak_ptr<Object3D> owner;
+    std::weak_ptr<Actor> owner;
 };

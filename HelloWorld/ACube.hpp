@@ -2,16 +2,14 @@
 // #include "Engine/Graphics/Mesh.hpp">
 #include <glm/mat4x4.hpp>
 #include <memory>
-#include "Engine/Object3D.hpp"
+#include "Engine/Actor.hpp"
 
 class PhysicsComp;
-class btRigidBody;
-class btVector3;
 
-class ACube : public Object3D {
+class ACube : public Actor {
 public:
   template<typename... Args>
-  ACube (Args&&... args): Object3D(std::forward<Args>(args)...) {}
+  ACube (Args&&... args): Actor(std::forward<Args>(args)...) {}
 
   std::shared_ptr<PhysicsComp> phyComp;
 

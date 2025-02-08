@@ -1,20 +1,14 @@
 #pragma   once
-#include "Object3D.hpp"
+#include "Actor.hpp"
+#include "common/json.hpp"
 #include <glm/vec3.hpp>
 #include <glm/vec2.hpp>
 
-class Light : public Object3D {
+class Light : public Actor {
 public:
-  Light() = default;
-  Light(
-    const glm::vec3& pos = {0, 0, 0},
-    const glm::vec3& color = {1.0f, 1.0f, 1.0f},
-    const glm::vec2& atteniation = {8.f, 21.f}
-  ) : color(color), atteniation(atteniation), Object3D(pos) {
-
-  }
-
   float intensity = 1.f;
-  glm::vec3 color;
-  glm::vec2 atteniation;
+  glm::vec3 color = {1.0f, 1.0f, 1.0f};
+  glm::vec2 attenuation = {8.f, 21.f};
+
+  JSON_DEFINE_OPTIONAL(Light, intensity, color, attenuation)
 };

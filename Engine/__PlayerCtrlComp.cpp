@@ -1,6 +1,6 @@
 #include "PlayerCtrlComp.hpp"
 #include "Inputs/Inputs.hpp"
-#include "Object3D.hpp"
+#include "Actor.hpp"
 #include "common/LOG.hpp"
 
 PlayerCtrlComp::PlayerCtrlComp (): AComp() {

@@ -1,7 +1,7 @@
 #include <memory>
 #include <vector>
 #include "Engine/Scene.hpp"
-#include "Engine/Object3D.hpp"
+// #include "Engine/Actor.hpp"
 #include "glm/fwd.hpp"
 #include "glm/vec3.hpp"
 #include "glm/vec4.hpp"
@@ -12,7 +12,7 @@ class Inputs;
 class MovementCtrl;
 class Physics;
 class Renderer;
-class Object3D;
+class Actor;
 class Time;
 class Cube;
 class BoxGeo;
@@ -41,10 +41,10 @@ public:
   GuiParams params;
 
   bool showWireframe = false;
-  shared_ptr<Object3D> cameraOrigin;
-  shared_ptr<Object3D> cube;
+  shared_ptr<Actor> cameraOrigin;
+  shared_ptr<Actor> cube;
   shared_ptr<BoxGeo> boxGeo;
-  // vector<shared_ptr<Object3D>> children;
+  // vector<shared_ptr<Actor>> children;
 
   virtual bool load () override;
   virtual void update (float dt) override;

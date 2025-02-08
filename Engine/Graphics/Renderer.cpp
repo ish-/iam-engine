@@ -9,6 +9,7 @@
 #include <glm/exponential.hpp>
 
 #include "Renderer.hpp"
+#include "ACS/AComp.hpp"
 #include "MeshComp.hpp"
 #include "PhongShader.hpp"
 #include "SDL3/SDL_video.h"
@@ -118,13 +119,14 @@ void Renderer::init (SDL_Window* sdlWindow) {
 }
 
 
-void Renderer::renderComps () {
+void Renderer::update (const vector<shared_ptr<AComp>>& comps, const float& dt) {
   // LOG("Renderer::renderComps");
   setFrameData();
 
-  auto comps = getComps();
+  // auto comps = getComps();
   for (auto& comp : comps) {
-    if (auto aliveComp = comp.lock()) {
+    // if (auto aliveComp = comp.lock()) {
+    if (auto aliveComp = comp) {
       shared_ptr<MeshComp> meshComp = dynamic_pointer_cast<MeshComp>(aliveComp);
       if (meshComp) {
         render(meshComp);
@@ -177,7 +179,7 @@ void Renderer::setShaderViewProjection(shared_ptr<Shader> shader) {
 // struct ShaderLight {
 //   vec3 pos;
 //   vec3 color;
-//   vec2 atteniationSq;
+//   vec2 attenuationSq;
 // };
 void Renderer::setShaderLight(shared_ptr<Shader> shader) {
   // LOG("Renderer::setShaderLight");
@@ -186,13 +188,13 @@ void Renderer::setShaderLight(shared_ptr<Shader> shader) {
     auto& light = scene->lights[i];
     vec3 lightPos = Transform(scene->lights[i]->getAbsTransformMatrix()).getPosition();
     // vec3 toLight = lightPos - Transform(mesh->getAbsTransformMatrix()).getPosition();
-    // if (length(toLight) > light->atteniation[1])
+    // if (length(toLight) > light->attenuation[1])
     //   continue;
 
     std::string base = "lights[" + std::to_string(curIdx) + "]";
     shader->setUniform((base+".pos").c_str(), lightPos);
     shader->setUniform((base+".color").c_str(), light->color);
-    shader->setUniform((base+".atten").c_str(), light->atteniation * light->atteniation);
+    shader->setUniform((base+".atten").c_str(), light->attenuation * light->attenuation);
     curIdx++;
   }
   shader->setUniform("lightsNum", (int)curIdx);

@@ -4,14 +4,17 @@
 #include <glm/mat4x4.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include "../ACS/ASystem.hpp"
-#include "PhysicsComp.hpp"
+// #include "PhysicsComp.hpp"
+#include "LinearMath/btVector3.h"
 #include "../common/Symbol.hpp"
 
 const btVector3 btVector3_ZERO = btVector3(0, 0, 0);
 
-class Physics : public ASystem<PhysicsComp> {
+class Physics : public ASystem/*<PhysicsComp>*/ {
 public:
   static Physics& get() { static Physics instance; return instance; } // singleton
+  static shared_ptr<Physics>& getPtr() { static shared_ptr<Physics> ptr = shared_ptr<Physics>(&Physics::get(), [](Physics*) {}); return ptr; }
+
   virtual Symbol getASystemType () override {
       static Symbol symbol { "Physics" };
       return symbol;
@@ -26,7 +29,7 @@ public:
 
   static glm::mat4 toGlmTMat4 (class btRigidBody* body);
 
-  Physics ();
+  Physics () { init(); }
 
   class btBroadphaseInterface* broadphase = nullptr;
   class btDefaultCollisionConfiguration* collisionConfig = nullptr;
@@ -39,7 +42,7 @@ public:
 
   bool init ();
 
-  bool update (const float& dt);
+  virtual void update (const vector<shared_ptr<AComp>>& comps, const float& dt) override;
 
   void deinit ();
 

@@ -1,0 +1,17 @@
+{
+  "name": "hw",
+  "actors": [
+    {
+      "type": "Camera",
+      "name": "player-camera",
+      "transform": {
+        "pos": [0, 0, 5]
+      },
+      "conf": {
+        "fov": 80,
+        "near": 0.1,
+        "far": 1000
+      }
+    }
+  ]
+}

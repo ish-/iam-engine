@@ -1,17 +1,17 @@
 #pragma once
 #include <memory>
-#include "Engine/Object3D.hpp"
+#include "Engine/Actor.hpp"
 
 class PhysicsComp;
 class PlayerCtrlComp;
 class btRigidBody;
 class btVector3;
 
-class HWPlayer : public Object3D {
+class HWPlayer : public Actor {
 public:
   template<typename... Args>
   HWPlayer (Args&&... args):
-    Object3D(std::forward<Args>(args)...) {}
+    Actor(std::forward<Args>(args)...) {}
 
   std::shared_ptr<PhysicsComp> phyComp;
   std::shared_ptr<PlayerCtrlComp> ctrlComp;

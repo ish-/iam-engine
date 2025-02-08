@@ -1,16 +1,16 @@
 #pragma once
 #include <glm/mat4x4.hpp>
 #include <memory>
-#include "Engine/Object3D.hpp"
+#include "Engine/Actor.hpp"
 
 class PhysicsComp;
 // class btRigidBodø
 
-class HWLevel : public Object3D {
+class HWLevel : public Actor {
 public:
   template<typename... Args>
   HWLevel (Args&&... args):
-    Object3D(std::forward<Args>(args)...) {}
+    Actor(std::forward<Args>(args)...) {}
 
   std::shared_ptr<PhysicsComp> phyComp;
 

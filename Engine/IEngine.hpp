@@ -9,8 +9,7 @@ public:
   class Renderer& renderer;
   class Inputs& inputs;
   class GUI& gui;
-  class Physics& physics;
-  class AMaestro& maestro;
+  // class Physics& physics;
 
   // void exit();
 };

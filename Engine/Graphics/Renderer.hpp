@@ -8,7 +8,7 @@
 #include <glm/mat4x4.hpp>
 #include "../ACS/ASystem.hpp"
 #include "../common/Symbol.hpp"
-#include "MeshComp.hpp"
+// #include "MeshComp.hpp"
 
 using namespace std;
 using namespace glm;
@@ -20,11 +20,16 @@ class Shader;
 class SDL_Window;
 // class SDL_GLContext;
 
-class Renderer : public ASystem<MeshComp> {
+class Renderer : public ASystem/*<MeshComp>*/ {
 public:
   static Renderer& get() {
     static Renderer instance;
     return instance;
+  }
+
+  static shared_ptr<Renderer>& getPtr() {
+    static shared_ptr<Renderer> ptr = shared_ptr<Renderer>(&Renderer::get(), [](Renderer*) {});
+    return ptr;
   }
 
   virtual Symbol getASystemType () override {
@@ -54,6 +59,8 @@ public:
   // void setScene(shared_ptr<Scene> scene);
   void render(shared_ptr<MeshComp> mesh);
   void renderComps();
+
+  virtual void update(const vector<shared_ptr<AComp>>& comps, const float& dt) override;
 
   // TODO: pass by ref
   void setShaderViewProjection(shared_ptr<Shader> shader);

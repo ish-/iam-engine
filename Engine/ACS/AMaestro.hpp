@@ -5,8 +5,8 @@
 #include <unordered_map>
 #include <typeindex>
 
-// #include "Object3D.hpp"
-#include "../Object3D.hpp"
+// #include "Actor.hpp"
+#include "../Actor.hpp"
 #include "../common/MACRO.hpp"
 #include "../common/Symbol.hpp"
 #include "../common/LOG.hpp"
@@ -21,25 +21,27 @@ public:
 
   // vector<shared_ptr<AComp>> components;
   unordered_map<Symbol, vector<weak_ptr<AComp>>> components;
-  vector<shared_ptr<Object3D>> actors;
+  vector<shared_ptr<Actor>> actors;
 
-  template <typename AA = Object3D, typename... Args>
+
+
+  template <typename AA = Actor, typename... Args>
   std::shared_ptr<AA> newActor(Args&&... args) {
-    auto actor = std::make_shared<AA>(std::forward<Args>(args)...);
-    // actors.push_back(actor);
-    actor->init();
-    return actor;
+    // auto actor = std::make_shared<AA>(std::forward<Args>(args)...);
+    // // actors.push_back(actor);
+    // actor->init();
+    // return actor;
   }
 
   template <typename T, typename... Args>
-  std::shared_ptr<T> addComp(shared_ptr<Object3D> actor, Args&&... args) {
-    auto component = std::make_shared<T>(std::forward<Args>(args)...);
-    auto sysType = component->getASystemType();
-    // LOG("Maestro::addComp", typeid(T).name(), "sysType", sysType.name());
-    component->setOwner(actor);
-    actor->components[typeid(T)] = component;
-    components[sysType].push_back(component);
-    component->init();
-    return component;
+  std::shared_ptr<T> addComp(shared_ptr<Actor> actor, Args&&... args) {
+    // auto component = std::make_shared<T>(std::forward<Args>(args)...);
+    // auto sysType = component->getASystemType();
+    // // LOG("Maestro::addComp", typeid(T).name(), "sysType", sysType.name());
+    // component->setOwner(actor);
+    // actor->comps[typeid(T)] = component;
+    // components[sysType].push_back(component);
+    // component->init();
+    // return component;
   }
 };

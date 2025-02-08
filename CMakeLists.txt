@@ -44,7 +44,8 @@ file(GLOB SOURCES
     ${PROJECT_SOURCE_DIR}/Engine/common/*.cpp
 )
 
-set(SAMPLE_NAME "HelloWorld")
+# set(SAMPLE_NAME "HelloWorld")
+set(SAMPLE_NAME "LoadScene")
 set(SAMPLE_DIR ${PROJECT_SOURCE_DIR}/${SAMPLE_NAME})
 file(GLOB SAMPLE_SOURCES ${SAMPLE_DIR}/*.cpp)
 list(FILTER SOURCES EXCLUDE REGEX "^.*/__.*\.cpp$")
@@ -122,26 +123,26 @@ add_library(GLAD "ext/glad/src/glad.c")
 target_link_libraries(Engine GLAD)
 target_include_directories(GLAD PRIVATE "${CMAKE_SOURCE_DIR}/ext/glad/include")
 
-# # !!!!!! JSON
-# FetchContent_Declare(
-#     nlohmann_json
-#     GIT_REPOSITORY https://github.com/nlohmann/json
-#     GIT_TAG        v3.11.3
-# )
-# FetchContent_MakeAvailable(nlohmann_json)
-# target_link_libraries(Engine PRIVATE nlohmann_json::nlohmann_json)
+# !!!!!! JSON
+FetchContent_Declare(
+    nlohmann_json
+    GIT_REPOSITORY https://github.com/nlohmann/json
+    GIT_TAG        v3.11.3
+)
+FetchContent_MakeAvailable(nlohmann_json)
+target_link_libraries(Engine nlohmann_json::nlohmann_json)
 
 # Fetch ImGui
 FetchContent_Declare(
     ImGui
     GIT_REPOSITORY https://github.com/ocornut/imgui.git
-    GIT_TAG v1.91.7
+    GIT_TAG v1.91.8-docking
 )
 FetchContent_MakeAvailable(ImGui)
 
 add_library(imgui STATIC
     ${imgui_SOURCE_DIR}/imgui.cpp
-    # ${imgui_SOURCE_DIR}/imgui_demo.cpp
+    ${imgui_SOURCE_DIR}/imgui_demo.cpp
     ${imgui_SOURCE_DIR}/imgui_draw.cpp
     ${imgui_SOURCE_DIR}/imgui_widgets.cpp
     ${imgui_SOURCE_DIR}/imgui_tables.cpp

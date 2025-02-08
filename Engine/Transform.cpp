@@ -18,7 +18,7 @@ void Transform::scale(const vec3& scale) {
   matrix = glm::scale(mat4(1.0f), scale) * matrix;
 }
 
-Transform::Conf Transform::getConf() const {
+Transform::Conf Transform::getTransformConf() const {
   glm::vec3 scale;
   glm::quat rotation;
   glm::vec3 translation, skew;
@@ -136,7 +136,7 @@ std::string Transform::transformStr() const {
   return "Transform { " + std::to_string(pos.x) + ", " + std::to_string(pos.y) + ", " + std::to_string(pos.z) + " }";
 };
 
-void Transform::setConf (const Conf& conf) {
+void Transform::setTransformConf (const Conf& conf) {
   this->conf = conf;
   glm::mat4 translationMatrix = glm::translate(glm::mat4(1.0f), conf.pos);
 

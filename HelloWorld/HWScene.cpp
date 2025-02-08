@@ -45,6 +45,8 @@ HWScene::HWScene (IEngine& ctx)
 }
 
 bool HWScene::load () {
+  loadFromJson("resources/scenes/hw.scene.json");
+
   Window& w = Window::get();
   physics.init();
 

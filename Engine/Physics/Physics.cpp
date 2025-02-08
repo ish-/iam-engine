@@ -1,5 +1,7 @@
 #include "Physics.hpp"
 // #include <btBulletDynamicsCommon.h>
+#include "ACS/AComp.hpp"
+#include "ACS/ASystem.hpp"
 #include "BulletDynamics/Dynamics/btDiscreteDynamicsWorld.h"
 #include "BulletDynamics/ConstraintSolver/btSequentialImpulseConstraintSolver.h"
 // #include <btBulletCollisionCommon.h>
@@ -7,8 +9,6 @@
 #include "BulletCollision/CollisionDispatch/btDefaultCollisionConfiguration.h"
 #include "DebugDraw.hpp"
 #include "../Graphics/MeshComp.hpp"
-
-Physics::Physics () {}
 
 glm::mat4 Physics::toGlmTMat4 (btRigidBody* body) {
   btTransform transform;
@@ -35,14 +35,9 @@ bool Physics::init () {
   return true;
 }
 
-bool Physics::update (const float& dt) {
-  dynamicsWorld->stepSimulation(1.0f / 60.0f, 10);
-  auto comps = getComps();
-  for (auto& comp : comps) {
-    if (auto aliveComp = comp.lock())
-      aliveComp->update(dt);
-  }
-  return true;
+void Physics::update (const vector<shared_ptr<AComp>>& comps, const float& dt) {
+  dynamicsWorld->stepSimulation(dt, 10);
+  ASystem::update(comps, dt);
 }
 
 void Physics::deinit () {

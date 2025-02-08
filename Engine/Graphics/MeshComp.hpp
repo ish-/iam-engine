@@ -3,50 +3,37 @@
 #include <memory>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/vec3.hpp>
-#include "../Object3D.hpp"
-#include "../common/Symbol.hpp"
+#include "../Actor.hpp"
 
-#include <glad/glad.h>
-#include "Shader.hpp"
-#include "Geo.hpp"
+using namespace std;
 
+class Symbol;
 class Shader;
 class Geo;
 
-class MeshComp : public AComp, public Object3D {
+class MeshComp : public AComp, public Actor {
 public:
   shared_ptr<Shader> shader;
   shared_ptr<Geo> geo;
 
   MeshComp(): AComp() {}
 
-  virtual Symbol getASystemType () override {
-      static Symbol symbol { "Renderer" };
-      return symbol;
-  }
+  virtual Symbol getASystemType () override;
 
   glm::vec3 tint = glm::vec3(1.);
   bool visible = true;
   bool shaded = true;
   bool wireframe = false;
+  string primitive = "BOX";
 
-  virtual void draw() {
-    glBindVertexArray(geo->VAO);
+  JSON_DEFINE_OPTIONAL(MeshComp, tint, visible, shaded, wireframe);
 
-    glDrawElements(GL_TRIANGLES, geo->vertexCount, GL_UNSIGNED_INT, 0);
+  virtual void draw();
 
-    glBindVertexArray(0);
-  }
+  virtual void init() override;
 
-  void update (float dt) override {
-
-  }
+  void update (float dt) override;
 
   // TODO: cache it since it's not update()d
-  mat4 getAbsTransformMatrix() const {
-    if (auto _parent = getOwner()) {
-        return _parent->getAbsTransformMatrix() * getTransformMatrix();
-    }
-    return getTransformMatrix();
-  }
+  mat4 getAbsTransformMatrix() const;
 };

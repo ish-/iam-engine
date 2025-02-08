@@ -1,15 +1,15 @@
 #include <btBulletDynamicsCommon.h>
 #include "Physics.hpp"
-#include "../Object3D.hpp"
+#include "../Actor.hpp"
 #include "PhysicsComp.hpp"
 // #include "../common/LOG.hpp"
 #include "../common/random.hpp"
 
-PhysicsComp::PhysicsComp (Params& params)
-  : physics(Physics::get()), params(params), AComp()
-{
-  // init(params);
-}
+// PhysicsComp::PhysicsComp (Params& params)
+// : physics(Physics::get()), params(params), AComp()
+// {
+//   // init(params);
+// }
 
 // template<typename Shape>
 bool PhysicsComp::init () {
@@ -26,32 +26,32 @@ bool PhysicsComp::init () {
 
   btTransform transform;
   transform.setIdentity();
-  transform.setOrigin(params.pos);
+  transform.setOrigin(this->pos);
   btDefaultMotionState* motionState = new btDefaultMotionState(transform);
 
   // inertia = new btVector3(.8, .8, .8);
-  if (params.mass > 0)
-    params.shape->calculateLocalInertia(params.mass, params.intertia);
+  if (this->mass > 0)
+    this->shape->calculateLocalInertia(this->mass, this->intertia);
 
-  btRigidBody::btRigidBodyConstructionInfo rigidBodyCI(params.mass, motionState, params.shape, params.intertia);
+  btRigidBody::btRigidBodyConstructionInfo rigidBodyCI(this->mass, motionState, this->shape, this->intertia);
   rigidBody = new btRigidBody(rigidBodyCI);
-  physics.dynamicsWorld->addRigidBody(rigidBody);
+  Physics::get().dynamicsWorld->addRigidBody(rigidBody);
   rigidBody->setActivationState(DISABLE_DEACTIVATION);
 
-  if (params.initialImpulse != btVector3_ZERO)
-    rigidBody->applyCentralForce(params.initialImpulse);
+  if (this->initialImpulse != btVector3_ZERO)
+    rigidBody->applyCentralForce(this->initialImpulse);
 
-  rigidBody->setDamping(params.damping.x, params.damping.y);
+  rigidBody->setDamping(this->damping.x, this->damping.y);
   return true;
 }
 
 PhysicsComp::~PhysicsComp () {
-  // physics.dynamicsWorld->removeRigidBody(rigidBody);
+  Physics::get().dynamicsWorld->removeRigidBody(rigidBody);
 
-  // delete params.shape;
-  // // no need to delete inertia as it is not dynamically allocated
-  // delete inertia;
-  // delete rigidBody;
+  delete shape;
+  // no need to delete inertia as it is not dynamically allocated
+  delete inertia;
+  delete rigidBody;
 }
 
 glm::mat4 PhysicsComp::getGlmTMat4 () {

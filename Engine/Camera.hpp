@@ -1,33 +1,37 @@
 #pragma once
 #include <glm/gtc/matrix_transform.hpp>
-#include "Object3D.hpp"
+#include "Actor.hpp"
+#include "common/json.hpp"
 
-class Camera: public Object3D {
+class Camera: public Actor {
 public:
-  struct Conf {
-    float ratio = 1.6777;
-    float fov = 60;
-    float near = .1;
-    float far = 1000.;
-  };
+  float ratio = 1.6777;
+  float fov = 60;
+  float near = .1;
+  float far = 1000.;
+
+  JSON_DEFINE_OPTIONAL(Camera, ratio, fov, near, far)
 
   glm::mat4 projection;
 
-  Conf params;
+  Camera() { setProjection(); }
 
-  Camera(const Conf&& params): params(params) { setConf(params); }
-  // Camera(const Conf& params): params(params) { setConf(params); }
-
-  void setConf (const Conf& params) {
+  void setProjection () {
     projection = glm::perspective(
-      glm::radians(params.fov),
-      params.ratio,
-      params.near,
-      params.far);
+      glm::radians(fov),
+      ratio,
+      near,
+      far);
   }
 
-  void setRatio (float ratio) {
-    params.ratio = ratio;
-    setConf(params);
+  virtual void init () override {
+    LOG("Camera::init()");
+    getScene()->sayHello();
+    // dynamic_pointer_cast<MyGame>(getScene()->getGame())->sayHello();
+  }
+
+  void setRatio (float _ratio) {
+    ratio = _ratio;
+    setProjection();
   }
 };

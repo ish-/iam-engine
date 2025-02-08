@@ -2,7 +2,7 @@
 #include <vector>
 #include <memory>
 #include "AComp.hpp"
-#include "AMaestro.hpp"
+// #include "AMaestro.hpp"
 #include "../common/Symbol.hpp"
 using namespace std;
 
@@ -14,7 +14,7 @@ using namespace std;
 
 static const Symbol NO_SYSTEM { "<NO_SYSTEM>" };
 
-template<typename AC = AComp>
+// template<typename AC = AComp>
 class ASystem {
 public:
 
@@ -28,19 +28,10 @@ public:
     return NO_SYSTEM;
   }
 
-  vector<weak_ptr<AComp>> getComps () {
-    static_assert(std::is_base_of<AComp, AC>::value, "ASystem: AC must derive from AComp");
-    auto maestro = AMaestro::get();
-    auto& allComps = maestro.components;
-    auto sysType = getASystemType().name();
-    auto& comps = allComps[getASystemType()];
-    return comps;
-    // return AMaestro::get().components[getASystemType()];
-  }
-
-  void update(const float& dt) {
-    for (auto& component : getComps()) {
-      component->update(1000.);
+  virtual void update(const vector<shared_ptr<AComp>>& comps, const float& dt) {
+    // for (auto& comp : getComps()) {
+    for (auto& comp : comps) {
+      comp->update(dt);
     }
   }
 };
