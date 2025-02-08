@@ -27,7 +27,7 @@ public:
     virtual void update(float dt) {};
 
     ~AComp () {
-        // std::cout << "~AComp\n";
+        std::cout << "~AComp()\n";
     }
 
 private:

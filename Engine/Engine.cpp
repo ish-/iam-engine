@@ -13,7 +13,7 @@
 #include "Graphics/Renderer.hpp"
 // #include "ACS/AMaestro.hpp"
 // #include "Graphics/WireframeShader.hpp"
-// #include "Physics/Physics.hpp"
+#include "Physics/Physics.hpp"
 #include "SDL3/SDL_keycode.h"
 #include "Time.hpp"
 #include "Scene.hpp"
@@ -25,8 +25,13 @@
 // r
 
 Engine::Engine()
-  : time(Time::get()), window(Window::get()), renderer(Renderer::get()), inputs(Inputs::get()), gui(GUI::get()), // , physics(Physics::get()),
-    ctx{Time::get(), Window::get(), Renderer::get(), Inputs::get(), GUI::get()/*, Physics::get()*/}
+  : time(Time::get()),
+    window(Window::get()),
+    renderer(Renderer::get()),
+    inputs(Inputs::get()),
+    gui(GUI::get()),
+    physics(Physics::get())
+    // ctx{Time::get(), Window::get(), Renderer::get(), Inputs::get(), GUI::get()}
 {
   std::filesystem::current_path(BIN_TO_BUILD_PATH);
   LOG("Current path", std::filesystem::current_path().c_str());
@@ -72,7 +77,7 @@ void Engine::run() {
     if (event.type == SDL_EVENT_QUIT) return;
     if (inputs.btnRel[SDLK_ESCAPE] > 0) return;
     if (inputs.btn[SDLK_LSHIFT] && inputs.btnRel[SDLK_P] > 0) pause = !pause;
-    // if (inputs.btn[SDLK_LCTRL] && inputs.btnRel[SDLK_R] > 0) setNewScene<Scene>();
+    if (inputs.btn[SDLK_LCTRL] && inputs.btnRel[SDLK_R] > 0) game->init();
     if (inputs.btnRel[SDLK_F] > 0) {
       window.toggleFullscreen();
       // scene->camera->setRatio((float)window.width / (float)window.height);
@@ -87,6 +92,7 @@ void Engine::run() {
       glViewport(0, 0, window.width, window.height);
       glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 
+      renderer.setDefaultShader();
       game->update(time.dT);
 
       ImGui::Begin("iam-engine");
@@ -95,17 +101,17 @@ void Engine::run() {
           int(time.frameComputing * 1000.));
         ImGui::Checkbox("Wireframes", &renderer.wireframes);
         ImGui::Checkbox("Shading", &renderer.shading);
-        // ImGui::Checkbox("Collisions", &physics.drawDebug);
+        ImGui::Checkbox("Collisions", &physics.drawDebug);
       ImGui::End();
 
       // ImGui::ShowDemoWindow();
 
 
-      // if (physics.drawDebug) {
-      //   physics.debugDrawWorld();
-      //   renderer.setShader(WireframeShader::get());
-      //   renderer.render(physics.debugGetMesh());
-      // }
+      if (physics.drawDebug) {
+        physics.debugDrawWorld();
+        renderer.setShader(WireframeShader::get());
+        renderer.render(physics.debugGetMesh());
+      }
 
       // game->drawGui();
 

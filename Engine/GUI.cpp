@@ -1,5 +1,6 @@
 #include "GUI.hpp"
 #include "imgui.h"
+#define IMGUI_IMPL_OPENGL_LOADER_GLAD
 #include "backends/imgui_impl_sdl3.h"
 #include "backends/imgui_impl_opengl3.h"
 
@@ -8,6 +9,10 @@ void GUI::init(SDL_Window* window, SDL_GLContext* gl_context) {
   IMGUI_CHECKVERSION();
   ImGui::CreateContext();
   ImGuiIO& io = ImGui::GetIO(); (void)io;
+
+	// io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
+	// io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+	// io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
 
   // Setup Dear ImGui style
   ImGui::StyleColorsDark();

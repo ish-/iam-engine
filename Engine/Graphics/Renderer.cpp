@@ -137,19 +137,22 @@ void Renderer::update (const vector<shared_ptr<AComp>>& comps, const float& dt) 
 
 void Renderer::render (shared_ptr<MeshComp> mesh) {
 
-  if (!mesh->visible)
+  if (!mesh->conf.visible)
     return;
 
   glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
   setShader(mesh->shader ? mesh->shader : shader);
   mat4 model = mesh->getAbsTransformMatrix();
+  bool toShade = shading && mesh->conf.shaded;
+  bool toWireframe = wireframes || mesh->conf.wireframe;
+  if (toShade || toWireframe)
+    shader->setUniform("model", model);
 
   if (auto err = glGetError()) LOG("GL ERROR: before shading", err);
-  if (shading && mesh->shaded) {
-    shader->setUniform("model", model);
+  if (toShade) {
     if (auto err = glGetError()) LOG("GL ERROR: model", err);
-    shader->setUniform("tintColor", mesh->tint);
+    shader->setUniform("tintColor", mesh->conf.tint);
     if (auto err = glGetError()) LOG("GL ERROR: tintColor", err);
     shader->setUniform("wireframes", 0.f);
     if (auto err = glGetError()) LOG("GL ERROR: wireframes", err);
@@ -158,7 +161,7 @@ void Renderer::render (shared_ptr<MeshComp> mesh) {
     if (auto err = glGetError()) LOG("GL ERROR: draw", err);
   }
 
-  if (wireframes || mesh->wireframe) {
+  if (toWireframe) {
     shader->setUniform("wireframes", 1.f);
     if (auto err = glGetError()) LOG("GL ERROR: wireframes2", err);
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);

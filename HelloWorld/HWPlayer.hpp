@@ -3,7 +3,7 @@
 #include "Engine/Actor.hpp"
 
 class PhysicsComp;
-class PlayerCtrlComp;
+class PlayerPhyCtrlComp;
 class btRigidBody;
 class btVector3;
 
@@ -14,7 +14,7 @@ public:
     Actor(std::forward<Args>(args)...) {}
 
   std::shared_ptr<PhysicsComp> phyComp;
-  std::shared_ptr<PlayerCtrlComp> ctrlComp;
+  std::shared_ptr<PlayerPhyCtrlComp> ctrlComp;
 
   // mat4 getTransformMatrix() const override;
 

@@ -6,8 +6,4 @@ public:
   MyGame ();
 
   virtual void init () override;
-
-  void sayHello () {
-    LOG("Hello from MyGame");
-  }
 };

@@ -1,7 +1,7 @@
 #include "Actor.hpp"
 #include <glm/gtx/quaternion.hpp>
 #include "ACS/AComp.hpp"
-
+#include "common/incrementTrailingDigits.hpp"
 
 // Actor::Actor () {
 //   name = getActorClassName();
@@ -16,6 +16,18 @@ mat4 Actor::getAbsTransformMatrix() const {
 
 void Actor::init () {
 
+}
+
+void Actor::setName (std::string desiredName) {
+  if (auto scene = getScene()) {
+    if (auto existing = scene->getActorByName(desiredName))
+      desiredName = incrementTrailingDigits(existing->name);
+    if (!name.empty())
+      scene->actorsByName.erase(name);
+    scene->actorsByName[desiredName] = shared_from_this();
+  }
+  else
+    this->name = desiredName;
 }
 
 void Actor::attach(const std::shared_ptr<Actor>& child) {
@@ -34,7 +46,7 @@ void Actor::update(const float& dt) {
 }
 
 Actor::~Actor() {
-  // std::cout << "~Actor\n";
+  LOG("~Actor()", name);
   comps.clear();
   children.clear();
 }

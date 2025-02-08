@@ -1,14 +1,16 @@
 #pragma once
 #include <nlohmann/json.hpp>
+#include <memory>
 // TODO: try to use forward declaration
 #include <glm/vec3.hpp>
 #include <glm/vec2.hpp>
 using namespace nlohmann;
 
 #define JSON_FROM_OPTIONAL(v1) if (nlohmann_json_j.contains(#v1)) nlohmann_json_j.at(#v1).get_to(nlohmann_json_t.v1);
+#define JSON_FROM_OPTIONAL_THIS(v1) if (nlohmann_json_j.contains(#v1)) nlohmann_json_j.at(#v1).get_to(this->v1);
 #define JSON_DEFINE_OPTIONAL(Type, ...) \
   friend void to_json(nlohmann::json& nlohmann_json_j, const Type& nlohmann_json_t) { NLOHMANN_JSON_EXPAND(NLOHMANN_JSON_PASTE(NLOHMANN_JSON_TO, __VA_ARGS__)) } \
-  friend void from_json(const nlohmann::json& nlohmann_json_j, Type& nlohmann_json_t) { NLOHMANN_JSON_EXPAND(NLOHMANN_JSON_PASTE(JSON_FROM_OPTIONAL, __VA_ARGS__)) }
+  friend void from_json(const nlohmann::json& nlohmann_json_j, Type& nlohmann_json_t) { NLOHMANN_JSON_EXPAND(NLOHMANN_JSON_PASTE(JSON_FROM_OPTIONAL, __VA_ARGS__)) } \
 
 namespace glm {
   static void to_json(nlohmann::json& j, const glm::vec3& v) { j = nlohmann::json{v.x, v.y, v.z};}

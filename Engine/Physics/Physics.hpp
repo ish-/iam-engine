@@ -29,7 +29,7 @@ public:
 
   static glm::mat4 toGlmTMat4 (class btRigidBody* body);
 
-  Physics () { init(); }
+  Physics () { }
 
   class btBroadphaseInterface* broadphase = nullptr;
   class btDefaultCollisionConfiguration* collisionConfig = nullptr;

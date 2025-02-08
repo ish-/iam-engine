@@ -2,7 +2,7 @@
 #include "MyGame.hpp"
 
 int main () {
-  Engine& engine = Engine::get ();
+  Engine& engine = Engine::get();
 
   engine.init<MyGame>();
   engine.run();

@@ -13,20 +13,24 @@ class Geo;
 
 class MeshComp : public AComp, public Actor {
 public:
-  shared_ptr<Shader> shader;
-  shared_ptr<Geo> geo;
-
-  MeshComp(): AComp() {}
-
   virtual Symbol getASystemType () override;
 
-  glm::vec3 tint = glm::vec3(1.);
-  bool visible = true;
-  bool shaded = true;
-  bool wireframe = false;
-  string primitive = "BOX";
+  struct Conf {
+    glm::vec3 tint = glm::vec3(1.);
+    bool visible = true;
+    bool shaded = true;
+    bool wireframe = false;
 
-  JSON_DEFINE_OPTIONAL(MeshComp, tint, visible, shaded, wireframe);
+    JSON_DEFINE_OPTIONAL(Conf, tint, visible, shaded, wireframe);
+  };
+
+  Conf conf;
+
+  MeshComp(): AComp() {}
+  MeshComp(const Conf& conf): conf(conf), AComp() {}
+
+  shared_ptr<Shader> shader;
+  shared_ptr<Geo> geo;
 
   virtual void draw();
 
@@ -36,4 +40,6 @@ public:
 
   // TODO: cache it since it's not update()d
   mat4 getAbsTransformMatrix() const;
+
+  ~MeshComp () { LOG("~Mesh()"); }
 };

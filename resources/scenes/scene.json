@@ -20,20 +20,31 @@
     {
       "type": "ACube",
       "name": "my-cube",
-      "rot": [45,45,45]
+      "rot": [45,45,45],
+      "comps": [
+        {
+          "type": "PhysicsComp",
+          "mass": 1,
+          "initialTorque": [10, 10, 10]
+        }
+      ]
     },
 
     {
       "name": "1st-model",
-      "pos": [1.5, 0, 0],
       "comps": [
         {
-          "type": "MeshComp",
-          "wireframe": true,
+          "type": "MeshModelComp",
           "tint": [1,0,0],
           "path": "resources/models/torus_lvl.obj",
           "exposeData": true,
           "merge": true
+        },
+        {
+          "type": "PhysicsComp",
+          "shapeType": "TRIANGULATE_SHAPE",
+          "mass": 0.8,
+          "initialImpulse": [1, 1, 1]
         }
       ]
     }

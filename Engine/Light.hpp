@@ -11,4 +11,6 @@ public:
   glm::vec2 attenuation = {8.f, 21.f};
 
   JSON_DEFINE_OPTIONAL(Light, intensity, color, attenuation)
+
+  Light (): Actor() { LOG("Light()"); }
 };

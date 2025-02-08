@@ -10,6 +10,7 @@ public:
   };
 
   virtual void init () override;
+  virtual void update(float dt) override;
 
   virtual void drawGui () override;
 };

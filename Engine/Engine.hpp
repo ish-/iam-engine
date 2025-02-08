@@ -24,13 +24,13 @@ public:
   // Engine(WContext& ctx) : ctx(ctx) {}
   virtual ~Engine() = default;
 
-  IEngine ctx;
+  // IEngine ctx;
   class Time& time;
   class Window& window;
   class Renderer& renderer;
   class Inputs& inputs;
   class GUI& gui;
-  // class Physics& physics;
+  class Physics& physics;
 
   void exit();
 

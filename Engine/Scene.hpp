@@ -17,10 +17,9 @@ class Camera;
 class Actor;
 class Game;
 class AComp;
-// class ASystem;
-// namespace nlohmann {
-//   class json;
-// };
+
+class Physics;
+class Renderer;
 
 class Scene :  public ILifecycle, public std::enable_shared_from_this<Scene>  {
 public:
@@ -30,10 +29,11 @@ public:
 
   sp<Game> getGame () { return game.lock(); }
   wp<Game> game;
+  sp<Physics> physics;
+  sp<Renderer> renderer;
 
   sp<Camera> camera;
   vector<sp<Light>> lights;
-  vector<sp<Actor>> children;
 
   template <typename ActorType = Actor, typename... Args>
   std::shared_ptr<ActorType> newActor(Args&&... args) {
@@ -45,8 +45,7 @@ public:
   }
 
   template <typename ActorType = Actor, typename... Args>
-  std::shared_ptr<ActorType> addActor(const ActorType& _actor) {
-    auto actor = std::make_shared<ActorType>(_actor);
+  std::shared_ptr<ActorType> addActor(const shared_ptr<ActorType>& actor) {
     actors.push_back(actor);
     actor->scene = shared_from_this();
     actor->init();
@@ -81,8 +80,8 @@ public:
 
   virtual void drawGui ();
 
-  vector<sp<Actor>> actors;
-  unordered_map<string, sp<Actor>> actorsByName;
+  vector<sp<Actor>> actors{};
+  unordered_map<string, sp<Actor>> actorsByName{};
   // TODO: remake to weak_ptr
   unordered_map<Symbol, vector<shared_ptr<AComp>>> compsBySystem;
   unordered_map<Symbol, weak_ptr<ASystem>> systems;

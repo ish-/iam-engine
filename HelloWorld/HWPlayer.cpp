@@ -7,7 +7,7 @@
 
 #include "Engine/ACS/AMaestro.hpp"
 #include "Engine/Physics/PhysicsComp.hpp"
-#include "Engine/PlayerCtrlComp.hpp"
+#include "Engine/PlayerPhyCtrlComp.hpp"
 #include "Engine/common/random.hpp"
 // TODO: clear bullet includes
 using namespace std;
@@ -31,5 +31,5 @@ void HWPlayer::init () {
   };
   phyComp = maestro.addComp<PhysicsComp>(shared_from_this(), createParams);
 
-  ctrlComp = maestro.addComp<PlayerCtrlComp>(shared_from_this());
+  ctrlComp = maestro.addComp<PlayerPhyCtrlComp>(shared_from_this());
 }

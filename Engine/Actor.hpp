@@ -21,7 +21,7 @@ class Scene;
 class Actor : public ILifecycle, public Transform, public enable_shared_from_this<Actor> {
 // protected:
 public:
-  // Actor ();
+  Actor () { LOG("new Actor()"); };
 
   vector<shared_ptr<Actor>> children;
   weak_ptr<Actor> parent;
@@ -65,4 +65,15 @@ public:
   bool removeComp(shared_ptr<AComp> comp);
 
   ~Actor();
+
+  void setName (std::string name);
+
+  // its cloning actor and all its components
+  // virtual void clone() {
+  //   auto actor = make_shared<Actor>();
+  //   for (auto& [type, comp] : comps) {
+  //     actor->comps[type] = comp->clone();
+  //   }
+  //   return actor;
+  // };
 };
