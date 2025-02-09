@@ -1,9 +1,9 @@
 #pragma once
 #include <string>
 #include "glm/fwd.hpp"
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/quaternion.hpp>
-#include "common/json.hpp"
+// #include <glm/gtc/matrix_transform.hpp>
+// #include <glm/gtc/quaternion.hpp>
+// #include "common/json.hpp"
 
 using namespace glm;
 

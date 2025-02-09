@@ -1,11 +1,9 @@
 #include "MyScene.hpp"
-#include "GUI.hpp"
-#include "Actor.hpp"
-#include "Physics/Physics.hpp"
-#include "common/json.hpp"
-#include "PlayerPhy.hpp"
+#include "Engine/GUI.hpp"
+#include "Engine/Actor.hpp"
+#include "Engine/PlayerPhy.hpp"
 
-#include "Physics/PhysicsComp.hpp"
+#include "Engine/Physics/PhysicsComp.hpp"
 
 // MyScene::MyScene () {}
 

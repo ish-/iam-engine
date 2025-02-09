@@ -1,14 +1,9 @@
 #pragma once
-#include "Graphics/MeshComp.hpp"
-#include "Physics/PhysicsComp.hpp"
-#include "Scene.hpp"
-#include "Actor.hpp"
-
-
+#include "Engine/Scene.hpp"
 
 class MyScene : public Scene {
 public:
-  MyScene (const sp<Game>& game) : Scene(game) {
+  MyScene (const sp<class Game>& game) : Scene(game) {
     LOG("MyScene created");
   };
 

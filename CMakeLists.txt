@@ -44,7 +44,8 @@ file(GLOB SOURCES
     ${PROJECT_SOURCE_DIR}/Engine/common/*.cpp
 )
 
-set(Engine ${PROJECT_NAME})
+# set(Engine ${PROJECT_NAME})
+set(Engine Engine)
 
 # set(SAMPLE_NAME "HelloWorld")
 set(SAMPLE_NAME "LoadScene")
@@ -62,11 +63,14 @@ message(STATUS "SAMPLE_SOURCES: ${SAMPLE_SOURCES}")
 
 add_executable(${PROJECT_NAME} ${SAMPLE_DIR}/${SAMPLE_NAME}.cpp ${SAMPLE_SOURCES} ${SOURCES})
 target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR})
+# target_precompile_headers(${PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/Engine/pch.hpp)
 
+# target_include_directories(${PROJECT_NAME} PUBLIC Engine)
+add_library(${Engine} SHARED ${SOURCES})
+target_precompile_headers(${Engine} PRIVATE ${CMAKE_SOURCE_DIR}/Engine/pch.hpp)
+target_precompile_headers(${PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/Engine/pch.hpp)
 target_include_directories(${Engine} PUBLIC Engine)
-# add_library(Engine SHARED ${SOURCES})
-# target_include_directories(Engine PUBLIC Engine)
-# target_link_libraries(${PROJECT_NAME} Engine)
+target_link_libraries(${PROJECT_NAME} ${Engine})
 
 # // ACS try lib
 # set(ACS_lib ACS)

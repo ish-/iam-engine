@@ -71,6 +71,7 @@
         "typeindex": "cpp",
         "typeinfo": "cpp",
         "unordered_set": "cpp",
-        "variant": "cpp"
+        "variant": "cpp",
+        "cassert": "cpp"
     }
 }
