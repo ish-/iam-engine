@@ -1,7 +1,10 @@
 #pragma once
 #include "Graphics/MeshComp.hpp"
+#include "Physics/PhysicsComp.hpp"
 #include "Scene.hpp"
 #include "Actor.hpp"
+
+
 
 class MyScene : public Scene {
 public:

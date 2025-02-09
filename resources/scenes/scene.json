@@ -38,7 +38,7 @@
           "path": "resources/models/lvl_station.obj",
           "exposeData": true,
           "merge": true,
-          "invertNormals": true
+          "invertNormals": false
         },
         {
           "type": "PhysicsComp",

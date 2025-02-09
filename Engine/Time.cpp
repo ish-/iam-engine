@@ -8,9 +8,10 @@ double Time::startFrame () {
 
   double now = SDL_GetTicks() / 1000.;
   // LOG("now, et", now, eT);
-  dT = now - eT;
+  dT = (now - eT);
+  dT = dT > desiredFrameTime * 2. ? desiredFrameTime : dT;
   // updateMeanDelta(dT);
-  eT = now;
+  eT += dT;
   return dT;
 }
 

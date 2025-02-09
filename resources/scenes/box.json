@@ -1,0 +1,29 @@
+{
+  "actors": [
+    {
+      "type": "ACube",
+      "name": "test-cube",
+      "comps": [
+        { "type": "PhysicsComp", "mass": 1 }
+      ]
+    },
+    {
+      "name": "lvl_box",
+      "comps": [
+        {
+          "type": "MeshModelComp",
+          "path": "resources/models/lvl_box.obj",
+          "exposeData": true,
+          "merge": true,
+          "invertNormals": false
+        },
+        {
+          "type": "PhysicsComp",
+          "shapeType": "TRIANGULATE_SHAPE",
+          "group": "WALL",
+          "mask": "WALL_MASK"
+        }
+      ]
+    }
+  ]
+}

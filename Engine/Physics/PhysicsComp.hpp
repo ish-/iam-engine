@@ -9,21 +9,7 @@
 #include "../common/Symbol.hpp"
 #include "../common/json.hpp"
 #include "../Graphics/MeshComp.hpp"
-
-// namespace nlohmann {
-//     template <>
-//     struct adl_serializer<btVector3> {
-//         static void to_json(json& j, const btVector3& vec) {
-//             j = json{{"x", vec.getX()}, {"y", vec.getY()}, {"z", vec.getZ()}};
-//         }
-
-//         static void from_json(const json& j, btVector3& vec) {
-//             vec.setX(j.at("x").get<float>());
-//             vec.setY(j.at("y").get<float>());
-//             vec.setZ(j.at("z").get<float>());
-//         }
-//     };
-// }
+#include "ContactResult.hpp"
 
 static void to_json(nlohmann::json& j, const btVector3& v) { j = nlohmann::json{v.getX(), v.getY(), v.getZ()};}
 static void from_json(const nlohmann::json& j, btVector3& v) { j[0].get_to(v[0]); j[1].get_to(v[1]); j[2].get_to(v[2]); }
@@ -37,6 +23,15 @@ class btBoxShape;
 
 class PhysicsComp : public AComp {
 public:
+  enum CollisionGroup {
+    PLAYER = 1 << 0,
+    ENEMY  = 1 << 1,
+    WALL   = 1 << 2,
+    OBJECT   = 1 << 2,
+    DEFAULT_MASK   = PLAYER | ENEMY | WALL | OBJECT,
+    WALL_MASK = PLAYER | ENEMY | OBJECT,
+  };
+
   struct Params {
     std::string shapeType = "BOX_SHAPE";
     btVector3 shapeSize = {.5, .5, .5};
@@ -50,7 +45,13 @@ public:
     // float restitution = 0.5;
     // float friction = 0.5;
 
-    JSON_DEFINE_OPTIONAL(Params, shapeType, pos, mass, damping, initialImpulse, initialTorque, intertia);
+    CollisionGroup group = OBJECT;
+    CollisionGroup mask = DEFAULT_MASK;
+    CollisionGroup overlap = PLAYER;
+
+    JSON_DEFINE_OPTIONAL(Params,
+      shapeType, pos, mass, damping, initialImpulse, initialTorque, intertia,
+      group, mask, overlap);
   };
 
   btCollisionShape* shape;
@@ -81,4 +82,38 @@ public:
 
   void applyForce (glm::vec3 force, glm::vec3 pos = {0,0,0});
   void applyTorque (glm::vec3 force);
+
+  ContactResult getContact(sp<PhysicsComp> other = nullptr);
+
+  // TODO: make_shared
+  static PhysicsComp* bodyToComp(const btRigidBody* body) {
+    return static_cast<PhysicsComp*>(body->getUserPointer());
+  }
 };
+
+static void from_json (const nlohmann::json& j, PhysicsComp::CollisionGroup& group) {
+  std::string str;
+  j.get_to(str);
+  if (str == "PLAYER") group = PhysicsComp::CollisionGroup::PLAYER;
+  else if (str == "ENEMY") group = PhysicsComp::CollisionGroup::ENEMY;
+  else if (str == "WALL") group = PhysicsComp::CollisionGroup::WALL;
+  else if (str == "OBJECT") group = PhysicsComp::CollisionGroup::OBJECT;
+  else if (str == "DEFAULT_MASK") group = PhysicsComp::CollisionGroup::DEFAULT_MASK;
+  else if (str == "WALL_MASK") group = PhysicsComp::CollisionGroup::WALL_MASK;
+  else group = PhysicsComp::CollisionGroup::DEFAULT_MASK;
+}
+
+// namespace nlohmann {
+//     template <>
+//     struct adl_serializer<btVector3> {
+//         static void to_json(json& j, const btVector3& vec) {
+//             j = json{{"x", vec.getX()}, {"y", vec.getY()}, {"z", vec.getZ()}};
+//         }
+
+//         static void from_json(const json& j, btVector3& vec) {
+//             vec.setX(j.at("x").get<float>());
+//             vec.setY(j.at("y").get<float>());
+//             vec.setZ(j.at("z").get<float>());
+//         }
+//     };
+// }

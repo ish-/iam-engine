@@ -38,6 +38,7 @@ void PlayerPhy::init () {
     .pos = btVector3(posMat[3][0], posMat[3][1], posMat[3][2]),
     .mass = 1.,
     .damping = vec2(.3, .3),
+    .group = PhysicsComp::PLAYER,
     // .initialImpulse = btVector3(rd::in(-10,10), rd::in(-10,10), rd::in(-10,10)),
   };
   phyComp = scene->newComp<PhysicsComp>(shared_from_this(), createParams);

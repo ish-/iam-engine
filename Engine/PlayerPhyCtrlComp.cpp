@@ -1,6 +1,7 @@
 #include "PlayerPhyCtrlComp.hpp"
 #include "Inputs/Inputs.hpp"
 #include "Actor.hpp"
+#include "SDL3/SDL_keycode.h"
 #include "common/LOG.hpp"
 
 PlayerPhyCtrlComp::PlayerPhyCtrlComp (): AComp() {
@@ -21,13 +22,14 @@ void PlayerPhyCtrlComp::update (float dt) {
 
   Inputs& inputs = Inputs::get();
 
+  float boost = 1 + inputs.btn[SDLK_TAB] * 2.; // boost
   float pan = inputs.btn[SDLK_D] - inputs.btn[SDLK_A]; // left-right
   float tilt = inputs.btn[SDLK_E] - inputs.btn[SDLK_Q]; // up-down
   float dolly = inputs.btn[SDLK_S] - inputs.btn[SDLK_W]; // forward-back
   if (pan != 0 || tilt != 0 || dolly != 0) {
     vec3 move = { pan, tilt, dolly };
 
-    phyComp->applyForce(owner->getForward() * move * this->moveForce * vec3(3.));
+    phyComp->applyForce(owner->getForward() * move * this->moveForce * vec3(3.) * vec3(boost));
   }
 
   if (bool mouseLocked = inputs.mouseLock(Bool::GET)) {

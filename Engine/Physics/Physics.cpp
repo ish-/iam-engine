@@ -9,6 +9,7 @@
 #include "BulletCollision/CollisionDispatch/btDefaultCollisionConfiguration.h"
 #include "DebugDraw.hpp"
 #include "../Graphics/MeshComp.hpp"
+#include "./CollisionDispatcher.hpp"
 
 glm::mat4 Physics::toGlmTMat4 (btRigidBody* body) {
   btTransform transform;
@@ -23,6 +24,7 @@ bool Physics::init () {
   broadphase = new btDbvtBroadphase();
   collisionConfig = new btDefaultCollisionConfiguration();
   dispatcher = new btCollisionDispatcher(collisionConfig);
+  // dispatcher = new CollisionDispatcher(collisionConfig);
   solver = new btSequentialImpulseConstraintSolver();
   dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConfig);
   // dynamicsWorld->setGravity(btVector3(0, -9.8, 0));

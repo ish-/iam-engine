@@ -7,6 +7,7 @@
 // #include "../common/LOG.hpp"
 #include "../common/random.hpp"
 #include "Collisions.hpp"
+#include "ContactCallback.hpp"
 
 // PhysicsComp::PhysicsComp (Params& params)
 // : physics(Physics::get()), params(params), AComp()
@@ -42,7 +43,7 @@ bool PhysicsComp::init () {
       LOG("Wrong shapeType!!!", params.shapeType);
   }
 
-
+  bool isDynamic = params.mass > 0.f;
 
   btTransform transform;
   transform.setIdentity();
@@ -60,20 +61,25 @@ bool PhysicsComp::init () {
   btDefaultMotionState* motionState = new btDefaultMotionState(transform);
 
   // inertia = new btVector3(.8, .8, .8);
-  if (params.mass > 0)
+  if (isDynamic) {
     shape->calculateLocalInertia(params.mass, params.intertia);
+    btRigidBody::btRigidBodyConstructionInfo rigidBodyCI(params.mass, isDynamic ? motionState : nullptr, shape, params.intertia);
+    rigidBody = new btRigidBody(rigidBodyCI);
+    rigidBody->setDamping(params.damping.x, params.damping.y);
 
-  btRigidBody::btRigidBodyConstructionInfo rigidBodyCI(params.mass, motionState, shape, params.intertia);
-  rigidBody = new btRigidBody(rigidBodyCI);
-  Physics::get().dynamicsWorld->addRigidBody(rigidBody);
+    if (params.initialImpulse != btVector3_ZERO)
+      rigidBody->applyCentralForce(params.initialImpulse);
+    if (params.initialTorque != btVector3_ZERO)
+      rigidBody->applyTorque(params.initialTorque);
+  } else {
+    rigidBody = new btRigidBody(0, nullptr, shape);
+  }
+  Physics::get().dynamicsWorld->addRigidBody(rigidBody, params.group, params.mask);
+  // Physics::get().dynamicsWorld->addRigidBody(rigidBody);
   rigidBody->setActivationState(DISABLE_DEACTIVATION);
+  if (!isDynamic)
+    rigidBody->setCollisionFlags(btCollisionObject::CF_STATIC_OBJECT | btCollisionObject::CF_CUSTOM_MATERIAL_CALLBACK);
 
-  if (params.initialImpulse != btVector3_ZERO)
-    rigidBody->applyCentralForce(params.initialImpulse);
-  if (params.initialTorque != btVector3_ZERO)
-    rigidBody->applyTorque(params.initialTorque);
-
-  rigidBody->setDamping(params.damping.x, params.damping.y);
   rigidBody->setUserPointer(this);
   return true;
 }
@@ -94,7 +100,8 @@ glm::mat4 PhysicsComp::getGlmTMat4 () {
 }
 
 void PhysicsComp::update (float dt) {
-  getOwner()->setMatrix(getGlmTMat4());
+  if (params.mass > 0.f)
+    getOwner()->setMatrix(getGlmTMat4());
 }
 
 void PhysicsComp::applyForce (glm::vec3 force, glm::vec3 pos) {
@@ -106,4 +113,13 @@ void PhysicsComp::applyForce (glm::vec3 force, glm::vec3 pos) {
 void PhysicsComp::applyTorque (glm::vec3 force) {
   rigidBody->applyTorque(
     btVector3(force.x, force.y, force.z));
+}
+
+ContactResult PhysicsComp::getContact(sp<PhysicsComp> other) {
+  ContactCallback cb;
+  if (other)
+    Physics::get().dynamicsWorld->contactPairTest(rigidBody, other->rigidBody, cb);
+  else
+    Physics::get().dynamicsWorld->contactTest(rigidBody, cb);
+  return cb.result;
 }

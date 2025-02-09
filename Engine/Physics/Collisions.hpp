@@ -3,6 +3,7 @@
 #include <BulletCollision/CollisionShapes/btTriangleMesh.h>
 #include <BulletCollision/CollisionShapes/btBvhTriangleMeshShape.h>
 #include <BulletCollision/CollisionShapes/btConvexHullShape.h>
+#include <BulletCollision/Gimpact/btGImpactShape.h>
 #include "../Graphics/Geo.hpp"
 
 class Collisions {
@@ -28,8 +29,7 @@ public:
     return compoundShape;
   }
 
-  static btBvhTriangleMeshShape *createTriMeshShape(const Geo::Data &data) {
-    // TODO: clear?
+  static btTriangleMesh* createTriangleMesh (const Geo::Data &data) {
     btTriangleMesh *triangleMesh = new btTriangleMesh();
 
     for (size_t i = 0; i < data.indices.size(); i += 3) {
@@ -47,8 +47,18 @@ public:
 
       triangleMesh->addTriangle(vertex0, vertex1, vertex2);
     }
+    return triangleMesh;
+  }
 
-    return new btBvhTriangleMeshShape(triangleMesh, true);
+  static btGImpactMeshShape *createTriGImpactMeshShape(const Geo::Data &data) {
+    auto* shape = new btGImpactMeshShape(createTriangleMesh(data));
+    shape->updateBound();
+  }
+
+  static btBvhTriangleMeshShape *createTriMeshShape(const Geo::Data &data) {
+    auto* shape = new btBvhTriangleMeshShape(createTriangleMesh(data), true);
+    shape->buildOptimizedBvh();
+    return shape;
   }
 
   static btCompoundShape* createCompauntConvexShape(const Geo::Data& data) {
