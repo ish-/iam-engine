@@ -50,12 +50,12 @@ bool PhysicsComp::init () {
 
   glm::mat4 glmMatrix = meshComp ? meshComp->getAbsTransformMatrix() : getOwner()->getAbsTransformMatrix();
   {
-    btScalar btMatrix[16];
-    const float *glmMatrixPtr = glm::value_ptr(glmMatrix);
-    for (int i = 0; i < 16; ++i) {
-      btMatrix[i] = glmMatrixPtr[i];
-    }
-    transform.setFromOpenGLMatrix(btMatrix);
+    // btScalar btMatrix[16];
+    // const float *glmMatrixPtr = glm::value_ptr(glmMatrix);
+    // for (int i = 0; i < 16; ++i) {
+    //   btMatrix[i] = glmMatrixPtr[i];
+    // }
+    transform.setFromOpenGLMatrix(glm::value_ptr(glmMatrix));
   }
   // transform.setOrigin(params.pos);
   btDefaultMotionState* motionState = new btDefaultMotionState(transform);

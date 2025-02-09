@@ -44,6 +44,8 @@ file(GLOB SOURCES
     ${PROJECT_SOURCE_DIR}/Engine/common/*.cpp
 )
 
+set(Engine ${PROJECT_NAME})
+
 # set(SAMPLE_NAME "HelloWorld")
 set(SAMPLE_NAME "LoadScene")
 set(SAMPLE_DIR ${PROJECT_SOURCE_DIR}/${SAMPLE_NAME})
@@ -58,12 +60,13 @@ message(STATUS "SAMPLE_SOURCES: ${SAMPLE_SOURCES}")
 # ARCHIVE_OUTPUT_DIRECTORY "${LIBRARY_DIRECTORY}"
 # )
 
-add_executable(${PROJECT_NAME} ${SAMPLE_DIR}/${SAMPLE_NAME}.cpp ${SAMPLE_SOURCES})
+add_executable(${PROJECT_NAME} ${SAMPLE_DIR}/${SAMPLE_NAME}.cpp ${SAMPLE_SOURCES} ${SOURCES})
 target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR})
 
-add_library(Engine SHARED ${SOURCES})
-target_include_directories(Engine PUBLIC Engine)
-target_link_libraries(${PROJECT_NAME} Engine)
+target_include_directories(${Engine} PUBLIC Engine)
+# add_library(Engine SHARED ${SOURCES})
+# target_include_directories(Engine PUBLIC Engine)
+# target_link_libraries(${PROJECT_NAME} Engine)
 
 # // ACS try lib
 # set(ACS_lib ACS)
@@ -106,7 +109,7 @@ if (NOT SDL3_FOUND) # If there's none, fetch and build SDL3
         FetchContent_MakeAvailable(SDL3)
     endif()
 endif()
-target_link_libraries(Engine SDL3::SDL3)
+target_link_libraries(${Engine} SDL3::SDL3)
 
 # GLM
 FetchContent_Declare(
@@ -115,12 +118,12 @@ FetchContent_Declare(
   GIT_TAG bf71a834948186f4097caa076cd2663c69a10e1e #refs/tags/1.0.1
 )
 FetchContent_MakeAvailable(glm)
-target_link_libraries(Engine glm::glm)
+target_link_libraries(${Engine} glm::glm)
 
-target_include_directories(Engine PUBLIC "${CMAKE_SOURCE_DIR}/ext/glad/include")
+target_include_directories(${Engine} PUBLIC "${CMAKE_SOURCE_DIR}/ext/glad/include")
 
 add_library(GLAD "ext/glad/src/glad.c")
-target_link_libraries(Engine GLAD)
+target_link_libraries(${Engine} GLAD)
 target_include_directories(GLAD PRIVATE "${CMAKE_SOURCE_DIR}/ext/glad/include")
 
 # !!!!!! JSON
@@ -130,7 +133,7 @@ FetchContent_Declare(
     GIT_TAG        v3.11.3
 )
 FetchContent_MakeAvailable(nlohmann_json)
-target_link_libraries(Engine nlohmann_json::nlohmann_json)
+target_link_libraries(${Engine} nlohmann_json::nlohmann_json)
 
 # Fetch ImGui
 FetchContent_Declare(
@@ -150,7 +153,7 @@ add_library(imgui STATIC
     ${imgui_SOURCE_DIR}/backends/imgui_impl_opengl3.cpp
 )
 
-target_include_directories(Engine PUBLIC
+target_include_directories(${Engine} PUBLIC
     ${imgui_SOURCE_DIR}
     ${imgui_SOURCE_DIR}/backends
 )
@@ -166,7 +169,7 @@ target_include_directories(imgui PUBLIC
 
 target_link_libraries(imgui PUBLIC SDL3::SDL3 GLAD)
 
-target_link_libraries(Engine imgui)
+target_link_libraries(${Engine} imgui)
 
 # !!!!!! following libs installed with VCPKG or BREW
 # how to install it https://learn.microsoft.com/en-au/vcpkg/get_started/get-started?pivots=shell-cmd
@@ -184,7 +187,7 @@ target_link_libraries(Engine imgui)
 # FetchContent_MakeAvailable(Bullet)
 find_package(Bullet REQUIRED)
 include_directories(${BULLET_INCLUDE_DIRS})
-target_link_libraries(Engine ${BULLET_LIBRARIES})
+target_link_libraries(${Engine} ${BULLET_LIBRARIES})
 
 # !!!!!! ASSIMP
 # brew install assimp@5.4.3
@@ -227,6 +230,6 @@ else()
     )
 endif()
 
-target_link_libraries(Engine ${ASSIMP_LIBRARIES})
-target_link_libraries(Engine assimp::assimp)
+target_link_libraries(${Engine} ${ASSIMP_LIBRARIES})
+target_link_libraries(${Engine} assimp::assimp)
 

@@ -7,10 +7,12 @@
 #include <iostream>
 #include <unordered_map>
 #include <typeindex>
-#include "common/id.hpp"
+// #include "common/id.hpp"
 #include "Transform.hpp"
 #include "Scene.hpp"
 #include "ILifecycle.hpp"
+#include "common/json.hpp"
+#include "nlohmann/json_fwd.hpp"
 // #include "ACS/AActor.hpp"
 using namespace glm;
 using namespace std;
@@ -21,7 +23,20 @@ class Scene;
 class Actor : public ILifecycle, public Transform, public enable_shared_from_this<Actor> {
 // protected:
 public:
-  Actor () { LOG("new Actor()"); };
+  static unsigned int getId () {
+    static unsigned int id = 1;
+    return id++;
+  }
+
+  virtual ~Actor();
+  virtual string getActorClassName() { return "Actor"; }
+
+  Actor () {
+    LOG("\n-- NEW ACTOR", id);
+  };
+  Actor (const mat4& transform) {
+    setMatrix(transform);
+  };
 
   vector<shared_ptr<Actor>> children;
   weak_ptr<Actor> parent;
@@ -38,9 +53,8 @@ public:
   // vector<shared_ptr<AComp>> comps;
   unordered_map<type_index, shared_ptr<AComp>> comps;
 
-  unsigned int id = getId();
+  unsigned int id = Actor::getId();
   string name = "";
-  virtual string getActorClassName();
 
   virtual void init();
   virtual void update(const float& dt);
@@ -64,7 +78,7 @@ public:
 
   bool removeComp(shared_ptr<AComp> comp);
 
-  ~Actor();
+  // ~Actor();
 
   void setName (std::string name);
 
@@ -76,4 +90,31 @@ public:
   //   }
   //   return actor;
   // };
+
+  // void to_json(json& j) const {
+  //   json jTransform = Transform::to_json();
+
+  //   json jComps = json::object();
+  //   for (const auto& [type, comp] : comps) {
+  //       jComps[type.name()] = *comp;
+  //   }
+
+  //   j = json{
+  //     {"id", id},
+  //     {"pos", jTransform["pos"]},
+  //     {"rot", jTransform["rot"]},
+  //     {"scale", jTransform["scale"]},
+  //     {"name", name},
+  //     {"comps", jComps}
+  //   };
+  // };
+  virtual void release () { _released = true; }
+  virtual bool isReleased () { return _released; }
+
+private:
+
+  void _actorInit() {
+    LOG("NEW Actor()", id, getActorClassName());
+  }
+  bool _released = false;
 };

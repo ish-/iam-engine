@@ -11,6 +11,7 @@ class btVector3;
 
 class PlayerPhy : public Actor {
 public:
+  string getActorClassName() override { return "PlayerPhy"; }
   struct Conf {
     glm::vec3 initialPos = {0, 0, 5};
     Camera::Conf cameraConf = { .fov = 80 };
@@ -24,4 +25,5 @@ public:
   std::shared_ptr<PlayerPhyCtrlComp> ctrlComp;
 
   virtual void init() override;
+  virtual void update(const float& dt) override;
 };

@@ -5,18 +5,20 @@
 #include <BulletCollision/CollisionShapes/btSphereShape.h>
 #include <SDL3/SDL_keycode.h>
 
+#include "Inputs/Inputs.hpp"
 #include "Physics/PhysicsComp.hpp"
 #include "PlayerPhyCtrlComp.hpp"
+#include "Projectile.hpp"
 #include "Camera.hpp"
 #include "Light.hpp"
 using namespace std;
 using namespace glm;
 
 void PlayerPhy::init () {
-  auto scene = getScene();
-  name = "PlayerPhy";
-
+  setName("PlayerPhy");
   setPosition(conf.initialPos);
+
+  auto scene = getScene();
 
   if (!scene->camera) {
     auto camera = scene->newActor<Camera>(conf.cameraConf);
@@ -46,4 +48,24 @@ void PlayerPhy::init () {
   ctrlComp = scene->newComp<PlayerPhyCtrlComp>(shared_from_this());
 
   scene->player = shared_from_this();
+}
+
+void PlayerPhy::update(const float &dt)
+{
+  if (Inputs::get().btnRel[SDLK_SPACE] > 0.) {
+    Transform transform = Transform(getAbsTransformMatrix());
+    auto forward = transform.getForward() * vec3(0., 0., -1.);
+    transform.translate(forward);
+
+    getScene()->newActor<Projectile>((Projectile::Conf){
+      .transform = transform.getTransformMatrix(),
+      .physics = (PhysicsComp::Params){
+        .shapeType = "SPHERE_SHAPE",
+        .mass = .1,
+        .initialImpulse = btVector3(forward.x, forward.y, forward.z) * 100.f,
+      }
+    });
+  }
+
+  Actor::update(dt);
 }

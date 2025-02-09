@@ -6,6 +6,7 @@
 
 class Camera: public Actor {
 public:
+  string getActorClassName() override { return "Camera"; }
   struct Conf {
     float ratio = 1.6777;
     float fov = 60;
@@ -18,10 +19,11 @@ public:
 
   Conf conf;
 
-  Camera (): Actor() { }
-  Camera (const Conf& conf): conf(conf), Actor() { }
+  Camera (): Actor() { /*LOG("Camera()");*/ }
+  Camera (const Conf& conf): conf(conf), Actor() { /*LOG("Camera(conf)");*/ }
 
   virtual void init () override {
+    Actor::init();
     setProjection();
 
     auto scene = getScene();

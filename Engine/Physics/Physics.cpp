@@ -9,14 +9,18 @@
 #include "BulletCollision/CollisionDispatch/btDefaultCollisionConfiguration.h"
 #include "DebugDraw.hpp"
 #include "../Graphics/MeshComp.hpp"
-#include "./CollisionDispatcher.hpp"
+// #include "./CollisionDispatcher.hpp"
 
-glm::mat4 Physics::toGlmTMat4 (btRigidBody* body) {
-  btTransform transform;
-  body->getMotionState()->getWorldTransform(transform);
+glm::mat4 Physics::toGlmTMat4 (const btTransform& transform) {
   btScalar matrix[16];
   transform.getOpenGLMatrix(matrix);
   return glm::make_mat4(matrix);
+}
+
+glm::mat4 Physics::toGlmTMat4 (const btRigidBody* body) {
+  btTransform transform;
+  body->getMotionState()->getWorldTransform(transform);
+  return Physics::toGlmTMat4(transform);
 }
 
 bool Physics::init () {

@@ -11,6 +11,7 @@
 
 #include "Transform.hpp"
 #include "common/file.hpp"
+#include "common/json-preprocess.hpp"
 
 #include "Camera.hpp"
 #include "Light.hpp"
@@ -20,8 +21,16 @@ using namespace std;
 using namespace nlohmann;
 
 void Scene::update(float dt) {
-  for (auto& actor : actors) {
-    actor->update(dt);
+  size_t actorsNum = actors.size();
+  for (size_t i = 0; i < actorsNum; ++i) {
+    auto& actor = actors[i];
+    // if (actor->isDestroyed()) {
+    //   actors.erase(actors.begin() + i);
+    //   --i;
+    //   --actorsNum;
+    // }
+    // else
+      actor->update(dt);
   }
 
   for (auto& [sysType, wpSystem] : systems) {
@@ -71,7 +80,7 @@ void Scene::_addCompToActor (const sp<Actor>& actor, const type_index& typeId, c
 void Scene::loadJson (string path) {
   using namespace nlohmann;
   LOG("<<< Loading scene", path);
-  json data = json::parse(loadFile(path));
+  json data = json::parse(JsonPreprocess::removeComments(loadFile(path)));
 
   if (data.contains("actors") && data["actors"].is_array()) {
     for (const auto& actor : data["actors"]) {

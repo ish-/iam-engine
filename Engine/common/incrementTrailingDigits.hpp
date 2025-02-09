@@ -2,7 +2,7 @@
 #include <regex>
 #include <string>
 
-static std::string incrementTrailingDigits(const std::string& input) {
+inline std::string incrementTrailingDigits(const std::string& input) {
   std::regex re(R"(\d+$)"); // Match trailing digits
   std::smatch match;
 

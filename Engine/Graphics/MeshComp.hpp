@@ -4,6 +4,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/vec3.hpp>
 #include "../Actor.hpp"
+#include "../ILifecycle.hpp"
 
 using namespace std;
 
@@ -11,7 +12,7 @@ class Symbol;
 class Shader;
 class Geo;
 
-class MeshComp : public AComp, public Actor {
+class MeshComp : public AComp, public ILifecycle, public Transform {
 public:
   virtual Symbol getASystemType () override;
 

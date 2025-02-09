@@ -15,7 +15,7 @@ mat4 Actor::getAbsTransformMatrix() const {
 }
 
 void Actor::init () {
-
+  LOG("Actor::init()", getActorClassName(), "\"" + name + "\"");
 }
 
 void Actor::setName (std::string desiredName) {
@@ -55,5 +55,3 @@ bool Actor::removeComp(std::shared_ptr<AComp> comp) {
   // components[typeid(comp)] = nullptr;
   return true;
 };
-
-std::string Actor::getActorClassName() { return "Actor"; }

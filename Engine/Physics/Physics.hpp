@@ -27,7 +27,8 @@ public:
     return glm::vec3(vec.getX(), vec.getY(), vec.getZ());
   }
 
-  static glm::mat4 toGlmTMat4 (class btRigidBody* body);
+  static glm::mat4 toGlmTMat4 (const class btRigidBody* body);
+  static glm::mat4 toGlmTMat4 (const class btTransform& transform);
 
   Physics () { }
 

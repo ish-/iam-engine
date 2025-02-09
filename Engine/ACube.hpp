@@ -8,6 +8,7 @@
 
 class ACube : public Actor {
 public:
+  string getActorClassName() override { return "ACube"; }
   // std::shared_ptr<PhysicsComp> phyComp;
 
   // mat4 getTransformMatrix() const override;

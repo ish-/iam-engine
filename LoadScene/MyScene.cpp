@@ -22,13 +22,13 @@ void MyScene::init () {
 
 void MyScene::update(float dt) {
   auto box = getActorByName("lvl_box");
-  auto testCubePhy = getActorByName("test-cube")->getComp<PhysicsComp>();
+  // auto testCubePhy = getActorByName("test-cube")->getComp<PhysicsComp>();
   auto boxPhy = box->getComp<PhysicsComp>();
   auto playerPhy = player->getComp<PhysicsComp>();
 
   if (auto contact = playerPhy->getContact()) {
     LOG("playerPhy contact",
-      PhysicsComp::bodyToComp(contact.body1)->getOwner()->name,
+      PhysicsComp::fromBody(contact.body1)->getOwner()->name,
       contact.impactSpeed, contact.penetrationDepth, contact.impactForce);
   }
 

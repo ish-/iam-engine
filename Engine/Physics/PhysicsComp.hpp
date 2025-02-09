@@ -86,7 +86,7 @@ public:
   ContactResult getContact(sp<PhysicsComp> other = nullptr);
 
   // TODO: make_shared
-  static PhysicsComp* bodyToComp(const btRigidBody* body) {
+  static PhysicsComp* fromBody(const btRigidBody* body) {
     return static_cast<PhysicsComp*>(body->getUserPointer());
   }
 };

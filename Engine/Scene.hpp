@@ -74,7 +74,14 @@ public:
 
   void loadJson (string path);
 
-  sp<Actor> getActorByName(string name) { return actorsByName[name]; }
+  sp<Actor> getActorByName(string name) {
+    auto it = actorsByName.find(name);
+    if (it == actorsByName.end()) {
+      LOG("getActorByName: Actor not found", name);
+      return nullptr;
+    }
+    return it->second;
+  }
 
   virtual void init() override;
   virtual void update(float dt) override;

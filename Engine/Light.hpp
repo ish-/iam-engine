@@ -6,6 +6,7 @@
 
 class Light : public Actor {
 public:
+  string getActorClassName() override { return "Light"; }
   struct Conf {
     float intensity = 1.f;
     glm::vec3 color = {1.0f, 1.0f, 1.0f};
@@ -15,13 +16,15 @@ public:
   };
 
   void init () override {
+    Actor::init();
+
     if (auto scene = getScene()) {
       scene->lights.push_back(std::dynamic_pointer_cast<Light>(shared_from_this()));
     }
   }
 
-  Light (): Actor() { }
-  Light (const Conf &conf): conf(conf), Actor() { }
+  Light (): Actor() { LOG("Light()"); }
+  Light (const Conf &conf): conf(conf), Actor() { LOG("Light(conf)"); }
 
   Conf conf;
 };
