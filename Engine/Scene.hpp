@@ -34,6 +34,7 @@ public:
 
   sp<Camera> camera;
   vector<sp<Light>> lights;
+  sp<Actor> player;
 
   template <typename ActorType = Actor, typename... Args>
   std::shared_ptr<ActorType> newActor(Args&&... args) {

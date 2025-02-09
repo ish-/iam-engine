@@ -20,8 +20,9 @@ public:
     bool visible = true;
     bool shaded = true;
     bool wireframe = false;
+    bool invertNormals = false;
 
-    JSON_DEFINE_OPTIONAL(Conf, tint, visible, shaded, wireframe);
+    JSON_DEFINE_OPTIONAL(Conf, tint, visible, shaded, wireframe, invertNormals);
   };
 
   Conf conf;

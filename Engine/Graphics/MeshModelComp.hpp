@@ -21,7 +21,8 @@ public:
     bool merge = false;
     bool exposeData = false;
 
-    JSON_DEFINE_OPTIONAL(Conf, path, merge, exposeData)
+    JSON_DEFINE_OPTIONAL(Conf, path, merge, exposeData,
+      tint, visible, shaded, wireframe, invertNormals)
   };
 
   virtual Symbol getASystemType () override;
@@ -29,7 +30,7 @@ public:
   Conf conf;
 
   MeshModelComp() : MeshComp() {};
-  MeshModelComp (const Conf&& _conf): conf(_conf), MeshComp() {
+  MeshModelComp (const Conf&& _conf): conf(_conf), MeshComp(_conf) {
     // shader = PhongShader::getPtr();
 
     if (conf.path.length() > 0)

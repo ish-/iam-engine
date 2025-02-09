@@ -37,8 +37,6 @@ public:
       exit(EXIT_FAILURE);
     }
     LOG("--- Shader loaded", shaderId);
-
-    // setUniform("invertNormals", invertNormals);
   }
 
   void setUniform(const char* name, const glm::mat4& value) { glUniformMatrix4fv(getUnformLocation(name), 1, GL_FALSE, glm::value_ptr(value)); }

@@ -149,26 +149,28 @@ void Renderer::render (shared_ptr<MeshComp> mesh) {
   if (toShade || toWireframe)
     shader->setUniform("model", model);
 
-  if (auto err = glGetError()) LOG("GL ERROR: before shading", err);
+  // if (auto err = glGetError()) LOG("GL ERROR: before shading", err);
   if (toShade) {
-    if (auto err = glGetError()) LOG("GL ERROR: model", err);
+    // if (auto err = glGetError()) LOG("GL ERROR: model", err);
+    // LOG("tint!!", mesh->conf.tint.x, mesh->conf.tint.y, mesh->conf.tint.z);
     shader->setUniform("tintColor", mesh->conf.tint);
-    if (auto err = glGetError()) LOG("GL ERROR: tintColor", err);
+    // if (auto err = glGetError()) LOG("GL ERROR: tintColor", err);
     shader->setUniform("wireframes", 0.f);
-    if (auto err = glGetError()) LOG("GL ERROR: wireframes", err);
+    shader->setUniform("normalsMult", mesh->conf.invertNormals ? -1.f : 1.f);
+    // if (auto err = glGetError()) LOG("GL ERROR: wireframes", err);
 
     mesh->draw();
-    if (auto err = glGetError()) LOG("GL ERROR: draw", err);
+    // if (auto err = glGetError()) LOG("GL ERROR: draw", err);
   }
 
   if (toWireframe) {
     shader->setUniform("wireframes", 1.f);
-    if (auto err = glGetError()) LOG("GL ERROR: wireframes2", err);
+    // if (auto err = glGetError()) LOG("GL ERROR: wireframes2", err);
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-    if (auto err = glGetError()) LOG("GL ERROR: glPolygonMode", err);
+    // if (auto err = glGetError()) LOG("GL ERROR: glPolygonMode", err);
 
     mesh->draw();
-    if (auto err = glGetError()) LOG("GL ERROR: draw2", err);
+    // if (auto err = glGetError()) LOG("GL ERROR: draw2", err);
   }
 }
 
@@ -196,8 +198,8 @@ void Renderer::setShaderLight(shared_ptr<Shader> shader) {
 
     std::string base = "lights[" + std::to_string(curIdx) + "]";
     shader->setUniform((base+".pos").c_str(), lightPos);
-    shader->setUniform((base+".color").c_str(), light->color);
-    shader->setUniform((base+".atten").c_str(), light->attenuation * light->attenuation);
+    shader->setUniform((base+".color").c_str(), light->conf.color);
+    shader->setUniform((base+".atten").c_str(), light->conf.attenuation * light->conf.attenuation);
     curIdx++;
   }
   shader->setUniform("lightsNum", (int)curIdx);

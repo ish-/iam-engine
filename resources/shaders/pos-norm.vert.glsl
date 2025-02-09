@@ -7,12 +7,14 @@ uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
 
+uniform float normalsMult;
+
 out vec3 vFragPos;
 out vec3 vNormal;
 
 void main() {
 	vFragPos = vec3(model * vec4(aPos, 1.0));
-	vNormal = mat3(transpose(inverse(model))) * aNormal;
+	vNormal = mat3(transpose(inverse(model))) * aNormal * normalsMult;
 	// vNormal = aNormal;
 	// TexCoords = aTexCoords;
 

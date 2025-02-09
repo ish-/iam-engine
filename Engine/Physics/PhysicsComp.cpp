@@ -74,6 +74,7 @@ bool PhysicsComp::init () {
     rigidBody->applyTorque(params.initialTorque);
 
   rigidBody->setDamping(params.damping.x, params.damping.y);
+  rigidBody->setUserPointer(this);
   return true;
 }
 

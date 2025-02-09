@@ -6,11 +6,22 @@
 
 class Light : public Actor {
 public:
-  float intensity = 1.f;
-  glm::vec3 color = {1.0f, 1.0f, 1.0f};
-  glm::vec2 attenuation = {8.f, 21.f};
+  struct Conf {
+    float intensity = 1.f;
+    glm::vec3 color = {1.0f, 1.0f, 1.0f};
+    glm::vec2 attenuation = {8.f, 21.f};
 
-  JSON_DEFINE_OPTIONAL(Light, intensity, color, attenuation)
+    JSON_DEFINE_OPTIONAL(Conf, intensity, color, attenuation)
+  };
 
-  Light (): Actor() { LOG("Light()"); }
+  void init () override {
+    if (auto scene = getScene()) {
+      scene->lights.push_back(std::dynamic_pointer_cast<Light>(shared_from_this()));
+    }
+  }
+
+  Light (): Actor() { }
+  Light (const Conf &conf): conf(conf), Actor() { }
+
+  Conf conf;
 };

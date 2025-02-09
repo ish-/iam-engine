@@ -45,7 +45,7 @@ void Scene::init() {
 
   actorCtors["Camera"] = [this](const json& actorJson) { return newActor<Camera>(actorJson.get<Camera::Conf>()); };
   actorCtors["Light"] = [this](const json& actorJson) {
-    auto light = newActor<Light>(actorJson);
+    auto light = newActor<Light>(actorJson.get<Light::Conf>());
     lights.push_back(light);
     return light;
   };

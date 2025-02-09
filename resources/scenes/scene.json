@@ -31,14 +31,14 @@
     },
 
     {
-      "name": "1st-model",
+      "name": "lvl_station",
       "comps": [
         {
           "type": "MeshModelComp",
-          "tint": [1,0,0],
-          "path": "resources/models/torus_lvl.obj",
+          "path": "resources/models/lvl_station.obj",
           "exposeData": true,
-          "merge": true
+          "merge": true,
+          "invertNormals": true
         },
         {
           "type": "PhysicsComp",

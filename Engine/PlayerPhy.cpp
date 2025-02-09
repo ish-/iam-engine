@@ -8,6 +8,7 @@
 #include "Physics/PhysicsComp.hpp"
 #include "PlayerPhyCtrlComp.hpp"
 #include "Camera.hpp"
+#include "Light.hpp"
 using namespace std;
 using namespace glm;
 
@@ -23,6 +24,13 @@ void PlayerPhy::init () {
     attach(camera);
   }
 
+  auto light = scene.get()->newActor<Light>((Light::Conf){
+    .color = vec3(1., 1., .7),
+    .intensity = 1.,
+    .attenuation = vec2(20, 30.),
+  });
+  attach(light);
+
   auto posMat = getAbsTransformMatrix();
 
   PhysicsComp::Params createParams {
@@ -35,4 +43,6 @@ void PlayerPhy::init () {
   phyComp = scene->newComp<PhysicsComp>(shared_from_this(), createParams);
 
   ctrlComp = scene->newComp<PlayerPhyCtrlComp>(shared_from_this());
+
+  scene->player = shared_from_this();
 }

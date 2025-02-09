@@ -17,6 +17,7 @@ void MeshModelComp::logChildren (const aiNode* node, int level) {
 }
 
 bool MeshModelComp::load (const string& path) {
+  LOG("tint!!", conf.tint.x, conf.tint.y, conf.tint.z);
   std::cout << "Loading model: " << path << std::endl;
   Assimp::Importer importer;
   const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs);
