@@ -32,7 +32,7 @@ void MyScene::init () {
 
 }
 
-void MyScene::update(float dt) {
+void MyScene::update (const float& dt) {
   auto box = getActorByName("lvl_box");
   // auto testCubePhy = getActorByName("test-cube")->getComp<PhysicsComp>();
   auto boxPhy = box->getComp<PhysicsComp>();

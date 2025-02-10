@@ -12,7 +12,7 @@ void PlayerPhyCtrlComp::init () {
   phyComp = getOwner()->getComp<PhysicsComp>();
 }
 
-void PlayerPhyCtrlComp::update (float dt) {
+void PlayerPhyCtrlComp::update (const float& dt) {
   auto owner = getOwner();
   auto phyComp = this->phyComp.lock();
   if (!phyComp) {

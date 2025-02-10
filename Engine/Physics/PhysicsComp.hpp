@@ -76,7 +76,7 @@ public:
 
   // template<typename Shape = btBoxShape>
   virtual void init () override;
-  virtual void update(float dt) override;
+  virtual void update (const float& dt) override;
 
   glm::mat4 getGlmTMat4 ();
 

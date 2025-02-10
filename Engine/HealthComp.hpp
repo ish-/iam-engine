@@ -12,7 +12,7 @@ public:
   HealthComp (const Conf& conf): conf(conf), AComp() {};
   HealthComp ():  AComp() {};
 
-  virtual void update(float dt) {
+  virtual void update (const float& dt) {
     conf.health += conf.regen * dt;
     if (conf.health <= 0) {
       getOwner()->release();

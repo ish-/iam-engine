@@ -3,6 +3,6 @@
 
 Game::Game () {}
 
-void Game::update(float dt) {
+void Game::update (const float& dt) {
   scene->update(dt);
 }

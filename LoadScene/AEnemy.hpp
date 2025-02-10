@@ -31,7 +31,6 @@ public:
     phyComp = scene->newComp<PhysicsComp>(shared_from_this(), conf.physics);
   }
 
-  #include <glm/glm.hpp>
   virtual void update(const float& dt) override {
     float health = getComp<HealthComp>()->getHealth();
     meshComp->conf.tint = glm::min(meshComp->conf.tint + vec3(.01), vec3(1, health, health));

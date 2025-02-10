@@ -86,7 +86,7 @@ public:
   }
 
   virtual void init() override;
-  virtual void update(float dt) override;
+  virtual void update (const float& dt) override;
 
   virtual void drawGui ();
 

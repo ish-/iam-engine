@@ -47,7 +47,7 @@ public:
   // vector<shared_ptr<Actor>> children;
 
   virtual bool load () override;
-  virtual void update (float dt) override;
+  virtual void update (const float& dt) override;
 
   // ~HWScene() = default;
 

@@ -38,7 +38,7 @@ public:
 
   virtual void init() override;
 
-  void update (float dt) override;
+  void update (const float& dt) override;
 
   // TODO: cache it since it's not update()d
   mat4 getAbsTransformMatrix() const;

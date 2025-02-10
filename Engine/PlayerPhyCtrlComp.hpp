@@ -22,5 +22,5 @@ public:
 
   virtual void init () override;
 
-  void update (float dt) override;
+  void update (const float& dt) override;
 };

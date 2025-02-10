@@ -6,6 +6,6 @@ public:
 
   virtual void init() {};
   virtual void load() {};
-  virtual void update(float dt) {};
+  virtual void update (const float& dt) {};
   virtual void release() {};
 };

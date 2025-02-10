@@ -24,7 +24,7 @@ public:
 
     std::shared_ptr<Actor> getOwner() const;
 
-    virtual void update(float dt) {};
+    virtual void update (const float& dt) {};
     virtual void init() {};
 
     ~AComp () {

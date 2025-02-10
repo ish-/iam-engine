@@ -98,7 +98,7 @@ glm::mat4 PhysicsComp::getGlmTMat4 () {
   return Physics::toGlmTMat4(rigidBody);
 }
 
-void PhysicsComp::update (float dt) {
+void PhysicsComp::update (const float& dt) {
   if (params.mass > 0.f)
     getOwner()->setMatrix(getGlmTMat4());
 }

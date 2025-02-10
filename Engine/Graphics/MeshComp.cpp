@@ -20,7 +20,7 @@ void MeshComp::draw() {
   glBindVertexArray(0);
 }
 
-void MeshComp::update (float dt) {
+void MeshComp::update (const float& dt) {
 
 }
 

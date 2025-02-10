@@ -89,7 +89,7 @@ bool HWScene::load () {
   return true;
 }
 
-void HWScene::update (float dt) {
+void HWScene::update (const float& dt) {
   Window& w = Window::get();
 
   for(auto& actor : children)

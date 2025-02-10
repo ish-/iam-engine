@@ -21,7 +21,7 @@
 using namespace std;
 using namespace nlohmann;
 
-void Scene::update(float dt) {
+void Scene::update (const float& dt) {
   // update components per systems
   for (auto& [sysType, system] : systems)
     system->update(compsBySystem[sysType], dt);

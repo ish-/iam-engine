@@ -8,7 +8,7 @@ class Game : public ILifecycle, public std::enable_shared_from_this<Game> {
 public:
   Game ();
 
-  virtual void update(float dt) override;
+  virtual void update (const float& dt) override;
 
   virtual void drawGui() {};
 
