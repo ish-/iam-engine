@@ -36,12 +36,21 @@ public:
     meshComp->conf.tint = glm::min(meshComp->conf.tint + vec3(.01), vec3(1, health, health));
 
     auto scene = getScene();
-    auto player = scene->player;
-    vec3 toPlayer = player->getPosition() - getPosition();
-    vec3 dirToPlayer = normalize(toPlayer);
-    vec3 radDir = dirToPlayer - getForward();
-    // phyComp->applyTorque(radDir * 0.1f);
-    phyComp->applyForce(dirToPlayer * 1.f);
+    auto target = scene->player;
+    vec3 toTarget = target->getPosition() - getPosition();
+    vec3 dirToTarget = normalize(toTarget);
+    vec3 forward = getForward();
+    vec3 rotationAxis = glm::cross(dirToTarget, forward);
+    float rotationDot = glm::dot(forward, dirToTarget);
+    float rotationAngle = glm::acos(rotationDot);
+
+    if (glm::length(rotationAxis) > 0) {
+      float rotationSpeed = .1;
+      vec3 torque = rotationAxis * rotationAngle * rotationSpeed;
+      phyComp->applyTorque(torque);
+    }
+
+    phyComp->applyForce(forward * rotationDot);
 
     Actor::update(dt);
   }
