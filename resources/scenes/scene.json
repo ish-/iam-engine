@@ -34,7 +34,7 @@
       "name": "lvl_station",
       "comps": [
         {
-          "type": "MeshModelComp",
+          "type": "MeshComp",
           "path": "resources/models/lvl_station.obj",
           "exposeData": true,
           "merge": true,

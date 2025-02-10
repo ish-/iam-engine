@@ -1,30 +1,22 @@
-#include "MeshModelComp.hpp"
+#include "MeshStorage.hpp"
 
-// MeshModelComp::MeshModelComp () {}
+#include <assimp/Importer.hpp>
+#include <assimp/scene.h>
+#include <assimp/postprocess.h>
 
-Symbol MeshModelComp::getASystemType () {
-  static Symbol symbol { "Renderer" };
-  return symbol;
-}
+// #include "MeshComp.hpp"
+#include "Geo.hpp"
 
-void MeshModelComp::logChildren (const aiNode* node, int level) {
-  for (unsigned int i = 0; i < node->mNumChildren; i++) {
-    auto name = std::string(node->mChildren[i]->mName.C_Str());
-    if (name == "off") continue;
-    LOG("Child", name);
-    logChildren(node->mChildren[i], level + 1);
-  }
-}
+MeshStorage::MeshStorage () {}
 
-bool MeshModelComp::load (const string& path) {
-  LOG("tint!!", conf.tint.x, conf.tint.y, conf.tint.z);
+sp<Geo> MeshStorage::loadModel(const std::string& path) {
   std::cout << "Loading model: " << path << std::endl;
   Assimp::Importer importer;
   const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs);
 
   if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) {
     std::cerr << "Error: " << importer.GetErrorString() << std::endl;
-    return -1;
+    return nullptr;
   }
   LOG("Model loaded", "Meshes: ", scene->mNumMeshes, "Materials: ", scene->mNumMaterials, "Textures: ", scene->mNumTextures, "Lights: ", scene->mNumLights, "Cameras: ", scene->mNumCameras);
   LOG("Root node", scene->mRootNode->mName.C_Str());
@@ -85,12 +77,22 @@ bool MeshModelComp::load (const string& path) {
   }
 
   // auto modelGeo
-  geo = std::make_shared<Geo>(Geo::Data{vertices, indices, {3,3,2}, 8, meshesOffsets});
-  if (!conf.exposeData)
-    geo->clearData();
+  auto geo = std::make_shared<Geo>(Geo::Data{vertices, indices, {3,3,2}, 8, meshesOffsets});
+  geos[path] = geo;
+  // auto geo = std::make_shared<Geo>(Geo::Data{vertices, indices, {3,3,2}, 8, meshesOffsets});
+  // if (!conf.exposeData)
+  //   geos[path]->clearData();
 
   // if (conf.expose)
     // geo = modelGeo;
+  return geo;
+}
 
-  return true;
+void MeshStorage::logChildren (const aiNode* node, int level) {
+  for (unsigned int i = 0; i < node->mNumChildren; i++) {
+    auto name = std::string(node->mChildren[i]->mName.C_Str());
+    if (name == "off") continue;
+    LOG("-- Child", name);
+    logChildren(node->mChildren[i], level + 1);
+  }
 }

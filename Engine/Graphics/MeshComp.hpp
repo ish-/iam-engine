@@ -5,6 +5,7 @@
 #include <glm/vec3.hpp>
 #include "../Actor.hpp"
 #include "../ILifecycle.hpp"
+#include "MeshStorage.hpp"
 
 using namespace std;
 
@@ -23,13 +24,18 @@ public:
     bool wireframe = false;
     bool invertNormals = false;
 
-    JSON_DEFINE_OPTIONAL(Conf, tint, visible, shaded, wireframe, invertNormals);
+    string path = "";
+
+    JSON_DEFINE_OPTIONAL(Conf, tint, visible, shaded, wireframe, invertNormals, path);
   };
 
   Conf conf;
 
   MeshComp(): AComp() {}
-  MeshComp(const Conf& conf): conf(conf), AComp() {}
+  MeshComp(const Conf& conf): conf(conf), AComp() {
+    if (conf.path.length() > 0)
+      geo = MeshStorage::get().loadModel(conf.path);
+  }
 
   shared_ptr<Shader> shader;
   shared_ptr<Geo> geo;

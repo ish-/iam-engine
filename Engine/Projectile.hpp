@@ -33,6 +33,7 @@ public:
 
     auto meshComp = scene->newComp<MeshComp>(shared_from_this());
     meshComp->scale(.2);
+    conf.physics.shapeSize = btVector3(.2f, .2f, .2f);
 
     phyComp = scene->newComp<PhysicsComp>(shared_from_this(), conf.physics);
     phyComp->rigidBody->setCcdMotionThreshold(0.1f);
@@ -40,6 +41,7 @@ public:
   }
 
   virtual void update(const float& dt) override {
+    bool toRelease = false;
     if (auto contact = phyComp->getContact()) {
       auto* otherPhyComp = PhysicsComp::fromBody(contact.body1);
 
@@ -54,8 +56,11 @@ public:
       }
 
       if (conf.releaseOnContact)
-        return release();
+        toRelease = true;
     }
+
+    if (toRelease)
+      return release();
 
     if (createdAt > 0.f && createdAt + conf.timeToLive < Time::get().eT)
       return release();

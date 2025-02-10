@@ -1,6 +1,5 @@
 #pragma once
 #include <iostream>
-#include <filesystem>
 
 #ifndef COUT_DISABLE
 	#define COUT_ENABLED
@@ -24,9 +23,6 @@
 	inline void print_arg(const std::string& arg) {
 		std::cout << arg << " ";
 	}
-	inline void print_arg(const std::filesystem::path& arg) {
-		std::cout << arg.string() << " ";
-	}
 	// > WIN32 FIX
 
 	template <typename... T>
@@ -38,6 +34,8 @@
 
 	#ifndef LOG_DISABLE
 		#define LOG(...) _LOG(__VA_ARGS__)
+		#define LOG_FATAL(...) _LOG(CRED("[FATAL]"), __VA_ARGS__); exit(1);
+		// #define ASSERT_FATAL(EXPR, ...) if (EXPR) LOG_FATAL(__VA_ARGS__)
 
 		template <typename... T>
 		inline void _LOG (const char* title, T&&... args) {

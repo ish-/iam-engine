@@ -1,6 +1,6 @@
 #pragma once
 
-#include <memory>
+// #include <memory>
 #include <unordered_map>
 #include <iostream>
 #include <string>
@@ -16,7 +16,7 @@
 #include <glm/gtx/matrix_decompose.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-// #include "common/memory.hpp"
+#include "common/memory.hpp"
 #include "common/file.hpp"
 #include "common/json.hpp"
 #include "common/LOG.hpp"

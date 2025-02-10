@@ -17,7 +17,7 @@
 #include "Light.hpp"
 #include "Time.hpp"
 #include "Graphics/MeshComp.hpp"
-#include "Graphics/MeshModelComp.hpp"
+// #include "Graphics/MeshModelComp.hpp"
 using namespace std;
 using namespace nlohmann;
 
@@ -78,9 +78,9 @@ void Scene::init() {
   compCtors["MeshComp"] = [this](const sp<Actor>& actor, const json& compJson) {
     return newComp<MeshComp>(actor, compJson.get<MeshComp::Conf>());
   };
-  compCtors["MeshModelComp"] = [this](const sp<Actor>& actor, const json& compJson) {
-    return newComp<MeshModelComp>(actor, compJson.get<MeshModelComp::Conf>());
-  };
+  // compCtors["MeshModelComp"] = [this](const sp<Actor>& actor, const json& compJson) {
+  //   return newComp<MeshModelComp>(actor, compJson.get<MeshModelComp::Conf>());
+  // };
 }
 
 void Scene::drawGui () {

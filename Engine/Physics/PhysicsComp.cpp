@@ -3,7 +3,6 @@
 #include "../Actor.hpp"
 #include "PhysicsComp.hpp"
 #include "Graphics/MeshComp.hpp"
-#include "Graphics/MeshModelComp.hpp"
 // #include "../common/LOG.hpp"
 #include "../common/random.hpp"
 #include "Collisions.hpp"
@@ -28,7 +27,6 @@ void PhysicsComp::init () {
   // }
   sp<MeshComp> meshComp = getOwner()->getComp<MeshComp>();
   if (params.shapeType == "TRIANGULATE_SHAPE") {
-    meshComp = getOwner()->getComp<MeshModelComp>();
     shape = Collisions::createTriMeshShape(meshComp->geo->data);
     meshComp->geo->clearData();
   }

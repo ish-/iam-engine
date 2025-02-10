@@ -11,7 +11,7 @@
       "name": "lvl_box",
       "comps": [
         {
-          "type": "MeshModelComp",
+          "type": "MeshComp",
           "path": "resources/models/lvl_box.obj",
           "exposeData": true,
           "merge": true,
