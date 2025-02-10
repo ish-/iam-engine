@@ -15,27 +15,42 @@
 
 #include "Camera.hpp"
 #include "Light.hpp"
+#include "Time.hpp"
 #include "Graphics/MeshComp.hpp"
 #include "Graphics/MeshModelComp.hpp"
 using namespace std;
 using namespace nlohmann;
 
 void Scene::update(float dt) {
+  // update components per systems
+  for (auto& [sysType, system] : systems)
+    system->update(compsBySystem[sysType], dt);
+
+  // update actors and clear
   size_t actorsNum = actors.size();
-  for (size_t i = 0; i < actorsNum; ++i) {
+  for (size_t i = 0; i < actorsNum; i++) {
     auto& actor = actors[i];
-    // if (actor->isDestroyed()) {
-    //   actors.erase(actors.begin() + i);
-    //   --i;
-    //   --actorsNum;
-    // }
-    // else
-      actor->update(dt);
+    if (actor->isReleased()) {
+      actors.erase(actors.begin() + i);
+      actorsNum--;
+      i--;
+      continue;
+    }
+    actor->update(dt);
   }
 
-  for (auto& [sysType, wpSystem] : systems) {
-    if (auto system = wpSystem.lock())
-      system->update(compsBySystem[sysType], dt);
+  // clear compsBySystem once per second one per frame
+  auto time = Time::get();
+  size_t systemsNum = compsBySystem.size();
+  size_t sysIdx = time.frame % 60;
+  if (sysIdx < systemsNum) {
+    auto it = compsBySystem.begin();
+    std::advance(it, sysIdx);
+    auto wComps = it->second;
+    wComps.erase(
+      std::remove_if(wComps.begin(), wComps.end(),
+      [](const auto& wComp) { return wComp.expired(); }),
+      wComps.end());
   }
 }
 

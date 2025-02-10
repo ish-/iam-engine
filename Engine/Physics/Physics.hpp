@@ -43,7 +43,7 @@ public:
 
   bool init ();
 
-  virtual void update (const vector<shared_ptr<AComp>>& comps, const float& dt) override;
+  virtual void update (const vector<weak_ptr<AComp>>& comps, const float& dt) override;
 
   void deinit ();
 

@@ -26,7 +26,9 @@ btScalar ContactCallback::addSingleResult(
   btVector3 relativeVelocity = velocity0 - velocity1;
   float impactSpeed = relativeVelocity.length();
   float penetrationDepth = cp.m_distance1;
-  float impactForce = body0->getMass() * body1->getMass() * impactSpeed;
+  float impactForce = 0;
+  if (body0 && body1)
+    impactForce = body0->getMass() * body1->getMass() * impactSpeed;
 
   result.normal = cp.m_normalWorldOnB;
   result.velocity0 = velocity0;

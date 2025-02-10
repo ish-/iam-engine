@@ -80,7 +80,9 @@ public:
       LOG("getActorByName: Actor not found", name);
       return nullptr;
     }
-    return it->second;
+    if (auto actor = it->second.lock())
+      return actor;
+    return nullptr;
   }
 
   virtual void init() override;
@@ -89,10 +91,9 @@ public:
   virtual void drawGui ();
 
   vector<sp<Actor>> actors{};
-  unordered_map<string, sp<Actor>> actorsByName{};
-  // TODO: remake to weak_ptr
-  unordered_map<Symbol, vector<shared_ptr<AComp>>> compsBySystem;
-  unordered_map<Symbol, weak_ptr<ASystem>> systems;
+  unordered_map<string, wp<Actor>> actorsByName{};
+  unordered_map<Symbol, vector<wp<AComp>>> compsBySystem;
+  unordered_map<Symbol, sp<ASystem>> systems;
   void _addCompToActor (const sp<Actor>& actor, const type_index& typeId, const sp<AComp>& comp);
 
   // using ConstructorFunc = sp<Actor>(*)(class nlohmann::json);

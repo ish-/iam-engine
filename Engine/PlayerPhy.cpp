@@ -54,14 +54,14 @@ void PlayerPhy::update(const float &dt)
 {
   if (Inputs::get().btnRel[SDLK_SPACE] > 0.) {
     Transform transform = Transform(getAbsTransformMatrix());
-    auto forward = transform.getForward() * vec3(0., 0., -1.);
+    auto forward = transform.getForward();
     transform.translate(forward);
 
     getScene()->newActor<Projectile>((Projectile::Conf){
       .transform = transform.getTransformMatrix(),
       .physics = (PhysicsComp::Params){
         .shapeType = "SPHERE_SHAPE",
-        .mass = .1,
+        .mass = .01,
         .initialImpulse = btVector3(forward.x, forward.y, forward.z) * 100.f,
       }
     });

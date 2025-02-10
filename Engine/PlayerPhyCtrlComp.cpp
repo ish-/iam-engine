@@ -29,7 +29,7 @@ void PlayerPhyCtrlComp::update (float dt) {
   if (pan != 0 || tilt != 0 || dolly != 0) {
     vec3 move = { pan, tilt, dolly };
 
-    phyComp->applyForce(owner->getForward() * move * this->moveForce * vec3(3.) * vec3(boost));
+    phyComp->applyForce(owner->getForwardQuat() * move * this->moveForce * vec3(3.) * vec3(boost));
   }
 
   if (bool mouseLocked = inputs.mouseLock(Bool::GET)) {
@@ -39,7 +39,7 @@ void PlayerPhyCtrlComp::update (float dt) {
     if (pitch != 0 || yaw != 0 || roll != 0) {
       vec3 rotate = -vec3(pitch, yaw, roll);
       // movementCtrl->applyTorque(rotate * vec3(10.));
-      phyComp->applyTorque(owner->getForward() * rotate * this->rotateForce / vec3(100.));
+      phyComp->applyTorque(owner->getForwardQuat() * rotate * this->rotateForce / vec3(100.));
     }
   }
 }

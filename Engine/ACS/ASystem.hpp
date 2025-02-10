@@ -28,10 +28,10 @@ public:
     return NO_SYSTEM;
   }
 
-  virtual void update(const vector<shared_ptr<AComp>>& comps, const float& dt) {
-    // for (auto& comp : getComps()) {
-    for (auto& comp : comps) {
-      comp->update(dt);
+  virtual void update(const vector<weak_ptr<AComp>>& comps, const float& dt) {
+    for (auto& wComp : comps) {
+      if (auto comp = wComp.lock())
+        comp->update(dt);
     }
   }
 };

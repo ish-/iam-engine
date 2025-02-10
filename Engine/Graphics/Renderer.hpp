@@ -60,7 +60,7 @@ public:
   void render(shared_ptr<MeshComp> mesh);
   void renderComps();
 
-  virtual void update(const vector<shared_ptr<AComp>>& comps, const float& dt) override;
+  virtual void update(const vector<weak_ptr<AComp>>& comps, const float& dt) override;
 
   // TODO: pass by ref
   void setShaderViewProjection(shared_ptr<Shader> shader);

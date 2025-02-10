@@ -124,8 +124,11 @@ void Transform::rotateEulLocal(const vec3& eulerAngs) {
   rotateLocal(radians(eulerAngs));
 }
 
-quat Transform::getForward() const {
+quat Transform::getForwardQuat() const {
   return quat_cast(mat3(matrix));
+}
+vec3 Transform::getForward() const {
+  return getForwardQuat() * vec3(0, 0, -1);
 }
 
 void Transform::setMatrix(const mat4& _matrix) { matrix = _matrix; }

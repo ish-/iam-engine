@@ -72,6 +72,10 @@
         "typeinfo": "cpp",
         "unordered_set": "cpp",
         "variant": "cpp",
-        "cassert": "cpp"
+        "cassert": "cpp",
+        "__availability": "cpp",
+        "semaphore": "cpp",
+        "*.tcc": "cpp",
+        "filesystem": "cpp"
     }
 }

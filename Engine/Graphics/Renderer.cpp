@@ -119,15 +119,14 @@ void Renderer::init (SDL_Window* sdlWindow) {
 }
 
 
-void Renderer::update (const vector<shared_ptr<AComp>>& comps, const float& dt) {
+void Renderer::update (const vector<weak_ptr<AComp>>& comps, const float& dt) {
   // LOG("Renderer::renderComps");
   setFrameData();
 
   // auto comps = getComps();
-  for (auto& comp : comps) {
-    // if (auto aliveComp = comp.lock()) {
-    if (auto aliveComp = comp) {
-      shared_ptr<MeshComp> meshComp = dynamic_pointer_cast<MeshComp>(aliveComp);
+  for (auto& wComp : comps) {
+    if (auto comp = wComp.lock()) {
+      shared_ptr<MeshComp> meshComp = dynamic_pointer_cast<MeshComp>(comp);
       if (meshComp) {
         render(meshComp);
       }

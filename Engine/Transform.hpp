@@ -37,7 +37,8 @@ public:
   Transform (const Conf& _conf) { setTransformConf(_conf); }
 
   virtual mat4 getTransformMatrix () const;
-  quat getForward() const;
+  quat getForwardQuat() const;
+  vec3 getForward() const;
 
   void setTransformConf (const Conf& _conf);
   Conf getTransformConf() const;
