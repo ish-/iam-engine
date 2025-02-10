@@ -8,4 +8,5 @@ public:
   virtual void load() {};
   virtual void update (const float& dt) {};
   virtual void release() {};
+  virtual bool isReleased () { return false; };
 };

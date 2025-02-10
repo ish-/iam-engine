@@ -22,6 +22,7 @@
 #include "common/LOG.hpp"
 #include "SDL3/SDL_opengl.h"
 #include "IEngine.hpp"
+#include "Game.hpp"
 // r
 
 Engine::Engine()
@@ -54,6 +55,8 @@ void Engine::initSystems() {
   if (auto err = glGetError()) {
     LOG("GL ERROR!", err); return; }
   // world = std::make_shared<World>(*this);
+
+  game->init();
 }
 
 
@@ -102,6 +105,7 @@ void Engine::run() {
         ImGui::Checkbox("Wireframes", &renderer.wireframes);
         ImGui::Checkbox("Shading", &renderer.shading);
         ImGui::Checkbox("Collisions", &physics.drawDebug);
+        ImGui::SliderFloat("Sim Speed", &physics.conf.speed, 0.0, 10);
       ImGui::End();
 
       // ImGui::ShowDemoWindow();
@@ -113,7 +117,7 @@ void Engine::run() {
         renderer.render(physics.debugGetMesh());
       }
 
-      // game->drawGui();
+      game->drawGui();
 
       gui.endFrame();
       SDL_GL_SwapWindow(window.sdlWindow);

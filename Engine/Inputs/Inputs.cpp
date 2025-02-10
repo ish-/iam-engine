@@ -20,10 +20,21 @@ void Inputs::processMouse(const SDL_Event& event) {
   mouse.rb = rb;
   mouse.x = x;
   mouse.y = y;
+
+  auto w = Window::get();
+  mouseNorm.x = x / w.width;
+  mouseNorm.y = y / w.height;
+
+  mouseClip.x = lerp(-1, 1, mouseNorm.x);
+  mouseClip.y = lerp(-1, 1, mouseNorm.y);
 }
 
 bool Inputs::mouseLock(SDL_Window* sdlWindow, bool lock) {
-  if (!SDL_SetWindowRelativeMouseMode(sdlWindow, lock)) {
+  // if (!SDL_SetWindowRelativeMouseMode(sdlWindow, lock)) {
+  //   LOG("Cant lock cursor", SDL_GetError(), sdlWindow);
+  //   return false;
+  // }d
+  if (!(lock ? SDL_HideCursor() : SDL_ShowCursor())) {
     LOG("Cant lock cursor", SDL_GetError(), sdlWindow);
     return false;
   }
@@ -37,7 +48,7 @@ bool Inputs::mouseLock(Bool lock) {
   bool _lock = bool(lock);
   if (TOGGLE == lock)
     _lock = !mouseLocked;
-    
+
   if (mouseLock(Window::get().sdlWindow, _lock))
     mouseLocked = _lock;
   return mouseLocked;

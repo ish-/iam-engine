@@ -53,6 +53,7 @@ public:
   static btGImpactMeshShape *createTriGImpactMeshShape(const Geo::Data &data) {
     auto* shape = new btGImpactMeshShape(createTriangleMesh(data));
     shape->updateBound();
+    return shape;
   }
 
   static btBvhTriangleMeshShape *createTriMeshShape(const Geo::Data &data) {

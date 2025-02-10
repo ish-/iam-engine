@@ -34,12 +34,11 @@ public:
 
   void exit();
 
-  template<typename GameType = ILifecycle>
+  template<typename GameType>
   void init () {
-    initSystems();
-
     game = std::make_shared<GameType>();
-    game->init();
+
+    initSystems();
   }
 
   void initSystems();
@@ -68,5 +67,5 @@ public:
 //     scene = nextScene;
 //   }
 
-  sp<ILifecycle> game;
+  sp<class Game> game;
 };

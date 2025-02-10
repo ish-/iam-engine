@@ -7,7 +7,9 @@
 
 #include "Inputs/Inputs.hpp"
 #include "Physics/PhysicsComp.hpp"
+#include "HealthComp.hpp"
 #include "PlayerPhyCtrlComp.hpp"
+#include "GunComp.hpp"
 #include "Projectile.hpp"
 #include "Camera.hpp"
 #include "Light.hpp"
@@ -29,7 +31,7 @@ void PlayerPhy::init () {
   auto light = scene.get()->newActor<Light>((Light::Conf){
     // .color = vec3(1., 1., .7),
     // .intensity = 1.,
-    .attenuation = vec2(20, 30.),
+    .attenuation = vec2(10, 30.),
   });
   attach(light);
 
@@ -40,33 +42,37 @@ void PlayerPhy::init () {
     .pos = btVector3(posMat[3][0], posMat[3][1], posMat[3][2]),
     .mass = 1.,
     .damping = vec2(.3, .3),
-    .group = PhysicsComp::PLAYER,
+  // .group = PhysicsComp::PLAYER,
     // .initialImpulse = btVector3(rd::in(-10,10), rd::in(-10,10), rd::in(-10,10)),
   };
-  phyComp = scene->newComp<PhysicsComp>(shared_from_this(), createParams);
+  phyComp = scene->newComp<PhysicsComp>(shared(), createParams);
 
-  ctrlComp = scene->newComp<PlayerPhyCtrlComp>(shared_from_this());
+  ctrlComp = scene->newComp<PlayerPhyCtrlComp>(shared());
 
-  scene->player = shared_from_this();
+  scene->newComp<HealthComp>(shared(), HealthComp::Conf{
+    .regen = .03,
+    .takeDamageCallback = [](const float& damage, sp<Actor> actor) {
+      std::cout << "Player took " << damage << " damage" << endl;
+    },
+  });
+
+  gunComp = scene->newComp<GunComp>(shared());
+
+  scene->player = shared();
 }
 
+#include <imgui.h>
 void PlayerPhy::update(const float &dt)
 {
-  if (Inputs::get().btnRel[SDLK_SPACE] > 0.) {
-    Transform transform = Transform(getAbsTransformMatrix());
-    auto forward = transform.getForward();
-    transform.translate(forward);
-
-    getScene()->newActor<Projectile>((Projectile::Conf){
-      .transform = transform.getTransformMatrix(),
-      .damage = .26,
-      .physics = (PhysicsComp::Params){
-        .shapeType = "SPHERE_SHAPE",
-        .mass = .1,
-        .initialImpulse = btVector3(forward.x, forward.y, forward.z) * 100.f,
-      }
-    });
-  }
+  if (Inputs::get().btnRel[SDLK_SPACE] > 0.)
+    gunComp->shoot();
 
   Actor::update(dt);
+
+  ImGui::SetNextWindowPos(ImVec2(20, 20));
+  ImGui::SetNextWindowSize(ImVec2(200, 50));
+  ImGui::Begin("HUD", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
+  ImGui::Text("Health:");
+  ImGui::ProgressBar(getComp<HealthComp>()->conf.health, ImVec2(180, 20));
+  ImGui::End();
 }

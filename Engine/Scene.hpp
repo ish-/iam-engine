@@ -68,10 +68,6 @@ public:
     return addComp<ACompType>(actor, comp);
   }
 
-  void sayHello () {
-    LOG("Hello from Scene");
-  }
-
   void loadJson (string path);
 
   sp<Actor> getActorByName(string name) {

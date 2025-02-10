@@ -28,7 +28,7 @@ public:
     virtual void init() {};
 
     ~AComp () {
-        std::cout << "~AComp()\n";
+        // std::cout << "~AComp()\n";
     }
 
 private:

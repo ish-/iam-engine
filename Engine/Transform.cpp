@@ -85,6 +85,14 @@ void Transform::setRotationEul(const vec3& eulerAngles) {
   return setRotation(radians(eulerAngles), false);
 }
 
+void Transform::setRotationQuat(const quat q) {
+  vec3 scale = getScale();
+  mat4 transform = glm::mat4_cast(q);
+  transform[3] = glm::vec4(getPosition(), 1.0f);
+  glm::scale(transform, scale);
+  setMatrix(transform);
+}
+
 void Transform::setRotationLocal(const vec3& angles) {
   vec3 translation = vec3(matrix[3]);
   quat quater = quat(angles);

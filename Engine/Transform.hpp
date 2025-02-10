@@ -57,6 +57,7 @@ public:
 
   quat getRotation() const;
   vec3 getRotationEul() const;
+  void setRotationQuat(const quat q);
 
   void setRotation(const vec3& angles, bool updateConf = true);
   void setRotationEul(const vec3& eulerAngles);

@@ -31,6 +31,9 @@ public:
   virtual ~Actor();
   virtual string getActorClassName() { return "Actor"; }
 
+  template<typename A = Actor>
+  sp<A> shared() { return shared_from_this(); }
+
   Actor () {
     LOG("\n-- NEW ACTOR", id);
   };
@@ -40,6 +43,7 @@ public:
 
   vector<shared_ptr<Actor>> children;
   weak_ptr<Actor> parent;
+  weak_ptr<Actor> instigator;
   void attach(const shared_ptr<Actor>& child);
   shared_ptr<Actor> getParent() const;
 
@@ -56,8 +60,8 @@ public:
   unsigned int id = Actor::getId();
   string name = "";
 
-  virtual void init();
-  virtual void update(const float& dt);
+  virtual void init() override;
+  virtual void update(const float& dt) override;
 
   sp<Scene> getScene () { return scene.lock(); }
   wp<Scene> scene;
@@ -108,8 +112,8 @@ public:
   //     {"comps", jComps}
   //   };
   // };
-  virtual void release () { _released = true; }
-  virtual bool isReleased () { return _released; }
+  virtual void release () override { _released = true; }
+  virtual bool isReleased () override { return _released; }
 
 private:
 

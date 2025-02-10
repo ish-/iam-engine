@@ -27,7 +27,7 @@ public:
     PLAYER = 1 << 0,
     ENEMY  = 1 << 1,
     WALL   = 1 << 2,
-    OBJECT   = 1 << 2,
+    OBJECT   = 1 << 3,
     DEFAULT_MASK   = PLAYER | ENEMY | WALL | OBJECT,
     WALL_MASK = PLAYER | ENEMY | OBJECT,
   };
@@ -36,11 +36,12 @@ public:
     std::string shapeType = "BOX_SHAPE";
     btVector3 shapeSize = {.5, .5, .5};
     btVector3 pos {0,0,0};
-    float mass = 0.;
+    float mass = 0;
     glm::vec2 damping = {0.,0.};
     btVector3 initialImpulse {0,0,0};
     btVector3 initialTorque {0,0,0};
     btVector3 intertia {0,0,0};
+    float friction = 0;
     // btVector3 initialImpulsePos {0,0,0};
     // float restitution = 0.5;
     // float friction = 0.5;

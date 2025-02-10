@@ -12,4 +12,8 @@ namespace rd {
   static float in (float min, float max) {
     return min + f() * (max - min);
   }
+
+  static glm::vec3 vec3in (float min, float max) {
+    return glm::vec3(in(min, max), in(min, max), in(min, max));
+  }
 }

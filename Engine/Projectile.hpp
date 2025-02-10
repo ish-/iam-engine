@@ -10,12 +10,12 @@ class Projectile : public Actor {
 public:
   string getActorClassName() override { return "Projectile"; }
   struct Conf : public PhysicsComp::Params {
-    glm::mat4 transform = glm::mat4(1.);
+    glm::mat4 transform = glm::mat4(1.f);
     // glm::vec3 initialVelocity = glm::vec3(0, 0, -10);
     PhysicsComp::Params physics;
     float timeToLive = 5.f;
     bool releaseOnContact = true;
-    float damage = .5;
+    float damage = .5f;
   };
   Conf conf;
 
@@ -35,9 +35,10 @@ public:
     meshComp->scale(.2);
     conf.physics.shapeSize = btVector3(.2f, .2f, .2f);
 
+    // conf.physics.mask = PhysicsComp::PLAYER;
     phyComp = scene->newComp<PhysicsComp>(shared_from_this(), conf.physics);
-    phyComp->rigidBody->setCcdMotionThreshold(0.1f);
-    phyComp->rigidBody->setCcdSweptSphereRadius(0.2f);
+    phyComp->rigidBody->setCcdMotionThreshold(0.03f);
+    phyComp->rigidBody->setCcdSweptSphereRadius(0.1f);
   }
 
   virtual void update(const float& dt) override {
@@ -45,15 +46,16 @@ public:
     if (auto contact = phyComp->getContact()) {
       auto* otherPhyComp = PhysicsComp::fromBody(contact.body1);
 
-      if (otherPhyComp->params.group == PhysicsComp::ENEMY) {
+      string instigatorName = "__";
+      if (auto ins = instigator.lock())
+        instigatorName = ins->name;
+      LOG("Projectile hit ", bool(contact), instigatorName, otherPhyComp->getOwner()->name);
+      // if (otherPhyComp->params.group == PhysicsComp::ENEMY) {
         auto enemy = otherPhyComp->getOwner();
 
-        if (auto eMeshComp = enemy->getComp<MeshComp>())
-          eMeshComp->conf.tint = glm::vec3(1, 0, 0);
-
         if (auto eHealthComp = enemy->getComp<HealthComp>())
-          eHealthComp->takeDamage(conf.damage);
-      }
+          eHealthComp->takeDamage(conf.damage, shared());
+      // }
 
       if (conf.releaseOnContact)
         toRelease = true;

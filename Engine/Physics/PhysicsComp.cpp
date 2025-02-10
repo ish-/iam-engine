@@ -64,6 +64,7 @@ void PhysicsComp::init () {
     btRigidBody::btRigidBodyConstructionInfo rigidBodyCI(params.mass, isDynamic ? motionState : nullptr, shape, params.intertia);
     rigidBody = new btRigidBody(rigidBodyCI);
     rigidBody->setDamping(params.damping.x, params.damping.y);
+    rigidBody->setFriction(params.friction);
 
     if (params.initialImpulse != btVector3_ZERO)
       rigidBody->applyCentralForce(params.initialImpulse);
@@ -82,7 +83,7 @@ void PhysicsComp::init () {
 }
 
 PhysicsComp::~PhysicsComp () {
-  LOG("~PhysicsComp ()");
+  // LOG("~PhysicsComp ()");
   auto& physics = Physics::get();
   physics.dynamicsWorld->removeRigidBody(rigidBody);
 

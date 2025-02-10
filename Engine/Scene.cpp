@@ -87,7 +87,7 @@ void Scene::drawGui () {
 
 }
 void Scene::_addCompToActor (const sp<Actor>& actor, const type_index& typeId, const sp<AComp>& comp) {
-  LOG("Scene::addComp", actor->name, actor->id, typeId.name());
+  // LOG("Scene::addComp", actor->name, actor->id, typeId.name());
   actor->comps[typeId] = comp;
   comp->setOwner(actor);
 }

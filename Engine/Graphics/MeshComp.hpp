@@ -49,5 +49,7 @@ public:
   // TODO: cache it since it's not update()d
   mat4 getAbsTransformMatrix() const;
 
-  ~MeshComp () { LOG("~Mesh()"); }
+  ~MeshComp () {
+    // LOG("~MeshComp()");
+  }
 };

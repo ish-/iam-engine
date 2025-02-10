@@ -33,11 +33,11 @@ void PlayerPhyCtrlComp::update (const float& dt) {
   }
 
   if (bool mouseLocked = inputs.mouseLock(Bool::GET)) {
-    float pitch = inputs.mouseRel.y; // pitch
-    float yaw = (1 - inputs.btn[SDLK_LSHIFT]) * inputs.mouseRel.x;  // yaw
-    float roll = inputs.btn[SDLK_LSHIFT] * inputs.mouseRel.x; // roll
+    float pitch = inputs.mouseClip.y; // pitch
+    float yaw = (1 - inputs.btn[SDLK_LSHIFT]) * inputs.mouseClip.x;  // yaw
+    float roll = inputs.btn[SDLK_LSHIFT] * inputs.mouseClip.x; // roll
     if (pitch != 0 || yaw != 0 || roll != 0) {
-      vec3 rotate = -vec3(pitch, yaw, roll);
+      vec3 rotate = -vec3(pitch, yaw, roll) * vec3(10.);
       // movementCtrl->applyTorque(rotate * vec3(10.));
       phyComp->applyTorque(owner->getForwardQuat() * rotate * this->rotateForce / vec3(100.));
     }

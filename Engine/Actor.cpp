@@ -15,13 +15,14 @@ mat4 Actor::getAbsTransformMatrix() const {
 }
 
 void Actor::init () {
-  LOG("Actor::init()", getActorClassName(), "\"" + name + "\"");
+  // LOG("Actor::init()", getActorClassName(), "\"" + name + "\"");
 }
 
 void Actor::setName (std::string desiredName) {
   if (auto scene = getScene()) {
     if (auto existing = scene->getActorByName(desiredName))
       desiredName = incrementTrailingDigits(existing->name);
+    name = desiredName;
     if (!name.empty())
       scene->actorsByName.erase(name);
     scene->actorsByName[desiredName] = shared_from_this();
@@ -46,7 +47,7 @@ void Actor::update(const float& dt) {
 }
 
 Actor::~Actor() {
-  LOG("~Actor()", name);
+  // LOG("~Actor()", name);
   comps.clear();
   children.clear();
 }

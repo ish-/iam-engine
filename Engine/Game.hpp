@@ -10,7 +10,9 @@ public:
 
   virtual void update (const float& dt) override;
 
-  virtual void drawGui() {};
+  virtual void drawGui() {
+    scene->drawGui();
+  };
 
   template<typename SceneType = Scene>
   sp<Scene> newScene () {

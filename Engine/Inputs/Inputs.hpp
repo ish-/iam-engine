@@ -34,6 +34,8 @@ public:
   MouseState mouse;
   bool mouseLocked = false;
   MouseState mouseRel;
+  glm::vec2 mouseNorm;
+  glm::vec2 mouseClip;
 
   void startFrame () {
     mouseRel = {0, 0, 0, 0};

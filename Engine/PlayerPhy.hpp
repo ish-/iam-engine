@@ -6,6 +6,8 @@
 
 class PhysicsComp;
 class PlayerPhyCtrlComp;
+class GunComp;
+
 class btRigidBody;
 class btVector3;
 
@@ -23,7 +25,10 @@ public:
 
   std::shared_ptr<PhysicsComp> phyComp;
   std::shared_ptr<PlayerPhyCtrlComp> ctrlComp;
+  std::shared_ptr<GunComp> gunComp;
 
   virtual void init() override;
   virtual void update(const float& dt) override;
+
+  void shoot ();
 };

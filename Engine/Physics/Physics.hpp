@@ -30,6 +30,11 @@ public:
   static glm::mat4 toGlmTMat4 (const class btRigidBody* body);
   static glm::mat4 toGlmTMat4 (const class btTransform& transform);
 
+  struct Conf {
+    float speed = 1.f;
+  };
+  Conf conf;
+
   Physics () { }
 
   class btBroadphaseInterface* broadphase = nullptr;
