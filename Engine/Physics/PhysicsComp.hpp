@@ -75,7 +75,7 @@ public:
   btVector3* inertia;
 
   // template<typename Shape = btBoxShape>
-  bool init ();
+  virtual void init () override;
   virtual void update(float dt) override;
 
   glm::mat4 getGlmTMat4 ();

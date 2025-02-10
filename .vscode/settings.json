@@ -76,6 +76,8 @@
         "__availability": "cpp",
         "semaphore": "cpp",
         "*.tcc": "cpp",
-        "filesystem": "cpp"
+        "filesystem": "cpp",
+        "random": "cpp",
+        "format": "cpp"
     }
 }

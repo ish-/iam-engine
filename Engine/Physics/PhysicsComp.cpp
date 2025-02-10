@@ -16,7 +16,7 @@
 // }
 
 // template<typename Shape>
-bool PhysicsComp::init () {
+void PhysicsComp::init () {
   // if constexpr (std::is_same<Shape, btBoxShape>::value) {
   //   shape = new btBoxShape(params.size);
   // } else if constexpr (std::is_same<Shape, btSphereShape>::value) {
@@ -81,7 +81,6 @@ bool PhysicsComp::init () {
     rigidBody->setCollisionFlags(btCollisionObject::CF_STATIC_OBJECT | btCollisionObject::CF_CUSTOM_MATERIAL_CALLBACK);
 
   rigidBody->setUserPointer(this);
-  return true;
 }
 
 PhysicsComp::~PhysicsComp () {

@@ -27,8 +27,8 @@ void PlayerPhy::init () {
   }
 
   auto light = scene.get()->newActor<Light>((Light::Conf){
-    .color = vec3(1., 1., .7),
-    .intensity = 1.,
+    // .color = vec3(1., 1., .7),
+    // .intensity = 1.,
     .attenuation = vec2(20, 30.),
   });
   attach(light);
@@ -59,9 +59,10 @@ void PlayerPhy::update(const float &dt)
 
     getScene()->newActor<Projectile>((Projectile::Conf){
       .transform = transform.getTransformMatrix(),
+      .damage = .26,
       .physics = (PhysicsComp::Params){
         .shapeType = "SPHERE_SHAPE",
-        .mass = .01,
+        .mass = .1,
         .initialImpulse = btVector3(forward.x, forward.y, forward.z) * 100.f,
       }
     });

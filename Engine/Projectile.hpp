@@ -4,16 +4,18 @@
 #include <glm/vec3.hpp>
 #include <glm/mat4x4.hpp>
 #include "Physics/PhysicsComp.hpp"
+#include "HealthComp.hpp"
 
 class Projectile : public Actor {
 public:
-string getActorClassName() override { return "Projectile"; }
+  string getActorClassName() override { return "Projectile"; }
   struct Conf : public PhysicsComp::Params {
     glm::mat4 transform = glm::mat4(1.);
     // glm::vec3 initialVelocity = glm::vec3(0, 0, -10);
     PhysicsComp::Params physics;
     float timeToLive = 5.f;
     bool releaseOnContact = true;
+    float damage = .5;
   };
   Conf conf;
 
@@ -39,8 +41,18 @@ string getActorClassName() override { return "Projectile"; }
 
   virtual void update(const float& dt) override {
     if (auto contact = phyComp->getContact()) {
-      // auto* other = PhysicsComp::fromBody(contact.body1);
-      // LOG("Projectile hit ", other->getOwner()->name);
+      auto* otherPhyComp = PhysicsComp::fromBody(contact.body1);
+
+      if (otherPhyComp->params.group == PhysicsComp::ENEMY) {
+        auto enemy = otherPhyComp->getOwner();
+
+        if (auto eMeshComp = enemy->getComp<MeshComp>())
+          eMeshComp->conf.tint = glm::vec3(1, 0, 0);
+
+        if (auto eHealthComp = enemy->getComp<HealthComp>())
+          eHealthComp->takeDamage(conf.damage);
+      }
+
       if (conf.releaseOnContact)
         return release();
     }

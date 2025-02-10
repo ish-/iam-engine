@@ -20,7 +20,7 @@ public:
 
   PlayerPhyCtrlComp ();
 
-  void init ();
+  virtual void init () override;
 
   void update (float dt) override;
 };
