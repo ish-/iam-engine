@@ -75,8 +75,8 @@ void GLAPIENTRY GLDebugMessageCallback(GLenum Source,
 }
 
 void Renderer::init (SDL_Window* sdlWindow) {
-  SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-  SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
+  SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
+  SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
   SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
   SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_DEBUG_FLAG);
   // SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1);
@@ -101,8 +101,9 @@ void Renderer::init (SDL_Window* sdlWindow) {
   glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
   glClearDepthf(1.0f);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-  // glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+  
+  glEnable(GL_BLEND);
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
   // glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
 
   // deprecated
@@ -113,6 +114,9 @@ void Renderer::init (SDL_Window* sdlWindow) {
   // glMinSampleShading(8);
   // if (auto err = glGetError())
   //   LOG("INIT GL ERROR: ", err);
+
+  // glEnable(GL_CULL_FACE);
+  // glCullFace(GL_BACK); 
 
   defaultShader = PhongShader::getPtr();
   setShader(defaultShader);

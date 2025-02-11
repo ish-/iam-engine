@@ -6,11 +6,13 @@ layout (location = 1) in vec3 aNormal;
 uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
+uniform vec3 viewPos;
 
 uniform float normalsMult;
 
 out vec3 vFragPos;
 out vec3 vNormal;
+out float vBlendFace;
 
 void main() {
 	vFragPos = vec3(model * vec4(aPos, 1.0));
@@ -18,5 +20,7 @@ void main() {
 	// vNormal = aNormal;
 	// TexCoords = aTexCoords;
 
-	gl_Position = projection * view * vec4(vFragPos, 1.0);
+	vec4 pos = projection * view * vec4(vFragPos, 1.0);
+	vBlendFace = step(dot(vNormal, pos.xyz - viewPos), 0);
+	gl_Position = pos;
 }

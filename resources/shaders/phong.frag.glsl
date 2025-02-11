@@ -5,6 +5,7 @@ out vec4 FragColor;
 in vec3 vFragPos;
 in vec3 vNormal;
 // in vec2 TexCoords;
+in float vBlendFace;
 
 struct Light {
   vec3 pos;
@@ -89,6 +90,7 @@ void main()
 		// float inside = 1 - step(0, dot(viewDir, norm));
     // FragColor = vec4(result, inside * .3);
     LIGHTING = mix(LIGHTING, vec3(1.), wireframes);
+    // FragColor = vec4(LIGHTING, vBlendFace);
     FragColor = vec4(LIGHTING, 1.);
     // FragColor = vec4(lightsNum / vec3(3), 1.);
 		// FragColor = vec4(1.0);

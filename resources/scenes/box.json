@@ -2,10 +2,11 @@
   "actors": [
     {
       "type": "ACube",
-      "name": "test-cube",
-      "comps": [
-        { "type": "PhysicsComp", "mass": 1 }
-      ]
+      "scale": [10, 10, 10],
+      "name": "test-cube"
+      // "comps": [
+      //   { "type": "PhysicsComp", "mass": 1 }
+      // ]
     },
     {
       "name": "lvl_box",
