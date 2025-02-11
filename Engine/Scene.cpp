@@ -4,10 +4,14 @@
 #include "common/json.hpp"
 #include "Actor.hpp"
 #include "ACube.hpp"
+#include <imgui.h>
 // #include "ACS/ASystem.hpp"
 #include "Graphics/Renderer.hpp"
+#include "Graphics/Window.hpp"
 #include "Physics/Physics.hpp"
+#include "Inputs/Inputs.hpp"
 #include "Physics/PhysicsComp.hpp"
+#include "GUI.hpp"
 
 #include "Transform.hpp"
 #include "common/file.hpp"
@@ -22,6 +26,14 @@ using namespace std;
 using namespace nlohmann;
 
 void Scene::update (const float& dt) {
+  auto inputs = Inputs::get();
+  if (inputs.btnRel[SDLK_P] > 0.) pause = !pause;
+
+  if (pause) {
+    renderer->update(compsBySystem[renderer->getASystemType()], dt);
+    return;
+  }
+
   // update components per systems
   for (auto& [sysType, system] : systems)
     system->update(compsBySystem[sysType], dt);
@@ -83,8 +95,46 @@ void Scene::init() {
   // };
 }
 
+bool sceneGui = false;
 void Scene::drawGui () {
+  using namespace ImGui;
+  if (!GUI::get().conf.showDebug) return;
+  if (!Begin("Scene", &sceneGui, ImGuiChildFlags_AutoResizeY | ImGuiWindowFlags_NoMove))
+    return End();
 
+  SetWindowSize(ImVec2(240, 0));
+  SetWindowPos(ImVec2(Window::get().width - 240, 0));
+
+  auto pos = player->getPosition();
+  Columns(4, "Camera");
+    Text("Pos"); NextColumn();
+    Text("%f", pos.x); NextColumn();
+    Text("%f", pos.y); NextColumn();
+    Text("%f", pos.z); NextColumn();
+  Columns(1);
+
+  // Text("Lights: %lu", lights.size());
+  // Text("Actors: %lu", actors.size());
+  string actorsHeader = "Actors: " + to_string(actors.size());
+  if (CollapsingHeader("Actors:", ImGuiTreeNodeFlags_DefaultOpen)) {
+    for (auto& actor : actors) {
+      string actorHeader = actor->name + " (" + actor->getActorClassName() + ")";
+      PushID(actor->id);
+      if (TreeNode(actorHeader.c_str())) {
+        for(auto& [type, comp] : actor->comps) {
+          Text("Type: %s", type.name());
+          ImGui::Separator();
+        }
+
+        TreePop();
+      }
+      PopID();
+
+    }
+  }
+
+
+  ImGui::End();
 }
 void Scene::_addCompToActor (const sp<Actor>& actor, const type_index& typeId, const sp<AComp>& comp) {
   // LOG("Scene::addComp", actor->name, actor->id, typeId.name());

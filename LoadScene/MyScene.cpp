@@ -17,19 +17,19 @@ void MyScene::init () {
 
   newActor<PlayerPhy>();
 
-  for (size_t i = 0; i < 10; i++) {
-    newActor<AEnemy>((AEnemy::Conf){
-      .transform = Transform(rd::vec3in(-30, 30), rd::vec3in(-3.14, 3.14)).getTransformMatrix(),
-      .physics = (PhysicsComp::Params){
-        .mass = 1.,
-        .damping = glm::vec2(.3, .3),
-        .group = PhysicsComp::ENEMY,
-      }
-    });
-  }
+  // for (size_t i = 0; i < 10; i++) {
+  //   newActor<AEnemy>((AEnemy::Conf){
+  //     .transform = Transform(rd::vec3in(-30, 30), rd::vec3in(-3.14, 3.14)).getTransformMatrix(),
+  //     .physics = (PhysicsComp::Params){
+  //       .mass = 1.,
+  //       .damping = glm::vec2(.3, .3),
+  //       .group = PhysicsComp::ENEMY,
+  //     }
+  //   });
+  // }
 
   // loadJson("resources/scenes/scene.json");
-  loadJson("resources/scenes/box.json");
+  loadJson("resources/scenes/lvl_station.json");
 
 
 }

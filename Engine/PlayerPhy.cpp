@@ -7,6 +7,7 @@
 
 #include "Inputs/Inputs.hpp"
 #include "Physics/PhysicsComp.hpp"
+#include "Graphics/Window.hpp"
 #include "HealthComp.hpp"
 #include "PlayerPhyCtrlComp.hpp"
 #include "GunComp.hpp"
@@ -69,10 +70,14 @@ void PlayerPhy::update(const float &dt)
 
   Actor::update(dt);
 
-  ImGui::SetNextWindowPos(ImVec2(20, 20));
-  ImGui::SetNextWindowSize(ImVec2(200, 50));
-  ImGui::Begin("HUD", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
-  ImGui::Text("Health:");
-  ImGui::ProgressBar(getComp<HealthComp>()->conf.health, ImVec2(180, 20));
-  ImGui::End();
+  {
+    using namespace ImGui;
+    auto w = Window::get();
+    Begin("HUD", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_AlwaysAutoResize);
+    ProgressBar(getComp<HealthComp>()->conf.health, ImVec2(180, 20), "HP");
+    auto size = GetWindowSize();
+    SetWindowPos(ImVec2(w.width / 2 - size.x / 2, w.height - size.y));
+
+    End();
+  }
 }

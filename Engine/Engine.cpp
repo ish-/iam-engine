@@ -84,8 +84,9 @@ void Engine::run() {
     if (inputs.btn[SDLK_LCTRL] && inputs.btnRel[SDLK_R] > 0) game->init();
     if (inputs.btnRel[SDLK_F] > 0) {
       window.toggleFullscreen();
-      // scene->camera->setRatio((float)window.width / (float)window.height);
+      game->scene->camera->setRatio((float)window.width / (float)window.height);
     }
+    if (inputs.btnRel[SDLK_H] > 0) GUI::get().conf.showDebug = !GUI::get().conf.showDebug;
 
     if (inputs.btnRel[SDLK_GRAVE] > 0) inputs.mouseLock(Bool::TOGGLE);
 
@@ -99,18 +100,7 @@ void Engine::run() {
       renderer.setDefaultShader();
       game->update(time.dT);
 
-      ImGui::Begin("iam-engine");
-        ImGui::Text("Perf: %i ~ %ims",
-          int(1. / time.frameDur),
-          int(time.frameComputing * 1000.));
-        ImGui::Checkbox("Wireframes", &renderer.wireframes);
-        ImGui::Checkbox("Shading", &renderer.shading);
-        ImGui::Checkbox("Collisions", &physics.drawDebug);
-        ImGui::SliderFloat("Sim Speed", &physics.conf.speed, 0.0, 10);
-      ImGui::End();
-
-      // ImGui::ShowDemoWindow();
-
+      drawGui();
 
       if (physics.drawDebug) {
         physics.debugDrawWorld();
@@ -131,5 +121,24 @@ void Engine::run() {
     if (time.frameDelay > 0)
       SDL_Delay(time.frameDelay * 1000);
     time.endFrame();
+  }
+}
+
+bool __imguiShowDemo = false;
+void Engine::drawGui () {
+  if (GUI::get().conf.showDebug) {
+    ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiCond_FirstUseEver);
+    ImGui::Begin("iam-engine");
+      ImGui::Checkbox("ImGgui Demo", &__imguiShowDemo);
+      ImGui::Text("Perf: %i ~ %ims",
+        int(1. / time.frameDur),
+        int(time.frameComputing * 1000.));
+      ImGui::Checkbox("Wireframes", &renderer.wireframes);
+      ImGui::Checkbox("Shading", &renderer.shading);
+      ImGui::Checkbox("Collisions", &physics.drawDebug);
+      ImGui::SliderFloat("Sim Speed", &physics.conf.speed, 0.0, 10);
+    ImGui::End();
+
+    if (__imguiShowDemo) ImGui::ShowDemoWindow();
   }
 }

@@ -10,6 +10,11 @@ public:
     return instance;
   }
   // GUI ();
+  struct Conf {
+    bool showHUD = true;
+    bool showDebug = false;
+  };
+  Conf conf;
 
   void init(SDL_Window* window, SDL_GLContext* gl_context);
 

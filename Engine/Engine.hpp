@@ -47,6 +47,8 @@ public:
 
   bool pause = false;
 
+  void drawGui ();
+
 // // SCENE
 //   std::shared_ptr<Scene> scene;
 

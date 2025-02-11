@@ -10,7 +10,9 @@ public:
     float hauntDist = 40.f;
     float hauntMinDist = 4.f;
     float shootDist = 20.f;
-    PhysicsComp::Params physics;
+    PhysicsComp::Params physics {
+      .shapeType = "SPHERE_SHAPE"
+    };
   };
   Conf conf;
   sp<PhysicsComp> phyComp;
