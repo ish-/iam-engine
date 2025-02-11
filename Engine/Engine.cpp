@@ -35,7 +35,8 @@ Engine::Engine()
     // ctx{Time::get(), Window::get(), Renderer::get(), Inputs::get(), GUI::get()}
 {
   std::filesystem::current_path(BIN_TO_BUILD_PATH);
-  LOG("Current path", std::filesystem::current_path().c_str());
+  LOG("Current path", std::filesystem::current_path().string());
+  rd::globalSeed(time.getSystemTime());
 }
 
 void Engine::initSystems() {
