@@ -121,3 +121,9 @@ ContactResult PhysicsComp::getContact(sp<PhysicsComp> other) {
     Physics::get().dynamicsWorld->contactTest(rigidBody, cb);
   return cb.result;
 }
+
+void PhysicsComp::setTransform (const glm::mat4& transform) {
+  btTransform btTrans;
+  btTrans.setFromOpenGLMatrix(glm::value_ptr(transform));
+  rigidBody->setWorldTransform(btTrans);
+}

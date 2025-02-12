@@ -68,8 +68,11 @@ quat Transform::getRotation() const {
   mat3 rotMat = mat3(matrix);
   return quat_cast(rotMat);
 }
-vec3 Transform::getRotationEul() const {
-  return eulerAngles(getRotation());
+
+vec3 Transform::getRotationEulAngles() const {
+  vec3 euler;
+  glm::extractEulerAngleXYZ(matrix, euler.x, euler.y, euler.z);
+  return glm::degrees(euler); // Convert to degrees
 }
 
 void Transform::setRotation(const vec3& angles, bool updateConf) {

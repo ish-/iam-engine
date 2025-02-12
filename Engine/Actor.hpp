@@ -1,6 +1,7 @@
 #pragma once
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/quaternion.hpp>
+#include "Physics/Physics.hpp"
 #include "common/memory.hpp"
 #include <vector>
 #include <string>
@@ -85,6 +86,8 @@ public:
   // ~Actor();
 
   void setName (std::string name);
+
+  void setTransformConf(const Transform::Conf& conf);
 
   // its cloning actor and all its components
   // virtual void clone() {

@@ -106,12 +106,21 @@ void Scene::drawGui () {
   SetWindowPos(ImVec2(Window::get().width - 240, 0));
 
   auto pos = player->getPosition();
+  auto rot = player->getRotationEulAngles();
   Columns(4, "Camera");
     Text("Pos"); NextColumn();
     Text("%f", pos.x); NextColumn();
     Text("%f", pos.y); NextColumn();
     Text("%f", pos.z); NextColumn();
+    Text("Rot"); NextColumn();
+    Text("%f", rot.x); NextColumn();
+    Text("%f", rot.y); NextColumn();
+    Text("%f", rot.z); NextColumn();
   Columns(1);
+
+  if (Inputs::get().btnRel[SDLK_K] > 0.)
+    SetClipboardText(string("[" + to_string(pos.x) + ", " + to_string(pos.y) + ", " + to_string(pos.z) + "]"
+      + ", [" + to_string(rot.x) + ", " + to_string(rot.y) + ", " + to_string(rot.z) + "]").c_str());
 
   // Text("Lights: %lu", lights.size());
   // Text("Actors: %lu", actors.size());

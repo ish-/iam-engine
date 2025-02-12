@@ -3,6 +3,8 @@
 #include "Actor.hpp"
 #include "SDL3/SDL_keycode.h"
 #include "common/LOG.hpp"
+#include "common/math.hpp"
+#include "glm/ext/quaternion_geometric.hpp"
 
 PlayerPhyCtrlComp::PlayerPhyCtrlComp (): AComp() {
   // std::cout << "PlayerPhyCtrlComp()\n";
@@ -12,6 +14,7 @@ void PlayerPhyCtrlComp::init () {
   phyComp = getOwner()->getComp<PhysicsComp>();
 }
 
+#include <imgui.h>
 void PlayerPhyCtrlComp::update (const float& dt) {
   auto owner = getOwner();
   auto phyComp = this->phyComp.lock();
@@ -32,12 +35,19 @@ void PlayerPhyCtrlComp::update (const float& dt) {
     phyComp->applyForce(owner->getForwardQuat() * move * this->moveForce * vec3(3.) * vec3(boost));
   }
 
+
+  // vec2 pointerNorm = glm::normalize(inputs.mouseClip);
+  // float distFromCenter = glm::length(inputs.mouseClip);
+  // distFromCenter = pow(std::max(0., (distFromCenter - .1) * 1.2), 2.);
+  // vec2 pointer = pointerNorm * vec2(distFromCenter);
+  vec2 pointer = vec2(inputs.mouseRel.x, inputs.mouseRel.y);
+
   if (bool mouseLocked = inputs.mouseLock(Bool::GET)) {
-    float pitch = inputs.mouseClip.y; // pitch
-    float yaw = (1 - inputs.btn[SDLK_LSHIFT]) * inputs.mouseClip.x;  // yaw
-    float roll = inputs.btn[SDLK_LSHIFT] * inputs.mouseClip.x; // roll
+    float pitch = pointer.y; // pitch
+    float yaw = (1 - inputs.btn[SDLK_LSHIFT]) * pointer.x;  // yaw
+    float roll = inputs.btn[SDLK_LSHIFT] * pointer.x; // roll
     if (pitch != 0 || yaw != 0 || roll != 0) {
-      vec3 rotate = -vec3(pitch, yaw, roll) * vec3(10.);
+      vec3 rotate = -vec3(pitch, yaw, roll);
       // movementCtrl->applyTorque(rotate * vec3(10.));
       phyComp->applyTorque(owner->getForwardQuat() * rotate * this->rotateForce / vec3(100.));
     }

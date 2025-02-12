@@ -77,7 +77,18 @@ void PlayerPhy::update(const float &dt)
     ProgressBar(getComp<HealthComp>()->conf.health, ImVec2(180, 20), "HP");
     auto size = GetWindowSize();
     SetWindowPos(ImVec2(w.width / 2 - size.x / 2, w.height - size.y));
-
     End();
+
+    ImVec2 cursorPos = ImGui::GetIO().MousePos;
+    ImDrawList* pointer = ImGui::GetForegroundDrawList();
+    pointer->AddLine(ImVec2(cursorPos.x - 5, cursorPos.y - 5), ImVec2(cursorPos.x + 5, cursorPos.y + 5), IM_COL32(255, 0, 0, 255), 2.0f);
+    pointer->AddLine(ImVec2(cursorPos.x + 5, cursorPos.y - 5), ImVec2(cursorPos.x - 5, cursorPos.y + 5), IM_COL32(255, 0, 0, 255), 2.0f);
+
+    ImDrawList* aim = ImGui::GetForegroundDrawList();
+    float cx = w.width / 2, cy = w.height / 2;
+    int aimSize = 10;
+    aim->AddLine(ImVec2(cx - aimSize, cy), ImVec2(cx + aimSize, cy), IM_COL32(255, 0, 0, 255), 2.0f);
+    aim->AddLine(ImVec2(cx, cy - aimSize), ImVec2(cx, cy + aimSize), IM_COL32(255, 0, 0, 255), 2.0f);
+
   }
 }

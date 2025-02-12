@@ -3,6 +3,7 @@
 #include <glm/vec3.hpp>
 #include "Actor.hpp"
 #include "Camera.hpp"
+#include "common/json.hpp"
 
 class PhysicsComp;
 class PlayerPhyCtrlComp;
@@ -17,6 +18,8 @@ public:
   struct Conf {
     glm::vec3 initialPos = {0, 0, 5};
     Camera::Conf cameraConf = { .fov = 80 };
+
+    JSON_DEFINE_OPTIONAL(Conf, initialPos);
   };
   Conf conf;
 

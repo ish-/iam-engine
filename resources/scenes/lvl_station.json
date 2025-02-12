@@ -1,20 +1,63 @@
 {
-  "name": "hw",
+  "name": "lvl_station",
   "actors": [
     {
       "name": "lvl_station",
       "comps": [
         {
           "type": "MeshComp",
-          "path": "resources/models/lvl_station.obj",
+          "path": "resources/models/lvl_station.fbx",
           "exposeData": true
         },
         {
           "type": "PhysicsComp",
-          "shapeType": "TRIANGULATE_SHAPE",
-          "initialImpulse": [1, 1, 1]
+          "shapeType": "TRIANGULATE_SHAPE"
         }
       ]
+    }
+    // , {
+    //   "type": "APlayer",
+    //   "pos": [0, 0, -5],
+    //   "rot": [0, -3.14, 0]
+    // }
+    , { // tube above the main
+      "type": "AEnemy",
+      "pos": [5.41, 19.71, -6.52],
+      "rot": [-121.5, 18.2, -13.45]
+    }
+    , { // in front of the main
+      "type": "AEnemy",
+      "pos": [2, -0.91, 31.28]
+    }
+    , { // on entrer into shrine
+      "type": "AEnemy",
+      "pos": [-16, 5, 21],
+      "rot": [-128, -25, -162]
+    }
+    , { // on deep of shrine
+      "type": "AEnemy",
+      "pos": [-18, 17.1, 12.7],
+      "rot": [-89, -4.6, -24]
+    }
+    , { // on top of shrine
+      "type": "AEnemy",
+      "pos": [-18, -4, 12.77],
+      "rot": [89, -2.1, -30]
+    }
+    , { // on top of observatory
+      "type": "AEnemy",
+      "pos": [24.991901, 13.634992, 21.357811],
+      "rot": [-106.068825, -10.887336, 139.546890]
+    }
+    , { // on top of observatory
+      "type": "AEnemy",
+      "pos": [25.048960, -11.207545, 20.755751],
+      "rot": [108.771561, -27.312735, 20.972143]
+    }
+    , { // on top of observatory
+      "type": "AEnemy",
+      "pos": [-5.837123, 11.679595, 26.498720],
+      "rot": [173.566040, -72.751846, -36.190807]
     }
   ]
 }

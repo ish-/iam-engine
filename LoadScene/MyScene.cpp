@@ -9,13 +9,23 @@
 #include "AEnemy.hpp"
 #include "Engine/common/random.hpp"
 #include "Engine/common/screenToWorld.hpp"
+#include "Transform.hpp"
 
 // MyScene::MyScene () {}
 
 void MyScene::init () {
   Scene::init();
 
-  newActor<PlayerPhy>();
+  // actorCtors["AEnemy"] = [this](const json& actorJson) {
+  //   return newActor<AEnemy>(actorJson.get<AEnemy::Conf>());
+  // };
+  actorCtors["AEnemy"] = [this](const json& actorJson) { return newActor<AEnemy>(actorJson.get<AEnemy::Conf>()); };
+  // actorCtors["PlayerPhy"] = [this](const json& actorJson) { return newActor<PlayerPhy>(actorJson.get<PlayerPhy::Conf>()); };
+  player = newActor<PlayerPhy>();
+  player->setTransformConf(Transform::Conf{
+    .pos = vec3(0, 0, -5),
+    .rot = vec3(0, 180, 0),
+  });
 
   // for (size_t i = 0; i < 10; i++) {
   //   newActor<AEnemy>((AEnemy::Conf){
@@ -29,9 +39,8 @@ void MyScene::init () {
   // }
 
   // loadJson("resources/scenes/scene.json");
+  // loadJson("resources/scenes/box.json");
   loadJson("resources/scenes/lvl_station.json");
-
-
 }
 
 void MyScene::update (const float& dt) {
@@ -54,10 +63,5 @@ void MyScene::update (const float& dt) {
 
 void MyScene::drawGui () {
   Scene::drawGui();
-
-  ImVec2 cursorPos = ImGui::GetIO().MousePos;
-  ImDrawList* drawList = ImGui::GetForegroundDrawList();
-  drawList->AddLine(ImVec2(cursorPos.x - 5, cursorPos.y), ImVec2(cursorPos.x + 5, cursorPos.y), IM_COL32(255, 0, 0, 255), 2.0f);
-  drawList->AddLine(ImVec2(cursorPos.x, cursorPos.y - 5), ImVec2(cursorPos.x, cursorPos.y + 5), IM_COL32(255, 0, 0, 255), 2.0f);
   // IMgui
 }

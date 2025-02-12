@@ -30,14 +30,14 @@ void Inputs::processMouse(const SDL_Event& event) {
 }
 
 bool Inputs::mouseLock(SDL_Window* sdlWindow, bool lock) {
-  // if (!SDL_SetWindowRelativeMouseMode(sdlWindow, lock)) {
-  //   LOG("Cant lock cursor", SDL_GetError(), sdlWindow);
-  //   return false;
-  // }d
-  if (!(lock ? SDL_HideCursor() : SDL_ShowCursor())) {
+  if (!SDL_SetWindowRelativeMouseMode(sdlWindow, lock)) {
     LOG("Cant lock cursor", SDL_GetError(), sdlWindow);
     return false;
   }
+  // if (!(lock ? SDL_HideCursor() : SDL_ShowCursor())) {
+  //   LOG("Cant lock cursor", SDL_GetError(), sdlWindow);
+  //   return false;
+  // }
   return true;
 }
 

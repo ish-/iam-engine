@@ -56,7 +56,7 @@ public:
   void translateLocal(const vec3& tranlateBy);
 
   quat getRotation() const;
-  vec3 getRotationEul() const;
+  vec3 getRotationEulAngles() const;
   void setRotationQuat(const quat q);
 
   void setRotation(const vec3& angles, bool updateConf = true);

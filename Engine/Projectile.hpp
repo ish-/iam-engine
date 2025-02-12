@@ -28,7 +28,7 @@ public:
     Actor::init();
     auto scene = getScene();
 
-    setMatrix(conf.transform);
+    // setMatrix(conf.transform);
     // setName("Projectile-" + to_string(id));
 
     auto meshComp = scene->newComp<MeshComp>(shared_from_this());
@@ -45,17 +45,21 @@ public:
     bool toRelease = false;
     if (auto contact = phyComp->getContact()) {
       auto* otherPhyComp = PhysicsComp::fromBody(contact.body1);
+      auto other = otherPhyComp->getOwner();
 
       string instigatorName = "__";
-      if (auto ins = instigator.lock())
+      auto ins = instigator.lock();
+      bool selfFire = false;
+      if (ins) {
         instigatorName = ins->name;
-      LOG("Projectile hit ", bool(contact), instigatorName, otherPhyComp->getOwner()->name);
-      // if (otherPhyComp->params.group == PhysicsComp::ENEMY) {
-        auto enemy = otherPhyComp->getOwner();
+        selfFire = other->id == ins->id;
+      }
 
-        if (auto eHealthComp = enemy->getComp<HealthComp>())
+      LOG("Projectile hit ", bool(contact), instigatorName, other->name);
+
+        auto eHealthComp = other->getComp<HealthComp>();
+        if (!selfFire && eHealthComp)
           eHealthComp->takeDamage(conf.damage, shared());
-      // }
 
       if (conf.releaseOnContact)
         toRelease = true;

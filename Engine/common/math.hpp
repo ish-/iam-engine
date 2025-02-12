@@ -1,4 +1,5 @@
 #pragma once
+#include <cmath>
 
 template<typename T>
 inline T lerp (const std::type_identity_t<T>& from, const std::type_identity_t<T>& to, const T& value){

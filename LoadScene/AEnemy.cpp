@@ -48,13 +48,18 @@ void AEnemy::update(const float& dt) {
       phyComp->applyTorque(torque);
     }
 
-    if (glm::length2(rotationAxis) < pow(.2f, 2) && //
+    float rotAxisLen2 = glm::length2(rotationAxis);
+
+    phyComp->rigidBody->setDamping(phyComp->params.damping.x, .5 - rotAxisLen2);
+
+    if (rotAxisLen2 < pow(.2f, 2) && //
         glm::length2(toTarget) < pow(conf.shootDist, 2))
       gunComp->shoot(targetPos + rd::vec3in(-1, 1));
 
+    vec3 moveDir = dirToTarget;
     if (glm::length2(toTarget) < pow(conf.hauntMinDist, 2))
-      forward = -forward;
-    phyComp->applyForce(forward * rotationDot);
+      moveDir = -moveDir;
+    phyComp->applyForce(moveDir * rotationDot);
   }
 
   Actor::update(dt);

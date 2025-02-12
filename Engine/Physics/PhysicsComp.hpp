@@ -90,6 +90,8 @@ public:
   static PhysicsComp* fromBody(const btRigidBody* body) {
     return static_cast<PhysicsComp*>(body->getUserPointer());
   }
+
+  void setTransform (const glm::mat4& transform);
 };
 
 static void from_json (const nlohmann::json& j, PhysicsComp::CollisionGroup& group) {

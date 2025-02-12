@@ -1,6 +1,7 @@
 #include "Actor.hpp"
 #include <glm/gtx/quaternion.hpp>
 #include "ACS/AComp.hpp"
+#include "Transform.hpp"
 #include "common/incrementTrailingDigits.hpp"
 
 // Actor::Actor () {
@@ -53,6 +54,17 @@ Actor::~Actor() {
 }
 
 bool Actor::removeComp(std::shared_ptr<AComp> comp) {
-  // components[typeid(comp)] = nullptr;
+  comps[typeid(comp)] = nullptr;
   return true;
 };
+
+// TODO: fix it :((
+#include "Physics/PhysicsComp.hpp"
+void Actor::setTransformConf(const Transform::Conf& conf) {
+  if (auto phyComp = getComp<PhysicsComp>()) {
+    Transform transform(conf);
+    phyComp->setTransform(transform.getTransformMatrix());
+  } else {
+    Transform::setTransformConf(conf);
+  }
+}
