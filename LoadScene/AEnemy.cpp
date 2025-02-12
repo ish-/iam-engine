@@ -24,6 +24,7 @@ void AEnemy::init () {
   gunComp = scene->newComp<GunComp>(shared(), GunComp::Conf{ .offset = vec3(0,0,-1.5) });
 }
 
+#include <glm/gtx/matrix_interpolation.hpp>
 void AEnemy::update(const float& dt) {
   float health = getComp<HealthComp>()->getHealth();
   meshComp->conf.tint = glm::min(meshComp->conf.tint + vec3(.01), vec3(1, health, health));
@@ -43,15 +44,55 @@ void AEnemy::update(const float& dt) {
     float rotationAngle = glm::acos(rotationDot);
 
     if (glm::length(rotationAxis) > 0) {
-      float rotationSpeed = .1;
-      vec3 torque = -rotationAxis * rotationAngle * rotationSpeed;
-      phyComp->applyTorque(torque);
+      // // Proportional-Derivative
+      // quat currentRot = glm::quat_cast(getAbsTransformMatrix());
+      // quat targetRot = glm::rotation(getForward(), dirToTarget);
+      // quat errorQuat = glm::inverse(currentRot) * targetRot;
+
+      // vec3 errorAxis;
+      // float errorAngle;
+      // // glm::axisAngle(errorQuat, errorAxis, errorAngle);
+      // errorAxis = glm::axis(errorQuat);
+      // errorAngle = glm::angle(errorQuat);
+      // vec3 error = errorAxis * errorAngle;
+
+      // vec3 Kp = vec3(10.0f);  // Proportional gain
+      // vec3 Kd = vec3(2.0f);
+
+      // vec3 angularVelocity = Physics::toGlmVec3(phyComp->rigidBody->getAngularVelocity());
+      // vec3 torque = Kp * error - Kd * angularVelocity;
+      // // /////// Proportional-Derivative
+
+      btTransform transform = phyComp->rigidBody->getWorldTransform();
+      btQuaternion rotation = transform.getRotation();
+      glm::quat glmRotation(rotation.w(), rotation.x(), rotation.y(), rotation.z());
+      glm::vec3 forwardDirection = glmRotation * glm::vec3(0, 0, -1);
+
+      float dot = glm::dot(forwardDirection, dirToTarget);
+      float angle = acos(glm::clamp(dot, -1.0f, 1.0f)); // Clamp to avoid numerical errors
+      glm::vec3 axis = glm::cross(forwardDirection, dirToTarget);
+      axis = glm::normalize(axis);
+
+      float kp = .5f; // gain
+      btVector3 torque = btVector3(axis.x, axis.y, axis.z) * angle * kp;
+      phyComp->rigidBody->applyTorque(torque);
+
+      btVector3 angularVelocity = phyComp->rigidBody->getAngularVelocity();
+      float damping = 0.08f;
+      btVector3 dampingTorque = -angularVelocity * damping;
+      phyComp->rigidBody->applyTorque(dampingTorque);
+
+      if (angle < 0.01f) {
+          phyComp->rigidBody->setAngularVelocity(btVector3(0, 0, 0));
+      }
+
+      // float rotationSpeed = .1;
+      // vec3 torque = -rotationAxis * rotationAngle * rotationSpeed;
+      // phyComp->applyTorque(torque);
     }
 
+
     float rotAxisLen2 = glm::length2(rotationAxis);
-
-    phyComp->rigidBody->setDamping(phyComp->params.damping.x, .5 - rotAxisLen2);
-
     if (rotAxisLen2 < pow(.2f, 2) && //
         glm::length2(toTarget) < pow(conf.shootDist, 2))
       gunComp->shoot(targetPos + rd::vec3in(-1, 1));
