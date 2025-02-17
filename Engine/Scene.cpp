@@ -7,7 +7,7 @@
 #include <imgui.h>
 // #include "ASystem.hpp"
 #include "Graphics/Renderer.hpp"
-#include "Graphics/Window.hpp"
+#include "Window.hpp"
 #include "Physics/Physics.hpp"
 #include "Inputs/Inputs.hpp"
 #include "Physics/PhysicsComp.hpp"

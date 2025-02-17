@@ -5,7 +5,7 @@
 #include <glm/vec3.hpp>
 #include "../Actor.hpp"
 #include "../ILifecycle.hpp"
-#include "MeshStorage.hpp"
+#include "AssetStore.hpp"
 
 using namespace std;
 
@@ -32,10 +32,7 @@ public:
   Conf conf;
 
   MeshComp(): AComp() {}
-  MeshComp(const Conf& conf): conf(conf), AComp() {
-    if (conf.path.length() > 0)
-      geo = MeshStorage::get().loadModel(conf.path);
-  }
+  MeshComp(const Conf& conf);
 
   shared_ptr<Shader> shader;
   shared_ptr<Geo> geo;

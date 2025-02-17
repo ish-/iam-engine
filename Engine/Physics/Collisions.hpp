@@ -4,11 +4,11 @@
 #include <BulletCollision/CollisionShapes/btBvhTriangleMeshShape.h>
 #include <BulletCollision/CollisionShapes/btConvexHullShape.h>
 #include <BulletCollision/Gimpact/btGImpactShape.h>
-#include "../Graphics/Geo.hpp"
+#include "../Graphics/ModelData.hpp"
 
 class Collisions {
 public:
-  static btCompoundShape *createTriMeshShapeCompaund(const Geo::Data &data) {
+  static btCompoundShape *createTriMeshShapeCompaund(const ModelData &data) {
     btCompoundShape* compoundShape = new btCompoundShape();
     for (size_t i = 0; i < data.meshesOffsets.size(); i++) {
       auto& offset = data.meshesOffsets[i];
@@ -29,7 +29,7 @@ public:
     return compoundShape;
   }
 
-  static btTriangleMesh* createTriangleMesh (const Geo::Data &data) {
+  static btTriangleMesh* createTriangleMesh (const ModelData &data) {
     btTriangleMesh *triangleMesh = new btTriangleMesh();
 
     for (size_t i = 0; i < data.indices.size(); i += 3) {
@@ -50,19 +50,19 @@ public:
     return triangleMesh;
   }
 
-  static btGImpactMeshShape *createTriGImpactMeshShape(const Geo::Data &data) {
+  static btGImpactMeshShape *createTriGImpactMeshShape(const ModelData &data) {
     auto* shape = new btGImpactMeshShape(createTriangleMesh(data));
     shape->updateBound();
     return shape;
   }
 
-  static btBvhTriangleMeshShape *createTriMeshShape(const Geo::Data &data) {
+  static btBvhTriangleMeshShape *createTriMeshShape(const ModelData &data) {
     auto* shape = new btBvhTriangleMeshShape(createTriangleMesh(data), true);
     shape->buildOptimizedBvh();
     return shape;
   }
 
-  static btCompoundShape* createCompauntConvexShape(const Geo::Data& data) {
+  static btCompoundShape* createCompauntConvexShape(const ModelData& data) {
     btCompoundShape* compoundShape = new btCompoundShape();
     for (size_t i = 0; i < data.meshesOffsets.size(); i++) {
       auto& offset = data.meshesOffsets[i];

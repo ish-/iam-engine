@@ -7,7 +7,7 @@
 
 #include "Inputs/Inputs.hpp"
 #include "Physics/PhysicsComp.hpp"
-#include "Graphics/Window.hpp"
+#include "Window.hpp"
 #include "HealthComp.hpp"
 #include "PlayerPhyCtrlComp.hpp"
 #include "GunComp.hpp"

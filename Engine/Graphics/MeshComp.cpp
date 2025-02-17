@@ -12,6 +12,13 @@ Symbol MeshComp::getASystemType () {
   return symbol;
 }
 
+MeshComp::MeshComp(const Conf& conf): conf(conf), AComp() {
+  if (conf.path.length() > 0) {
+    auto data = AssetStore::get().loadModel(conf.path);
+    geo = make_shared<Geo>(data);
+  }
+}
+
 void MeshComp::draw() {
   glBindVertexArray(geo->VAO);
 

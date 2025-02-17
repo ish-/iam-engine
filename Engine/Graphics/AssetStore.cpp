@@ -1,4 +1,4 @@
-#include "MeshStorage.hpp"
+#include "AssetStore.hpp"
 
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
@@ -7,9 +7,9 @@
 // #include "MeshComp.hpp"
 #include "Geo.hpp"
 
-MeshStorage::MeshStorage () {}
+AssetStore::AssetStore () {}
 
-sp<Geo> MeshStorage::loadModel(const std::string& path) {
+sp<ModelData> AssetStore::loadModel(const std::string& path) {
   std::cout << "Loading model: " << path << std::endl;
   Assimp::Importer importer;
   const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs);
@@ -23,9 +23,9 @@ sp<Geo> MeshStorage::loadModel(const std::string& path) {
   logChildren(scene->mRootNode);
 
   // Extract
-  std::vector<GLfloat> vertices;
-  std::vector<GLint> indices;
-  std::vector<GLint> meshesOffsets;
+  std::vector<float> vertices;
+  std::vector<int> indices;
+  std::vector<int> meshesOffsets;
   GLint indicesOffset = 0;
 
   for (unsigned int i = 0; i < scene->mNumMeshes; i++) {
@@ -77,7 +77,7 @@ sp<Geo> MeshStorage::loadModel(const std::string& path) {
   }
 
   // auto modelGeo
-  auto geo = std::make_shared<Geo>(Geo::Data{vertices, indices, {3,3,2}, 8, meshesOffsets});
+  auto geo = std::make_shared<ModelData>(ModelData{vertices, indices, {3,3,2}, 8, meshesOffsets});
   geos[path] = geo;
   // auto geo = std::make_shared<Geo>(Geo::Data{vertices, indices, {3,3,2}, 8, meshesOffsets});
   // if (!conf.exposeData)
@@ -88,7 +88,7 @@ sp<Geo> MeshStorage::loadModel(const std::string& path) {
   return geo;
 }
 
-void MeshStorage::logChildren (const aiNode* node, int level) {
+void AssetStore::logChildren (const aiNode* node, int level) {
   for (unsigned int i = 0; i < node->mNumChildren; i++) {
     auto name = std::string(node->mChildren[i]->mName.C_Str());
     if (name == "off") continue;

@@ -1,7 +1,7 @@
 #include "Inputs.hpp"
 #include <SDL3/SDL_mouse.h>
 // #include <objc/objc.h>
-#include "../Graphics/Window.hpp"
+#include "../Window.hpp"
 #include "../common/LOG.hpp"
 #include "SDL3/SDL_stdinc.h"
 

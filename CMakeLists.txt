@@ -56,46 +56,20 @@ list(FILTER SOURCES EXCLUDE REGEX "^.*/__.*\.cpp$")
 message(STATUS "SOURCES: ${SOURCES}")
 message(STATUS "GAME_SOURCES: ${GAME_SOURCES}")
 
-# set_target_properties(${PROJECT_NAME} PROPERTIES
-# RUNTIME_OUTPUT_DIRECTORY "${OUTPUT_DIRECTORY}"
-# LIBRARY_OUTPUT_DIRECTORY "${OUTPUT_DIRECTORY}"
-# ARCHIVE_OUTPUT_DIRECTORY "${LIBRARY_DIRECTORY}"
-# )
-
 add_executable(${PROJECT_NAME} ${GAME_DIR}/${GAME_NAME}.cpp ${GAME_SOURCES} ${SOURCES})
 target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR})
-# target_precompile_headers(${PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/Engine/pch.hpp)
 
-# target_include_directories(${PROJECT_NAME} PUBLIC Engine)
 add_library(${Engine} SHARED ${SOURCES})
 target_precompile_headers(${Engine} PRIVATE ${CMAKE_SOURCE_DIR}/Engine/pch.hpp)
 target_precompile_headers(${PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/Engine/pch.hpp)
 target_include_directories(${Engine} PUBLIC Engine)
 target_link_libraries(${PROJECT_NAME} ${Engine})
 
-# // ACS try lib
-# set(ACS_lib ACS)
-# set(ACS_lib_DIRS ${PROJECT_SOURCE_DIR}/Engine/ACS)
-# file(GLOB ACS_lib_SOURCES ${ACS_lib_DIRS}/*)
-# message(STATUS "ACS_lib_DIRS: ${ACS_lib_DIRS}")
-# message(STATUS "ACS_lib_SOURCES: ${ACS_lib_SOURCES}")
-# add_library(${ACS_lib}Objects OBJECT ${ACS_lib_SOURCES})
-# target_include_directories(${ACS_lib}Objects PUBLIC ${ACS_lib_DIRS})
-# add_library(${ACS_lib}Static STATIC $<TARGET_OBJECTS:${ACS_lib}Objects>)
-# add_library(${ACS_lib}Shared SHARED $<TARGET_OBJECTS:${ACS_lib}Objects>)
-# target_link_libraries(${PROJECT_NAME} ${ACS_lib}Shared)
-
-# include_directories(./ext/)
-
-# include_directories(${PROJECT_SOURCE_DIR})
-
-# target_compile_definitions(${PROJECT_NAME} PRIVATE IS_WIN=$<BOOL:${WIN32}> IS_MAC=$<BOOL:${APPLE}> IS_LINUX=$<BOOL:${LINUX}>)
-
 
 # !!!!!! -- LIBS
 include(FetchContent)
 
-# SDL3
+# !!!!!! SDL3
 set(SDL3_VERSION 3.2.2)
 find_package(SDL3 ${SDL3_VERSION} QUIET) # QUIET or REQUIRED
 if (NOT SDL3_FOUND) # If there's none, fetch and build SDL3
@@ -116,7 +90,7 @@ if (NOT SDL3_FOUND) # If there's none, fetch and build SDL3
 endif()
 target_link_libraries(${Engine} SDL3::SDL3)
 
-# GLM
+# !!!!!! GLM
 FetchContent_Declare(
   glm
   GIT_REPOSITORY https://github.com/g-truc/glm.git
@@ -140,7 +114,7 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(nlohmann_json)
 target_link_libraries(${Engine} nlohmann_json::nlohmann_json)
 
-# Fetch ImGui
+# !!!!!! ImGui
 FetchContent_Declare(
     ImGui
     GIT_REPOSITORY https://github.com/ocornut/imgui.git
@@ -163,10 +137,6 @@ target_include_directories(${Engine} PUBLIC
     ${imgui_SOURCE_DIR}/backends
 )
 
-# target_include_directories(imgui INTERFACE
-#   $<BUILD_INTERFACE:${imgui_SOURCE_DIR}>
-#   $<BUILD_INTERFACE:${imgui_SOURCE_DIR}/backends>
-# )
 target_include_directories(imgui PUBLIC
   ${imgui_SOURCE_DIR}
   ${imgui_SOURCE_DIR}/backends

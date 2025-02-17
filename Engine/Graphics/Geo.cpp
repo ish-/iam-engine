@@ -2,7 +2,7 @@
 #include "glad/glad.h"
 #include <sys/types.h>
 
-void Geo::bindBuffers(const Data& data) {
+void Geo::bindBuffers(const ModelData& data) {
   // GLuint VBO, EBO;
 
   glGenVertexArrays(1, &VAO);
@@ -43,7 +43,7 @@ Geo::~Geo()
 }
 
 void Geo::clearData() {
-  data.vertices.clear();
-  data.indices.clear();
-  data.layout.clear();
+  data->vertices.clear();
+  data->indices.clear();
+  data->layout.clear();
 }

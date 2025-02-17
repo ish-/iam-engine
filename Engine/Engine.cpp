@@ -9,7 +9,7 @@
 #include "Engine.hpp"
 #include "Graphics/WireframeShader.hpp"
 #include "Inputs/Inputs.hpp"
-#include "Graphics/Window.hpp"
+#include "Window.hpp"
 #include "Graphics/Renderer.hpp"
 // #include "Graphics/WireframeShader.hpp"
 #include "Physics/Physics.hpp"
