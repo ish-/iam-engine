@@ -28,11 +28,7 @@ void DLScene1::init () {
     .rot = vec3(0, 180, 0),
   });
 
-
-  // loadJson("resources/scenes/scene.json");
-  // loadJson("resources/scenes/box.json");
   loadJson("resources/scenes/lvl_station.json");
-
 
   for (size_t i = 0; i < 100; i++) {
     auto cube = newActor<ACube>();

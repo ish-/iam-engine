@@ -35,25 +35,26 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # set(PROJECT_SOURCE_DIR ${PROJECT_SOURCE_DIR}/src)
 
+set(ENGINE_DIR ${PROJECT_SOURCE_DIR}/Engine)
 file(GLOB SOURCES
-    ${PROJECT_SOURCE_DIR}/Engine/*.cpp
-    ${PROJECT_SOURCE_DIR}/Engine/Graphics/*.cpp
-    ${PROJECT_SOURCE_DIR}/Engine/ACS/*.cpp
-    ${PROJECT_SOURCE_DIR}/Engine/Inputs/*.cpp
-    ${PROJECT_SOURCE_DIR}/Engine/Physics/*.cpp
-    ${PROJECT_SOURCE_DIR}/Engine/common/*.cpp
+    ${ENGINE_DIR}/*.cpp
+    ${ENGINE_DIR}/Graphics/*.cpp
+    ${ENGINE_DIR}/ACS/*.cpp
+    ${ENGINE_DIR}/Inputs/*.cpp
+    ${ENGINE_DIR}/Physics/*.cpp
+    ${ENGINE_DIR}/common/*.cpp
 )
 
 # set(Engine ${PROJECT_NAME})
 set(Engine Engine)
 
-# set(SAMPLE_NAME "HelloWorld")
-set(SAMPLE_NAME "DescentLike")
-set(SAMPLE_DIR ${PROJECT_SOURCE_DIR}/${SAMPLE_NAME})
-file(GLOB SAMPLE_SOURCES ${SAMPLE_DIR}/*.cpp)
+# set(GAME_NAME "HelloWorld")
+set(GAME_NAME "DescentLike")
+set(GAME_DIR ${PROJECT_SOURCE_DIR}/${GAME_NAME})
+file(GLOB GAME_SOURCES ${GAME_DIR}/*.cpp)
 list(FILTER SOURCES EXCLUDE REGEX "^.*/__.*\.cpp$")
 message(STATUS "SOURCES: ${SOURCES}")
-message(STATUS "SAMPLE_SOURCES: ${SAMPLE_SOURCES}")
+message(STATUS "GAME_SOURCES: ${GAME_SOURCES}")
 
 # set_target_properties(${PROJECT_NAME} PROPERTIES
 # RUNTIME_OUTPUT_DIRECTORY "${OUTPUT_DIRECTORY}"
@@ -61,7 +62,7 @@ message(STATUS "SAMPLE_SOURCES: ${SAMPLE_SOURCES}")
 # ARCHIVE_OUTPUT_DIRECTORY "${LIBRARY_DIRECTORY}"
 # )
 
-add_executable(${PROJECT_NAME} ${SAMPLE_DIR}/${SAMPLE_NAME}.cpp ${SAMPLE_SOURCES} ${SOURCES})
+add_executable(${PROJECT_NAME} ${GAME_DIR}/${GAME_NAME}.cpp ${GAME_SOURCES} ${SOURCES})
 target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR})
 # target_precompile_headers(${PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/Engine/pch.hpp)
 
@@ -205,35 +206,26 @@ include_directories(${ASSIMP_INCLUDE_DIRS})
 target_link_libraries(${PROJECT_NAME} ${ASSIMP_LIBRARIES})
 target_link_libraries(${PROJECT_NAME} assimp::assimp)
 
-
-# !!!!!! copy resources
-# set(RESOURCE_FILES
-#     ${PROJECT_SOURCE_DIR}/shaders
-# )
-set(CREATE_SYMLINKS OFF)
-if(NOT WIN32 AND CMAKE_BUILD_TYPE STREQUAL "Debug")
-    set(CREATE_SYMLINKS ON)
-endif()
-
-if (CREATE_SYMLINKS)
-    add_custom_target(symlink_config ALL
-        # COMMAND ${CMAKE_COMMAND} -E rm resources/config.json
-        COMMAND ${CMAKE_COMMAND} -E create_symlink ${PROJECT_SOURCE_DIR}/resources ./resources
-        COMMENT "Symlinking config.json"
-    )
-else()
-    add_custom_target(copy_resources ALL
-        COMMAND ${CMAKE_COMMAND} -E copy_directory ${PROJECT_SOURCE_DIR}/resources ${CMAKE_BINARY_DIR}/resources
-        # COMMAND ${CMAKE_COMMAND} -E copy ${PROJECT_SOURCE_DIR}/config.json ${CMAKE_BINARY_DIR}/resources/config.json
-
-        # Fix WIN32 SDL3 shared lib not found just run it twice (it will work after 1st try SDL3 build)
-        COMMAND ${CMAKE_COMMAND} -E copy ${PROJECT_BINARY_DIR}/_deps/sdl3-build/CMakeFiles/SDL3-shared.dir/src/core/windows/version.rc.res.res ${PROJECT_BINARY_DIR}/_deps/sdl3-build/CMakeFiles/SDL3-shared.dir/src/core/windows/version.rc.res
-
-        DEPENDS ${RESOURCE_FILES}
-        COMMENT "Copying resource files to build directory"
-    )
-endif()
-
 target_link_libraries(${Engine} ${ASSIMP_LIBRARIES})
 target_link_libraries(${Engine} assimp::assimp)
 
+# !!!!!! RESOURCES
+
+add_custom_target(copy_resources ALL
+    # COMMAND ${CMAKE_COMMAND} -E copy_directory ${PROJECT_SOURCE_DIR}/resources ${CMAKE_BINARY_DIR}/resources
+    COMMAND ${CMAKE_COMMAND} -E copy_directory ${GAME_DIR}/resources ${CMAKE_BINARY_DIR}/resources
+    COMMAND ${CMAKE_COMMAND} -E copy_directory ${ENGINE_DIR}/resources ${CMAKE_BINARY_DIR}/resources
+    # COMMAND ${CMAKE_COMMAND} -E copy ${PROJECT_SOURCE_DIR}/config.json ${CMAKE_BINARY_DIR}/resources/config.json
+
+    # Fix WIN32 SDL3 shared lib not found just run it twice (it will work after 1st try SDL3 build)
+
+    DEPENDS ${RESOURCE_FILES}
+    COMMENT "Copying resource files to build directory"
+)
+
+if(WIN32)
+    add_custom_target(fix_win32_sdl3-shared ALL
+        COMMAND ${CMAKE_COMMAND} -E copy ${PROJECT_BINARY_DIR}/_deps/sdl3-build/CMakeFiles/SDL3-shared.dir/src/core/windows/version.rc.res.res ${PROJECT_BINARY_DIR}/_deps/sdl3-build/CMakeFiles/SDL3-shared.dir/src/core/windows/version.rc.res
+        COMMENT "fix_win32_sdl3-shared"
+    )
+endif()
