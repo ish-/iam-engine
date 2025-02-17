@@ -1,7 +1,7 @@
 #pragma once
 #include <memory>
 #include "LinearMath/btVector3.h"
-#include "../ACS/AComp.hpp"
+#include "../AComp.hpp"
 #include <glm/mat4x4.hpp>
 #include <glm/vec3.hpp>
 #include <glm/vec2.hpp>

@@ -3,7 +3,7 @@
 #include <memory>
 #include <glm/mat4x4.hpp>
 #include <glm/gtc/type_ptr.hpp>
-#include "../ACS/ASystem.hpp"
+#include "../ASystem.hpp"
 // #include "PhysicsComp.hpp"
 #include "LinearMath/btVector3.h"
 #include "../common/Symbol.hpp"

@@ -2,8 +2,7 @@
 #include <vector>
 #include <memory>
 #include "AComp.hpp"
-// #include "AMaestro.hpp"
-#include "../common/Symbol.hpp"
+#include "common/Symbol.hpp"
 using namespace std;
 
 // #define SINGLETON(classname) \

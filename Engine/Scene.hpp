@@ -8,7 +8,7 @@
 #include "common/memory.hpp"
 #include "common/Symbol.hpp"
 #include "common/LOG.hpp"
-#include "ACS/ASystem.hpp"
+#include "ASystem.hpp"
 #include "ILifecycle.hpp"
 using namespace std;
 

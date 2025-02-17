@@ -1,5 +1,5 @@
 #pragma once
-#include "ACS/AComp.hpp"
+#include "AComp.hpp"
 #include "Physics/PhysicsComp.hpp"
 // #include <glm/gtc/matrix_transform.hpp>
 #include <glm/vec3.hpp>

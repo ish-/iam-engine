@@ -1,5 +1,5 @@
 #pragma once
-#include "ACS/AComp.hpp"
+#include "AComp.hpp"
 #include "Projectile.hpp"
 
 class GunComp : public AComp {

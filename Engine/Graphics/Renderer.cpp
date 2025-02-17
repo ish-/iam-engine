@@ -9,7 +9,7 @@
 #include <glm/exponential.hpp>
 
 #include "Renderer.hpp"
-#include "ACS/AComp.hpp"
+#include "AComp.hpp"
 #include "MeshComp.hpp"
 #include "PhongShader.hpp"
 #include "SDL3/SDL_video.h"
@@ -101,7 +101,7 @@ void Renderer::init (SDL_Window* sdlWindow) {
   glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
   glClearDepthf(1.0f);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  
+
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
   // glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
@@ -116,7 +116,7 @@ void Renderer::init (SDL_Window* sdlWindow) {
   //   LOG("INIT GL ERROR: ", err);
 
   // glEnable(GL_CULL_FACE);
-  // glCullFace(GL_BACK); 
+  // glCullFace(GL_BACK);
 
   defaultShader = PhongShader::getPtr();
   setShader(defaultShader);

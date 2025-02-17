@@ -1,7 +1,7 @@
 #include "Physics.hpp"
 // #include <btBulletDynamicsCommon.h>
-#include "ACS/AComp.hpp"
-#include "ACS/ASystem.hpp"
+#include "AComp.hpp"
+#include "ASystem.hpp"
 #include "BulletDynamics/Dynamics/btDiscreteDynamicsWorld.h"
 #include "BulletDynamics/ConstraintSolver/btSequentialImpulseConstraintSolver.h"
 // #include <btBulletCollisionCommon.h>

@@ -1,6 +1,6 @@
 #pragma once
 #include <functional>
-#include "ACS/AComp.hpp"
+#include "AComp.hpp"
 #include "ILifecycle.hpp"
 // TODO: fwd decl
 #include "Actor.hpp"

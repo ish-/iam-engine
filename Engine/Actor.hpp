@@ -14,7 +14,6 @@
 #include "ILifecycle.hpp"
 #include "common/json.hpp"
 #include "nlohmann/json_fwd.hpp"
-// #include "ACS/AActor.hpp"
 using namespace glm;
 using namespace std;
 
@@ -52,7 +51,7 @@ public:
 
   mat4 getAbsTransformMatrix() const;
 
-// AActor
+// Actor
   // TODO:
 
   // vector<shared_ptr<AComp>> comps;

@@ -6,7 +6,7 @@
 // #include "Scene.hpp"
 #include <glm/vec3.hpp>
 #include <glm/mat4x4.hpp>
-#include "../ACS/ASystem.hpp"
+#include "../ASystem.hpp"
 #include "../common/Symbol.hpp"
 // #include "MeshComp.hpp"
 

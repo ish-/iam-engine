@@ -1,6 +1,6 @@
 #include "Actor.hpp"
 #include <glm/gtx/quaternion.hpp>
-#include "ACS/AComp.hpp"
+#include "AComp.hpp"
 #include "Transform.hpp"
 #include "common/incrementTrailingDigits.hpp"
 
