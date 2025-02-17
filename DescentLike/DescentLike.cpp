@@ -1,10 +1,10 @@
 #include "Engine/Engine.hpp"
-#include "MyGame.hpp"
+#include "DLGame.hpp"
 
 int main () {
   Engine& engine = Engine::get();
 
-  engine.init<MyGame>();
+  engine.init<DLGame>();
   engine.run();
 
   return 0;

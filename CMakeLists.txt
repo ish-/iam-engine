@@ -48,7 +48,7 @@ file(GLOB SOURCES
 set(Engine Engine)
 
 # set(SAMPLE_NAME "HelloWorld")
-set(SAMPLE_NAME "LoadScene")
+set(SAMPLE_NAME "DescentLike")
 set(SAMPLE_DIR ${PROJECT_SOURCE_DIR}/${SAMPLE_NAME})
 file(GLOB SAMPLE_SOURCES ${SAMPLE_DIR}/*.cpp)
 list(FILTER SOURCES EXCLUDE REGEX "^.*/__.*\.cpp$")

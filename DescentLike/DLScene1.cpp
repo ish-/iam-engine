@@ -1,4 +1,4 @@
-#include "MyScene.hpp"
+#include "DLScene1.hpp"
 #include "Engine/GUI.hpp"
 #include "Engine/Actor.hpp"
 #include "Engine/PlayerPhy.hpp"
@@ -12,9 +12,9 @@
 #include "Engine/common/screenToWorld.hpp"
 #include "Transform.hpp"
 
-// MyScene::MyScene () {}
+// DLScene1::DLScene1 () {}
 
-void MyScene::init () {
+void DLScene1::init () {
   Scene::init();
 
   // actorCtors["AEnemy"] = [this](const json& actorJson) {
@@ -40,14 +40,14 @@ void MyScene::init () {
   }
 }
 
-void MyScene::update (const float& dt) {
+void DLScene1::update (const float& dt) {
   Scene::update(dt);
 };
 
 // #include "Engine/Inputs/Inputs.hpp"
 // #include "Engine/Graphics/Window.hpp"
 // #include "Engine/Physics/Ray.hpp"
-// void MyScene::castMouseRay () {
+// void DLScene1::castMouseRay () {
 //   auto inputs = Inputs::get();
 //   auto w = Window::get();
 //   vec3 worldMouseDir = screenToWorldDir(inputs.mouse.x, inputs.mouse.y, w.width, w.height,
@@ -58,7 +58,7 @@ void MyScene::update (const float& dt) {
 //     phyComp->getOwner()->getComp<MeshComp>()->conf.tint = vec3(0, 0, 1);
 // }
 
-void MyScene::drawGui () {
+void DLScene1::drawGui () {
   Scene::drawGui();
   // IMgui
 }

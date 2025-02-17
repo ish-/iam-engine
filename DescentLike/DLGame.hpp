@@ -1,9 +1,9 @@
 #pragma once
 #include "Engine/Game.hpp"
 
-class MyGame : public Game {
+class DLGame : public Game {
 public:
-  MyGame ();
+  DLGame ();
 
   virtual void init () override;
 };

@@ -1,10 +1,10 @@
 #pragma once
 #include "Engine/Scene.hpp"
 
-class MyScene : public Scene {
+class DLScene1 : public Scene {
 public:
-  MyScene (const sp<class Game>& game) : Scene(game) {
-    LOG("MyScene created");
+  DLScene1 (const sp<class Game>& game) : Scene(game) {
+    LOG("DLScene1 created");
   };
 
   virtual void init () override;
