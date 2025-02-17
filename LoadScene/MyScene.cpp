@@ -5,8 +5,9 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <imgui.h>
 
-#include "Engine/Physics/PhysicsComp.hpp"
+// #include "Engine/Physics/PhysicsComp.hpp"
 #include "AEnemy.hpp"
+#include "ACube.hpp"
 #include "Engine/common/random.hpp"
 #include "Engine/common/screenToWorld.hpp"
 #include "Transform.hpp"
@@ -27,20 +28,16 @@ void MyScene::init () {
     .rot = vec3(0, 180, 0),
   });
 
-  // for (size_t i = 0; i < 10; i++) {
-  //   newActor<AEnemy>((AEnemy::Conf){
-  //     .transform = Transform(rd::vec3in(-30, 30), rd::vec3in(-3.14, 3.14)).getTransformMatrix(),
-  //     .physics = (PhysicsComp::Params){
-  //       .mass = 1.,
-  //       .damping = glm::vec2(.3, .3),
-  //       .group = PhysicsComp::ENEMY,
-  //     }
-  //   });
-  // }
 
   // loadJson("resources/scenes/scene.json");
   // loadJson("resources/scenes/box.json");
   loadJson("resources/scenes/lvl_station.json");
+
+
+  for (size_t i = 0; i < 100; i++) {
+    auto cube = newActor<ACube>();
+    cube->setTransformConf((Transform::Conf){vec3(0,0,-5) + vec3(rd::in(-15,15), rd::in(-5,5), rd::in(0, 30)), rd::vec3in(-15,15), rd::vec3in(-180,180)});
+  }
 }
 
 void MyScene::update (const float& dt) {

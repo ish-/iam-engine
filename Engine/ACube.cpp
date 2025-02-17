@@ -2,8 +2,9 @@
 #include <memory>
 #include <BulletCollision/CollisionShapes/btBoxShape.h>
 // #include "Engine/ACS/AMaestro.hpp"
-// #include "Engine/Physics/PhysicsComp.hpp"
+#include "Physics/PhysicsComp.hpp"
 #include "Graphics/MeshComp.hpp"
+#include "Physics/Physics.hpp"
 #include "Graphics/BoxGeo.hpp"
 #include "common/random.hpp"
 #include "Scene.hpp"
@@ -25,13 +26,12 @@ void ACube::init () {
 
   // auto posMat = meshComp->getAbsTransformMatrix();
 
-  // PhysicsComp::Params createParams {
-  //   .shape = new btBoxShape(btVector3(.5, .5, .5)),
-  //   .pos = btVector3(posMat[3][0], posMat[3][1], posMat[3][2]),
-  //   .mass = .8,
-  //   .initialImpulse = btVector3(rd::in(-10,10), rd::in(-10,10), rd::in(-10,10)),
-  // };
-  // phyComp = AMaestro::get().addComp<PhysicsComp>(shared_from_this(), createParams);
+  PhysicsComp::Params createParams {
+    .shapeType = "BOX_SHAPE",
+    .mass = .8,
+    // .initialImpulse = btVector3(rd::in(-10,10), rd::in(-10,10), rd::in(-10,10)),
+  };
+  ctr->newComp<PhysicsComp>(shared_from_this(), createParams);
 }
 
 // mat4 ACube::getTransformMatrix() const{

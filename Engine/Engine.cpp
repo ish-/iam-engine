@@ -46,7 +46,7 @@ void Engine::initSystems() {
     throw std::runtime_error("SDL failed initialization.");
   }
 
-  window.Init("Hello World");
+  window.Init("Window");
   // window.setFullscreeln(true);
   renderer.init(window.sdlWindow);
 
