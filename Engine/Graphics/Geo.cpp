@@ -43,7 +43,7 @@ Geo::~Geo()
 }
 
 void Geo::clearData() {
-  data->vertices.clear();
-  data->indices.clear();
-  data->layout.clear();
+  data.vertices.clear();
+  data.indices.clear();
+  data.layout.clear();
 }

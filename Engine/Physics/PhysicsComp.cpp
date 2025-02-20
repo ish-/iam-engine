@@ -28,7 +28,7 @@ void PhysicsComp::init () {
   // }
   sp<MeshComp> meshComp = getOwner()->getComp<MeshComp>();
   if (params.shapeType == "TRIANGULATE_SHAPE") {
-    shape = Collisions::createTriMeshShape(*meshComp->geo->data.get());
+    shape = Collisions::createTriMeshShape(meshComp->geo->data);
     meshComp->geo->clearData();
   }
   else {

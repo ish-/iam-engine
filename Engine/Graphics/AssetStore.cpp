@@ -9,7 +9,7 @@
 
 AssetStore::AssetStore () {}
 
-sp<ModelData> AssetStore::loadModel(const std::string& path) {
+sp<Geo> AssetStore::loadModel(const std::string& path) {
   std::cout << "Loading model: " << path << std::endl;
   Assimp::Importer importer;
   const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs);
@@ -77,7 +77,8 @@ sp<ModelData> AssetStore::loadModel(const std::string& path) {
   }
 
   // auto modelGeo
-  auto geo = std::make_shared<ModelData>(ModelData{vertices, indices, {3,3,2}, 8, meshesOffsets});
+  auto modelData = ModelData{vertices, indices, {3,3,2}, 8, meshesOffsets};
+  auto geo = std::make_shared<Geo>(modelData);
   geos[path] = geo;
   // auto geo = std::make_shared<Geo>(Geo::Data{vertices, indices, {3,3,2}, 8, meshesOffsets});
   // if (!conf.exposeData)
