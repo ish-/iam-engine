@@ -20,6 +20,7 @@
 #include "../Scene.hpp"
 #include "WireframeShader.hpp"
 #include "../Transform.hpp"
+#include "Geo.hpp"
 #include "glm/ext/quaternion_common.hpp"
 #include <map>
 
@@ -130,15 +131,30 @@ void Renderer::update (const vector<weak_ptr<AComp>>& comps, const float& dt) {
   // auto comps = getComps();
   for (auto& wComp : comps) {
     if (auto comp = wComp.lock()) {
-      shared_ptr<MeshComp> meshComp = dynamic_pointer_cast<MeshComp>(comp);
+      auto meshComp = dynamic_pointer_cast<MeshComp>(comp);
       if (meshComp) {
-        render(meshComp);
+        if (meshComp->shouldInstance())
+          geoToMeshComps[meshComp->geo].push_back(meshComp);
+        else
+          render(meshComp);
       }
     }
   }
+
+  // instancing
+  for (auto& [geo, meshComps] : geoToMeshComps) {
+    vector<mat4> transforms;
+    transforms.reserve(meshComps.size());
+    for (auto& meshComp : meshComps) {
+      transforms.push_back(meshComp->getAbsTransformMatrix());
+    }
+    geo->bindInstancingBuffer(transforms);
+    render(meshComps[0], true);
+  }
+  geoToMeshComps.clear();
 }
 
-void Renderer::render (shared_ptr<MeshComp> mesh) {
+void Renderer::render (shared_ptr<MeshComp> mesh, bool instanced) {
 
   if (!mesh->conf.visible)
     return;
@@ -149,31 +165,30 @@ void Renderer::render (shared_ptr<MeshComp> mesh) {
   mat4 model = mesh->getAbsTransformMatrix();
   bool toShade = shading && mesh->conf.shaded;
   bool toWireframe = wireframes || mesh->conf.wireframe;
-  if (toShade || toWireframe)
+  if (toShade || toWireframe) {
     shader->setUniform("model", model);
+    shader->setUniform("instancesCount", int(mesh->geo->instancesCount));
+  }
 
-  // if (auto err = glGetError()) LOG("GL ERROR: before shading", err);
   if (toShade) {
-    // if (auto err = glGetError()) LOG("GL ERROR: model", err);
-    // LOG("tint!!", mesh->conf.tint.x, mesh->conf.tint.y, mesh->conf.tint.z);
     shader->setUniform("tintColor", mesh->conf.tint);
-    // if (auto err = glGetError()) LOG("GL ERROR: tintColor", err);
     shader->setUniform("wireframes", 0.f);
     shader->setUniform("normalsMult", mesh->conf.invertNormals ? -1.f : 1.f);
-    // if (auto err = glGetError()) LOG("GL ERROR: wireframes", err);
 
-    mesh->draw();
-    // if (auto err = glGetError()) LOG("GL ERROR: draw", err);
+    if (instanced)
+      mesh->drawInstances();
+    else
+      mesh->draw();
   }
 
   if (toWireframe) {
     shader->setUniform("wireframes", 1.f);
-    // if (auto err = glGetError()) LOG("GL ERROR: wireframes2", err);
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-    // if (auto err = glGetError()) LOG("GL ERROR: glPolygonMode", err);
 
-    mesh->draw();
-    // if (auto err = glGetError()) LOG("GL ERROR: draw2", err);
+    if (instanced)
+      mesh->drawInstances();
+    else
+      mesh->draw();
   }
 }
 

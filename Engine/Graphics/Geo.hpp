@@ -12,6 +12,9 @@ public:
   GLuint EBO = 0;
   ModelData data;
 
+  GLuint IBO = 0;
+  int instancesCount = 0;
+
   // std::vector<std::shared_ptr<Geo>> parts;
 
   GLuint vertexCount = 0;
@@ -27,6 +30,8 @@ public:
   }
 
   void bindBuffers(const ModelData& data);
+
+  void bindInstancingBuffer(const std::vector<glm::mat4>& transforms);
 
   void clearData();
 

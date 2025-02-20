@@ -10,6 +10,9 @@
 AssetStore::AssetStore () {}
 
 sp<Geo> AssetStore::loadModel(const std::string& path) {
+  if (geos.find(path) != geos.end())
+    return geos[path];
+
   std::cout << "Loading model: " << path << std::endl;
   Assimp::Importer importer;
   const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs);

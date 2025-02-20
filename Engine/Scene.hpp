@@ -74,7 +74,7 @@ public:
   sp<Actor> getActorByName(string name) {
     auto it = actorsByName.find(name);
     if (it == actorsByName.end()) {
-      LOG("getActorByName: Actor not found", name);
+      // LOG("getActorByName: Actor not found", name);
       return nullptr;
     }
     if (auto actor = it->second.lock())

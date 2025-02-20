@@ -23,10 +23,11 @@ public:
     bool shaded = true;
     bool wireframe = false;
     bool invertNormals = false;
+    bool autoInstancing = true;
 
     string path = "";
 
-    JSON_DEFINE_OPTIONAL(Conf, tint, visible, shaded, wireframe, invertNormals, path);
+    JSON_DEFINE_OPTIONAL(Conf, tint, visible, shaded, wireframe, invertNormals, autoInstancing, path);
   };
 
   Conf conf;
@@ -38,6 +39,8 @@ public:
   shared_ptr<Geo> geo;
 
   virtual void draw();
+  // virtual void drawInstances(const vector<mat4>& transforms);
+  virtual void drawInstances();
 
   virtual void init() override;
 
@@ -46,7 +49,7 @@ public:
   // TODO: cache it since it's not update()d
   mat4 getAbsTransformMatrix() const;
 
-  ~MeshComp () {
-    // LOG("~MeshComp()");
-  }
+  virtual bool shouldInstance ();
+
+  ~MeshComp ();
 };

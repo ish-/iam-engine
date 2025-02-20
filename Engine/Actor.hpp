@@ -35,7 +35,7 @@ public:
   sp<A> shared() { return shared_from_this(); }
 
   Actor () {
-    LOG("\n-- NEW ACTOR", id);
+    // LOG("\n-- NEW ACTOR", id);
   };
   Actor (const mat4& transform) {
     setMatrix(transform);

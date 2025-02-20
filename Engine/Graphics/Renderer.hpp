@@ -55,9 +55,14 @@ public:
   SDL_GLContext* context;
   FrameCache frameCache;
 
+  unordered_map<
+    shared_ptr<class Geo>,
+    vector<shared_ptr<class MeshComp>>
+  > geoToMeshComps;
+
   void init (SDL_Window* sdlWindow);
   // void setScene(shared_ptr<Scene> scene);
-  void render(shared_ptr<MeshComp> mesh);
+  void render(shared_ptr<MeshComp> mesh,  bool instanced = false);
   void renderComps();
 
   virtual void update(const vector<weak_ptr<AComp>>& comps, const float& dt) override;
