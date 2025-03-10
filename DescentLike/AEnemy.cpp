@@ -14,7 +14,7 @@ void AEnemy::init () {
   auto scene = getScene();
 
   scene->newComp<HealthComp>(shared(),
-    (HealthComp::Conf){ .regen = .03 });
+    HealthComp::Conf{ .regen = .03 });
 
   meshComp = scene->newComp<MeshComp>(shared(),
     MeshComp::Conf{ .path = "resources/models/papership.obj" });

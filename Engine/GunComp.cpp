@@ -25,9 +25,9 @@ void GunComp::shoot (vec3 targetPos) {
   }
 
   auto forward = transform.getForward();
-  auto projectile = owner->getScene()->newActor<Projectile>((Projectile::Conf){
+  auto projectile = owner->getScene()->newActor<Projectile>(Projectile::Conf{
     .transform = transform.getTransformMatrix(),
-    .physics = (PhysicsComp::Params){
+    .physics = PhysicsComp::Params{
       .shapeType = "SPHERE_SHAPE",
       .mass = .05f,
       .initialImpulse = btVector3(forward.x, forward.y, forward.z) * 100.f,

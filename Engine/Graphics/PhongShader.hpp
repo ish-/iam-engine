@@ -18,7 +18,7 @@ public:
   }
 
   PhongShader (): Shader(
-    (Shader::Opts){ .vertPath = "shaders/pos-norm.vert.glsl", .fragPath = "shaders/phong.frag.glsl" }
+    Shader::Opts{ .vertPath = "shaders/pos-norm.vert.glsl", .fragPath = "shaders/phong.frag.glsl" }
   ) {
 
   }
