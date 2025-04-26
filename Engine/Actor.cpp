@@ -15,6 +15,14 @@ mat4 Actor::getAbsTransformMatrix() const {
   return getTransformMatrix();
 }
 
+vec3 Actor::getAbsPosition() const {
+  if (auto _parent = parent.lock()) {
+      return _parent->getAbsPosition() + getPosition();
+  }
+  return getPosition();
+}
+
+
 void Actor::init () {
   // LOG("Actor::init()", getActorClassName(), "\"" + name + "\"");
 }

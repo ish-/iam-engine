@@ -183,8 +183,8 @@ target_link_libraries(${Engine} assimp::assimp)
 
 add_custom_target(copy_resources ALL
     # COMMAND ${CMAKE_COMMAND} -E copy_directory ${PROJECT_SOURCE_DIR}/resources ${CMAKE_BINARY_DIR}/resources
-    COMMAND ${CMAKE_COMMAND} -E copy_directory ${GAME_DIR}/resources ${CMAKE_BINARY_DIR}/resources
     COMMAND ${CMAKE_COMMAND} -E copy_directory ${ENGINE_DIR}/resources ${CMAKE_BINARY_DIR}/resources
+    COMMAND ${CMAKE_COMMAND} -E copy_directory ${GAME_DIR}/resources ${CMAKE_BINARY_DIR}/resources
     # COMMAND ${CMAKE_COMMAND} -E copy ${PROJECT_SOURCE_DIR}/config.json ${CMAKE_BINARY_DIR}/resources/config.json
 
     # Fix WIN32 SDL3 shared lib not found just run it twice (it will work after 1st try SDL3 build)
@@ -193,9 +193,9 @@ add_custom_target(copy_resources ALL
     COMMENT "Copying resource files to build directory"
 )
 
-if(WIN32)
-    add_custom_target(fix_win32_sdl3-shared ALL
-        COMMAND ${CMAKE_COMMAND} -E copy ${PROJECT_BINARY_DIR}/_deps/sdl3-build/CMakeFiles/SDL3-shared.dir/src/core/windows/version.rc.res.res ${PROJECT_BINARY_DIR}/_deps/sdl3-build/CMakeFiles/SDL3-shared.dir/src/core/windows/version.rc.res
-        COMMENT "fix_win32_sdl3-shared"
-    )
-endif()
+# if(WIN32 AND CMAKE_GENERATOR MATCHES "Visual Studio" AND MSVC_IDE)
+#     add_custom_target(fix_win32_sdl3-shared ALL
+#         COMMAND ${CMAKE_COMMAND} -E copy ${PROJECT_BINARY_DIR}/_deps/sdl3-build/CMakeFiles/SDL3-shared.dir/src/core/windows/version.rc.res.res ${PROJECT_BINARY_DIR}/_deps/sdl3-build/CMakeFiles/SDL3-shared.dir/src/core/windows/version.rc.res
+#         COMMENT "fix_win32_sdl3-shared"
+#     )
+# endif()

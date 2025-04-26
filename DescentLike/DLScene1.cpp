@@ -12,6 +12,8 @@
 #include "Engine/common/screenToWorld.hpp"
 #include "Transform.hpp"
 
+#include "ParticlesSample.hpp"
+
 // DLScene1::DLScene1 () {}
 
 void DLScene1::init () {
@@ -28,16 +30,24 @@ void DLScene1::init () {
     .rot = vec3(0, 180, 0),
   });
 
-  loadJson("resources/scenes/lvl_station.json");
+  camera->conf.far = 100000.;
 
-  /*for (size_t i = 0; i < 100; i++) {
+  // loadJson("resources/scenes/lvl_station.json");
+
+  plexusScene = new ParticlesSample(camera);
+  plexusScene->load();
+
+  for (size_t i = 0; i < 100; i++) {
     auto cube = newActor<ACube>();
     cube->setTransformConf(Transform::Conf{vec3(0,0,-5) + vec3(rd::in(-15,15), rd::in(-5,5), rd::in(0, 30)), rd::vec3in(-15,15), rd::vec3in(-180,180)});
-  }*/
+  }
 }
 
 void DLScene1::update (const float& dt) {
   Scene::update(dt);
+
+  plexusScene->update(dt);
+  plexusScene->draw();
 };
 
 // #include "Engine/Inputs/Inputs.hpp"

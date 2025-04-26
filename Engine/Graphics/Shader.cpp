@@ -4,6 +4,50 @@
 #include <SDL3/SDL_log.h>
 #include "../common/LOG.hpp"
 
+GLuint Shader::loadComputeShader (string& compShaderCode)
+{
+  GLuint ComputeShaderID = glCreateShader(GL_COMPUTE_SHADER);
+
+  GLint Result = GL_FALSE;
+  int InfoLogLength;
+
+  printf("Compiling shader : %s\n", "compute");
+  char const* ComputeSourcePointer = compShaderCode.c_str();
+  glShaderSource(ComputeShaderID, 1, &ComputeSourcePointer, NULL);
+  glCompileShader(ComputeShaderID);
+
+  // Check Compute Shader
+  glGetShaderiv(ComputeShaderID, GL_COMPILE_STATUS, &Result);
+  glGetShaderiv(ComputeShaderID, GL_INFO_LOG_LENGTH, &InfoLogLength);
+  if (InfoLogLength > 0) {
+    std::string ComputeShaderErrorMessage("", InfoLogLength + 1);
+    glGetShaderInfoLog(ComputeShaderID, InfoLogLength, NULL, ComputeShaderErrorMessage.data());
+    printf("%s\n", ComputeShaderErrorMessage.c_str());
+  }
+
+  printf("Linking program\n");
+  GLuint ProgramID = glCreateProgram();
+  glAttachShader(ProgramID, ComputeShaderID);
+  glLinkProgram(ProgramID);
+
+  glGetProgramiv(ProgramID, GL_LINK_STATUS, &Result);
+  glGetProgramiv(ProgramID, GL_INFO_LOG_LENGTH, &InfoLogLength);
+  if (InfoLogLength > 0) {
+    std::string ProgramErrorMessage("", InfoLogLength + 1);
+    glGetProgramInfoLog(ProgramID, InfoLogLength, NULL, ProgramErrorMessage.data());
+    auto* errMsg = ProgramErrorMessage.c_str();
+    printf("%s\n", errMsg);
+    std::string errCheckStr = "ERROR:";
+    if (strncmp(errMsg, errCheckStr.c_str(), errCheckStr.size()) == 0)
+      return 0;
+  }
+
+  glDetachShader(ProgramID, ComputeShaderID);
+  glDeleteShader(ComputeShaderID);
+
+  return ProgramID;
+}
+
 GLuint Shader::loadShader(std::string& vertexShaderCode, std::string& fragmentShaderCode)
 {
   GLuint VertexShaderID = glCreateShader(GL_VERTEX_SHADER);

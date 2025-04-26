@@ -19,6 +19,7 @@ public:
   struct Opts {
     string vertPath;
     string fragPath;
+    string compPath;
   };
 
   Opts opts;
@@ -28,14 +29,22 @@ public:
   unsigned int frame = 0;
 
   Shader (const Shader::Opts& opts): opts(opts) {
-    string vertShaderCode = loadFile("resources/" + opts.vertPath);
-    string fragShaderCode = loadFile("resources/" + opts.fragPath);
-
-    LOG("--- Loading shader");
-    shaderId = loadShader(vertShaderCode, fragShaderCode);
-    if (!shaderId) {
-      exit(EXIT_FAILURE);
+    if (!opts.compPath.empty()) {
+      string compShaderCode = loadFile("resources/" + opts.compPath);
+      shaderId = loadComputeShader(compShaderCode);
+      LOG("ComputeShader path: ", opts.compPath);
+      return;
+    } else {
+      string vertShaderCode = loadFile("resources/" + opts.vertPath);
+      string fragShaderCode = loadFile("resources/" + opts.fragPath);
+      LOG("--- Loading shader");
+      shaderId = loadShader(vertShaderCode, fragShaderCode);
     }
+
+    
+    if (!shaderId)
+      exit(EXIT_FAILURE);
+    
     LOG("--- Shader loaded", shaderId);
   }
 
@@ -48,6 +57,7 @@ public:
 
 private:
   GLuint loadShader (string& vertShaderCode, string& fragShaderCode);
+  GLuint loadComputeShader (string& compShaderCode);
 
   GLint getUnformLocation(const string& name) {
     if (uniformLocations.find(name) == uniformLocations.end()) {

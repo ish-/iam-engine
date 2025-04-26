@@ -50,6 +50,7 @@ public:
   // void attach(const Actor& child);
 
   mat4 getAbsTransformMatrix() const;
+  vec3 getAbsPosition() const;
 
 // Actor
   // TODO:

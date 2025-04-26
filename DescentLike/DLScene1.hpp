@@ -7,6 +7,8 @@ public:
     LOG("DLScene1 created");
   };
 
+  class ParticlesSample* plexusScene = nullptr;
+
   virtual void init () override;
   virtual void update (const float& dt) override;
 
