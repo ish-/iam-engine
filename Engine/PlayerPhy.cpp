@@ -71,6 +71,8 @@ void PlayerPhy::update(const float &dt)
   Actor::update(dt);
 
   {
+    Inputs& inputs = Inputs::get();
+
     using namespace ImGui;
     auto w = Window::get();
     Begin("HUD", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_AlwaysAutoResize);
@@ -79,10 +81,9 @@ void PlayerPhy::update(const float &dt)
     SetWindowPos(ImVec2(w.width / 2 - size.x / 2, w.height - size.y));
     End();
 
-    ImVec2 cursorPos = ImGui::GetIO().MousePos;
     ImDrawList* pointer = ImGui::GetForegroundDrawList();
-    pointer->AddLine(ImVec2(cursorPos.x - 5, cursorPos.y - 5), ImVec2(cursorPos.x + 5, cursorPos.y + 5), IM_COL32(255, 0, 0, 255), 2.0f);
-    pointer->AddLine(ImVec2(cursorPos.x + 5, cursorPos.y - 5), ImVec2(cursorPos.x - 5, cursorPos.y + 5), IM_COL32(255, 0, 0, 255), 2.0f);
+    pointer->AddLine(ImVec2(inputs.mouse.x - 5, inputs.mouse.y - 5), ImVec2(inputs.mouse.x + 5, inputs.mouse.y + 5), IM_COL32(255, 0, 0, 255), 2.0f);
+    pointer->AddLine(ImVec2(inputs.mouse.x + 5, inputs.mouse.y - 5), ImVec2(inputs.mouse.x - 5, inputs.mouse.y + 5), IM_COL32(255, 0, 0, 255), 2.0f);
 
     ImDrawList* aim = ImGui::GetForegroundDrawList();
     float cx = w.width / 2, cy = w.height / 2;

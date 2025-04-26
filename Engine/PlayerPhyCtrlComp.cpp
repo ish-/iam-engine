@@ -24,6 +24,7 @@ void PlayerPhyCtrlComp::update (const float& dt) {
   }
 
   Inputs& inputs = Inputs::get();
+  bool mouseLocked = inputs.mouseLock(Bool::GET);
 
   float boost = 1 + inputs.btn[SDLK_TAB] * 2.; // boost
   float pan = inputs.btn[SDLK_D] - inputs.btn[SDLK_A]; // left-right
@@ -35,14 +36,21 @@ void PlayerPhyCtrlComp::update (const float& dt) {
     phyComp->applyForce(owner->getForwardQuat() * move * this->moveForce * vec3(3.) * vec3(boost));
   }
 
+  if (glm::length(inputs.mouseClip) == 0.0f)
+      return;
+  
+  /*vec2 pointerNorm = glm::normalize(inputs.mouseClip);
+  float distFromCenter = glm::length(inputs.mouseClip);
+  distFromCenter = pow(std::max(0., (distFromCenter - .1) * 1.2), 2.);
+  vec2 pointer = pointerNorm * vec2(distFromCenter) * vec2(100.);*/
 
-  // vec2 pointerNorm = glm::normalize(inputs.mouseClip);
-  // float distFromCenter = glm::length(inputs.mouseClip);
-  // distFromCenter = pow(std::max(0., (distFromCenter - .1) * 1.2), 2.);
-  // vec2 pointer = pointerNorm * vec2(distFromCenter);
-  vec2 pointer = vec2(inputs.mouseRel.x, inputs.mouseRel.y);
+  vec2 pointer = vec2(inputs.mouseClip.x, inputs.mouseClip.y) * vec2(10.);
+  
+  //vec2 pointer = vec2(inputs.mouseRel.x, inputs.mouseRel.y);
 
-  if (bool mouseLocked = inputs.mouseLock(Bool::GET)) {
+  //LOG("pointer", pointer.x, pointer.y);
+
+  if (true/*mouseLocked*/) {
     float pitch = pointer.y; // pitch
     float yaw = (1 - inputs.btn[SDLK_LSHIFT]) * pointer.x;  // yaw
     float roll = inputs.btn[SDLK_LSHIFT] * pointer.x; // roll

@@ -30,10 +30,10 @@ void DLScene1::init () {
 
   loadJson("resources/scenes/lvl_station.json");
 
-  for (size_t i = 0; i < 100; i++) {
+  /*for (size_t i = 0; i < 100; i++) {
     auto cube = newActor<ACube>();
     cube->setTransformConf(Transform::Conf{vec3(0,0,-5) + vec3(rd::in(-15,15), rd::in(-5,5), rd::in(0, 30)), rd::vec3in(-15,15), rd::vec3in(-180,180)});
-  }
+  }*/
 }
 
 void DLScene1::update (const float& dt) {
