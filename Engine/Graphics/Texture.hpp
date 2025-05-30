@@ -7,14 +7,19 @@ struct Texture {
 
   Texture (const std::string& path, int numChannels) {
     image = std::make_shared<Image>(path, numChannels);
-    bind();
+    create();
   }
 
   Texture (sp<Image> image): image(image) {
-    bind();
+    create();
   }
 
-  void bind () {
+  void bind (GLuint unit) const {
+    glActiveTexture(GL_TEXTURE0 + unit);
+    glBindTexture(GL_TEXTURE_2D, id);
+  }
+
+  void create () {
 
     glGenTextures(1, &id);
     glBindTexture(GL_TEXTURE_2D, id);

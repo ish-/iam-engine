@@ -52,6 +52,7 @@ public:
   // virtual ~Renderer() = default;
   // shared_ptr<Scene> scene;
   shared_ptr<class Shader> defaultShader;
+  shared_ptr<class Material> material;
   shared_ptr<class Shader> shader;
   shared_ptr<class Scene> scene;
   SDL_GLContext* context;
@@ -76,6 +77,7 @@ public:
 
   void setScene (shared_ptr<Scene> scene);
   void setShader (shared_ptr<class Shader> shader);
+  void setMaterial (shared_ptr<class Material> material);
   void setDefaultShader ();
   void setFrameData ();
 

@@ -6,6 +6,7 @@
 
 // #include "MeshComp.hpp"
 #include "Geo.hpp"
+#include "Texture.hpp"
 
 AssetStore::AssetStore () {}
 
@@ -99,4 +100,13 @@ void AssetStore::logChildren (const aiNode* node, int level) {
     LOG("-- Child", name);
     logChildren(node->mChildren[i], level + 1);
   }
+}
+
+sp<Texture> AssetStore::loadTexture(const std::string& path, int numChannels) {
+  if (textures.find(path) != textures.end())
+    return textures[path];
+
+  auto texture = std::make_shared<Texture>(path, numChannels);
+  textures[path] = texture;
+  return texture;
 }

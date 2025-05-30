@@ -14,6 +14,7 @@
 #include "PhongShader.hpp"
 #include "SDL3/SDL_video.h"
 #include "Shader.hpp"
+#include "Material.hpp"
 #include "../Camera.hpp"
 #include "../Time.hpp"
 #include "../Light.hpp"
@@ -165,7 +166,8 @@ void Renderer::render (shared_ptr<MeshComp> mesh, bool instanced) {
 
   glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
-  setShader(mesh->shader ? mesh->shader : shader);
+  setMaterial(mesh->material ? mesh->material : material);
+  // setShader(mesh->shader ? mesh->shader : shader);
   mat4 model = mesh->getAbsTransformMatrix();
   bool toShade = shading && mesh->conf.shaded;
   bool toWireframe = wireframes || mesh->conf.wireframe;
@@ -179,11 +181,8 @@ void Renderer::render (shared_ptr<MeshComp> mesh, bool instanced) {
     shader->setUniform("wireframes", 0.f);
     shader->setUniform("normalsMult", mesh->conf.invertNormals ? -1.f : 1.f);
 
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, tex->id);
-
-    GLint loc = glGetUniformLocation(shader->shaderId, "sAlbedo");
-    glUniform1i(loc, 0);
+    // glActiveTexture(GL_TEXTURE0);
+    // glBindTexture(GL_TEXTURE_2D, tex->id);
 
     if (instanced)
       mesh->drawInstances();
@@ -239,6 +238,13 @@ void Renderer::setScene (shared_ptr<Scene> scene) {
 
 void Renderer::setDefaultShader () {
   setShader(defaultShader);
+}
+
+void Renderer::setMaterial (shared_ptr<Material> _material) {
+  if (_material != material) {
+    material = _material;
+    setShader(material->shader);
+  }
 }
 
 void Renderer::setShader (shared_ptr<Shader> _shader) {

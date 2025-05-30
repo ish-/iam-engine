@@ -1,9 +1,11 @@
 #include "MeshComp.hpp"
 #include <glad/glad.h>
+#include "Graphics/PhongMaterial.hpp"
 #include "Shader.hpp"
 #include "Geo.hpp"
 #include "BoxGeo.hpp"
 #include "../common/Symbol.hpp"
+#include "Material.hpp"
 // #include <glm/vec3.hpp>
 // using namespace glm;
 
@@ -21,6 +23,10 @@ MeshComp::MeshComp(const Conf& conf): conf(conf), AComp() {
 void MeshComp::draw() {
   glBindVertexArray(geo->VAO);
 
+  if (material) {
+    material->bind();
+  }
+
   glDrawElements(GL_TRIANGLES, geo->vertexCount, GL_UNSIGNED_INT, 0);
 
   glBindVertexArray(0);
@@ -29,6 +35,10 @@ void MeshComp::draw() {
 void MeshComp::drawInstances() {
   glBindVertexArray(geo->VAO);
   // if (auto err = glGetError()) LOG("GL ERROR: glBindVertexArray", err);
+
+  if (material) {
+    material->bind();
+  }
 
   // geo->bindInstancingBuffer(transforms);
   glDrawElementsInstanced(GL_TRIANGLES, geo->vertexCount, GL_UNSIGNED_INT, 0, geo->instancesCount);
@@ -49,6 +59,8 @@ void MeshComp::init() {
 
   geo = BoxGeo::getPtr();
   geo->instancesCount++;
+
+  material = PhongMaterial::getPtr();
 }
 
 // TODO: cache it since it's not update()d
