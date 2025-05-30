@@ -2,6 +2,7 @@
 
 layout (location = 0) in vec3 aPos;
 layout (location = 1) in vec3 aNormal;
+layout (location = 2) in vec2 aUv;
 
 uniform mat4 model;
 uniform mat4 view;
@@ -13,6 +14,7 @@ uniform float normalsMult;
 
 out vec3 vFragPos;
 out vec3 vNormal;
+out vec2 vUv;
 // out float vBlendFace;
 
 layout (location = 3) in vec4 instanceMat0; // mat4 first column
@@ -27,6 +29,7 @@ void main() {
 	}
 	vFragPos = vec3(_model * vec4(aPos, 1.0));
 	vNormal = mat3(transpose(inverse(mat3(_model)))) * aNormal;
+	vUv = aUv;
 	// vNormal = aNormal;
 	// TexCoords = aTexCoords;
 

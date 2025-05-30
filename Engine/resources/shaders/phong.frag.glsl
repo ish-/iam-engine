@@ -4,7 +4,7 @@ out vec4 FragColor;
 
 in vec3 vFragPos;
 in vec3 vNormal;
-// in vec2 TexCoords;
+in vec2 vUv;
 in float vBlendFace;
 
 struct Light {
