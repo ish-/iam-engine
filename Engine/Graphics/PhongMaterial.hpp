@@ -3,17 +3,7 @@
 #include "PhongShader.hpp"
 
 struct PhongMaterial : public Material {
-  static PhongMaterial& get() {
-    static PhongMaterial instance;
-    return instance;
-  }
-
-  static std::shared_ptr<PhongMaterial> getPtr() {
-    static std::shared_ptr<PhongMaterial> instancePtr(&get(), [](PhongMaterial*) {
-        // Custom deleter does nothing to prevent deleting singleton
-    });
-    return instancePtr;
-  }
+  SINGLETON_PTR(PhongMaterial)
 
   PhongMaterial(): Material(Material::Conf{
     .albedoPath = "images/grey_grid.png",

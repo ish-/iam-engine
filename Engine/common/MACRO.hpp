@@ -1,7 +1,15 @@
-#define SINGLETON(NAME) \
-  static NAME& get() { \
-    static NAME instance; \
+#define SINGLETON(T) \
+  static T& get() { \
+    static T instance; \
     return instance; \
+  }
+
+#define SINGLETON_PTR(T) \
+  SINGLETON(T) \
+  static std::shared_ptr<T> getPtr() { \
+    static std::shared_ptr<T> instancePtr(&get(), [](T*) { \
+    }); \
+    return instancePtr; \
   }
 
 #define PROP_GETSET (TYPE, NAME) \

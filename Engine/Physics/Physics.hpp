@@ -12,8 +12,7 @@ const btVector3 btVector3_ZERO = btVector3(0, 0, 0);
 
 class Physics : public ASystem/*<PhysicsComp>*/ {
 public:
-  static Physics& get() { static Physics instance; return instance; } // singleton
-  static shared_ptr<Physics>& getPtr() { static shared_ptr<Physics> ptr = shared_ptr<Physics>(&Physics::get(), [](Physics*) {}); return ptr; }
+  SINGLETON_PTR(Physics)
 
   virtual Symbol getASystemType () override {
       static Symbol symbol { "Physics" };

@@ -124,8 +124,6 @@ void Renderer::init (SDL_Window* sdlWindow) {
 
   defaultShader = PhongShader::getPtr();
   setShader(defaultShader);
-
-  tex = make_shared<Texture>("images/omar.jpg", 4);
 }
 
 

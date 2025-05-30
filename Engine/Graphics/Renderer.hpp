@@ -22,17 +22,7 @@ class SDL_Window;
 
 class Renderer : public ASystem/*<MeshComp>*/ {
 public:
-  sp<class Texture> tex;
-
-  static Renderer& get() {
-    static Renderer instance;
-    return instance;
-  }
-
-  static shared_ptr<Renderer>& getPtr() {
-    static shared_ptr<Renderer> ptr = shared_ptr<Renderer>(&Renderer::get(), [](Renderer*) {});
-    return ptr;
-  }
+  SINGLETON_PTR(Renderer)
 
   virtual Symbol getASystemType () override {
       static Symbol symbol { "Renderer" };
