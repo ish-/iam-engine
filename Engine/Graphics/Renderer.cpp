@@ -24,6 +24,8 @@
 #include "glm/ext/quaternion_common.hpp"
 #include <map>
 
+#include "Graphics/Texture.hpp"
+
 using namespace glm;
 
 #ifdef _WIN32
@@ -121,6 +123,8 @@ void Renderer::init (SDL_Window* sdlWindow) {
 
   defaultShader = PhongShader::getPtr();
   setShader(defaultShader);
+
+  tex = make_shared<Texture>("images/omar.jpg", 4);
 }
 
 
@@ -174,6 +178,12 @@ void Renderer::render (shared_ptr<MeshComp> mesh, bool instanced) {
     shader->setUniform("tintColor", mesh->conf.tint);
     shader->setUniform("wireframes", 0.f);
     shader->setUniform("normalsMult", mesh->conf.invertNormals ? -1.f : 1.f);
+
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, tex->id);
+
+    GLint loc = glGetUniformLocation(shader->shaderId, "sAlbedo");
+    glUniform1i(loc, 0);
 
     if (instanced)
       mesh->drawInstances();

@@ -22,10 +22,11 @@ uniform float wireframes;
 // uniform vec3 lightPos;
 // uniform vec3 lightColor;
 uniform vec3 viewPos;
-// uniform sampler2D texture1;
 uniform vec3 tintColor;
 uniform vec2 lightAttenuationSq;
 uniform vec3 wireColor;
+
+uniform sampler2D sAlbedo;
 
 float invlerp (float from, float to, float value){
   return (value - from) / (to - from);
@@ -81,8 +82,10 @@ void main()
       float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);
       vec3 specular = specularStrength * spec * vec3(1.0);
 
+      vec3 albedo = texture(sAlbedo, vUv).rgb;
+
       // vec3 result = (ambient + diffuse + specular) * texture(texture1, TexCoords).rgb;
-      LIGHTING += (diffuse + specular) * tintColor;
+      LIGHTING += (diffuse * albedo + specular) * tintColor;
     }
 
     LIGHTING += (ambient * tintColor);

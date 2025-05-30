@@ -99,6 +99,22 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(glm)
 target_link_libraries(${Engine} glm::glm)
 
+# !!!!!! STB
+FetchContent_Declare(
+    stb
+    GIT_REPOSITORY https://github.com/nothings/stb.git
+    GIT_TAG f58f558c120e9b32c217290b80bad1a0729fbb2c
+)
+FetchContent_MakeAvailable(stb)
+
+add_library(stb INTERFACE)
+target_include_directories(stb INTERFACE ${stb_SOURCE_DIR})
+
+target_link_libraries(${Engine} stb)
+
+
+# !!!!!! GLAD
+
 target_include_directories(${Engine} PUBLIC "${CMAKE_SOURCE_DIR}/ext/glad/include")
 
 add_library(GLAD "ext/glad/src/glad.c")

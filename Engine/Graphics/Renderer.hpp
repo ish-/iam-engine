@@ -22,6 +22,8 @@ class SDL_Window;
 
 class Renderer : public ASystem/*<MeshComp>*/ {
 public:
+  sp<class Texture> tex;
+
   static Renderer& get() {
     static Renderer instance;
     return instance;
