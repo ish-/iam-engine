@@ -24,6 +24,7 @@
 #include "common/math.hpp"
 #include "common/random.hpp"
 #include "common/Symbol.hpp"
+#include "DebugTimer.hpp"
 
 #include <glad/glad.h>
 #include <SDL3/SDL_keycode.h>
