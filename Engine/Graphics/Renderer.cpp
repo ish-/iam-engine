@@ -143,8 +143,8 @@ void Renderer::update (const vector<weak_ptr<AComp>>& comps, const float& dt) {
     if (auto comp = wComp.lock()) {
       auto meshComp = dynamic_pointer_cast<MeshComp>(comp);
       if (meshComp) {
-        auto bb = meshComp->getBoundingBox();
-        if (!frustrum.isAABBPartiallyInsideFrustum(bb)) {
+        meshComp->culled = !frustrum.isAABBPartiallyInsideFrustum(meshComp->getBoundingBox());
+        if (meshComp->culled) {
           culledNum++;
           continue;
         }

@@ -42,7 +42,7 @@ bool Physics::init () {
 }
 
 void Physics::update (const vector<weak_ptr<AComp>>& comps, const float& dt) {
-  dynamicsWorld->stepSimulation(dt * conf.speed, 10);
+  dynamicsWorld->stepSimulation(dt * conf.speed, 1);
   ASystem::update(comps, dt);
 }
 

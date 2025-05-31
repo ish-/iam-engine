@@ -26,8 +26,8 @@ void PhysicsComp::init () {
   // } else {
   //   return false;
   // }
-  sp<MeshComp> meshComp = getOwner()->getComp<MeshComp>();
-  if (params.shapeType == "TRIANGULATE_SHAPE") {
+  meshComp = getOwner()->getComp<MeshComp>();
+  if (meshComp && params.shapeType == "TRIANGULATE_SHAPE") {
     shape = Collisions::createTriMeshShape(meshComp->geo->data);
     meshComp->geo->clearData();
   }
@@ -101,6 +101,10 @@ glm::mat4 PhysicsComp::getGlmTMat4 () {
 void PhysicsComp::update (const float& dt) {
   if (params.mass > 0.f)
     getOwner()->setMatrix(getGlmTMat4());
+
+  if (params.disableCulled && meshComp && meshComp->culled) {
+    rigidBody->setActivationState(meshComp->culled ? ISLAND_SLEEPING : DISABLE_DEACTIVATION);
+  }
 }
 
 void PhysicsComp::applyForce (glm::vec3 force, glm::vec3 pos) {

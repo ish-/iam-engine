@@ -28,6 +28,7 @@ void ACube::init () {
   PhysicsComp::Params createParams {
     .shapeType = "BOX_SHAPE",
     .mass = .8,
+    .disableCulled = true,
     // .initialImpulse = btVector3(rd::in(-10,10), rd::in(-10,10), rd::in(-10,10)),
   };
   ctr->newComp<PhysicsComp>(shared_from_this(), createParams);

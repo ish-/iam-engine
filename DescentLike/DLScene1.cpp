@@ -30,14 +30,13 @@ void DLScene1::init () {
     .rot = vec3(0, 180, 0),
   });
 
-  loadJson("resources/scenes/lvl_station.json");
+  // loadJson("resources/scenes/lvl_station.json");
+  // auto stationMesh = getActorByName("lvl_station")->getComp<MeshComp>();
+  // stationMesh->material->conf.worldAlignedTexture = true;
+  // stationMesh->material->conf.uvScale = .5f;
+  // stationMesh->material->albedoTex = AssetStore::get().loadTexture("scenes/likeabluenoise.jpg", 4);
 
-  auto stationMesh = getActorByName("lvl_station")->getComp<MeshComp>();
-  stationMesh->material->conf.worldAlignedTexture = true;
-  stationMesh->material->conf.uvScale = .5f;
-  stationMesh->material->albedoTex = AssetStore::get().loadTexture("scenes/likeabluenoise.jpg", 4);
-
-  for (size_t i = 0; i < 100; i++) {
+  for (size_t i = 0; i < 500; i++) {
     auto cube = newActor<ACube>();
     cube->setTransformConf((Transform::Conf){vec3(0,0,-5) + vec3(rd::in(-15,15), rd::in(-5,5), rd::in(0, 30)), rd::vec3in(-15,15), rd::vec3in(-180,180)});
   }

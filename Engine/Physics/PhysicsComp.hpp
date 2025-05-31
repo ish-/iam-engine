@@ -42,6 +42,7 @@ public:
     btVector3 initialTorque {0,0,0};
     btVector3 intertia {0,0,0};
     float friction = 0;
+    bool disableCulled = false;
     // btVector3 initialImpulsePos {0,0,0};
     // float restitution = 0.5;
     // float friction = 0.5;
@@ -52,7 +53,7 @@ public:
 
     JSON_DEFINE_OPTIONAL(Params,
       shapeType, pos, mass, damping, initialImpulse, initialTorque, intertia,
-      group, mask, overlap);
+      group, mask, overlap, disableCulled);
   };
 
   btCollisionShape* shape;
@@ -92,6 +93,8 @@ public:
   }
 
   void setTransform (const glm::mat4& transform);
+
+  sp<class MeshComp> meshComp;
 };
 
 static void from_json (const nlohmann::json& j, PhysicsComp::CollisionGroup& group) {
