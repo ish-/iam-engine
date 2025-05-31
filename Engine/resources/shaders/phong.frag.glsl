@@ -27,6 +27,8 @@ uniform vec2 lightAttenuationSq;
 uniform vec3 wireColor;
 
 uniform sampler2D sAlbedo;
+uniform float uShininess;
+uniform vec3 uSpecularColor;
 
 float invlerp (float from, float to, float value){
   return (value - from) / (to - from);
@@ -37,11 +39,10 @@ float remap (float origFrom, float origTo, float targetFrom, float targetTo, flo
   return mix(targetFrom, targetTo, rel);
 }
 
-vec3 attenuateLight (Light light, vec3 fragPos) {
+float attenuateLight (Light light, vec3 fragPos) {
 	vec3 toLight = light.pos - vFragPos;
 	float distSq = dot(toLight, toLight);
-	float attenuation = clamp(remap(light.atten[0], light.atten[1], 1., 0. , distSq), 0., 1.);
-	return light.color * attenuation;
+	return clamp(remap(light.atten[0], light.atten[1], 1., 0. , distSq), 0., 1.);
 }
 
 void main()
@@ -71,16 +72,17 @@ void main()
       // vec3 norm = normalize(vNormal);
       vec3 norm = vNormal;
       vec3 lightDir = normalize(lights[i].pos - vFragPos);
-      float diff = max(dot(norm, lightDir), 0.0);
-      vec3 diffuse = diff * attenuateLight(lights[i], vFragPos);
+      // float diff = max(dot(norm, lightDir), 0.0);
+      float diff = abs(dot(norm, lightDir));
+      float attenuation = attenuateLight(lights[i], vFragPos);
+      vec3 diffuse = diff * attenuation * lights[i].color;
       // TODO: discard not enlighten fragments
 
       // Specular
-      float specularStrength = 0.5;
       vec3 viewDir = normalize(viewPos - vFragPos);
       vec3 reflectDir = reflect(-lightDir, norm);
-      float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);
-      vec3 specular = specularStrength * spec * vec3(1.0);
+      float spec = pow(max(dot(viewDir, reflectDir), 0.0), uShininess);
+      vec3 specular = spec * uSpecularColor * min(attenuation * 10, 1);
 
       vec3 albedo = texture(sAlbedo, vUv).rgb;
 

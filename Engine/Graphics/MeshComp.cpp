@@ -16,7 +16,9 @@ Symbol MeshComp::getASystemType () {
 
 MeshComp::MeshComp(const Conf& conf): conf(conf), AComp() {
   if (conf.path.length() > 0) {
-    geo = AssetStore::get().loadModel(conf.path);
+    auto modelFull = AssetStore::get().loadModel(conf.path);
+    geo = modelFull->geo;
+    material = modelFull->material;
   }
 }
 
