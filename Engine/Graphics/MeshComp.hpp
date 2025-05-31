@@ -13,6 +13,12 @@ class Symbol;
 class Shader;
 class Geo;
 
+enum CullingMode {
+  NONE = 0,
+  SPHERE = 1,
+  BB = 2,
+};
+
 class MeshComp : public AComp, public ILifecycle, public Transform {
 public:
   virtual Symbol getASystemType () override;
@@ -24,6 +30,8 @@ public:
     bool wireframe = false;
     bool invertNormals = false;
     bool autoInstancing = true;
+    bool instancingCulling = false;
+    CullingMode culling = CullingMode::SPHERE;
 
     string path = "";
 
@@ -52,6 +60,8 @@ public:
   mat4 getAbsTransformMatrix() const;
 
   virtual bool shouldInstance ();
+  virtual bool shouldCulled ();
+  virtual int getInstancesNum () const;
 
   virtual class BoundingBox getBoundingBox();
 

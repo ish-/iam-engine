@@ -1,6 +1,7 @@
 #include "Scene.hpp"
 #include <cstddef>
 #include <memory>
+#include "DebugTimer.hpp"
 #include "common/json.hpp"
 #include "Actor.hpp"
 #include "ACube.hpp"
@@ -35,8 +36,10 @@ void Scene::update (const float& dt) {
   }
 
   // update components per systems
-  for (auto& [sysType, system] : systems)
+  for (auto& [sysType, system] : systems) {
+    DebugTimer timer("Scene::update " + sysType.name());
     system->update(compsBySystem[sysType], dt);
+  }
 
   // update actors and clear
   size_t actorsNum = actors.size();

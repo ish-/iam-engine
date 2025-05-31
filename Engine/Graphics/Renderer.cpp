@@ -10,6 +10,7 @@
 
 #include "Renderer.hpp"
 #include "AComp.hpp"
+#include "DebugTimer.hpp"
 #include "MeshComp.hpp"
 #include "PhongShader.hpp"
 #include "SDL3/SDL_video.h"
@@ -139,14 +140,17 @@ void Renderer::update (const vector<weak_ptr<AComp>>& comps, const float& dt) {
 
   // auto comps = getComps();
   int culledNum = 0;
+  int instancedNum = 0;
   for (auto& wComp : comps) {
     if (auto comp = wComp.lock()) {
       auto meshComp = dynamic_pointer_cast<MeshComp>(comp);
       if (meshComp) {
-        meshComp->culled = !frustrum.isAABBPartiallyInsideFrustum(meshComp->getBoundingBox());
-        if (meshComp->culled) {
-          culledNum++;
-          continue;
+        if (meshComp->shouldCulled()) {
+          meshComp->culled = !frustrum.isAABBPartiallyInsideFrustum(meshComp->getBoundingBox());
+          if (meshComp->culled) {
+            culledNum++;
+            continue;
+          }
         }
 
         if (meshComp->shouldInstance()) {
@@ -154,7 +158,8 @@ void Renderer::update (const vector<weak_ptr<AComp>>& comps, const float& dt) {
           if (instancedMeshes.find(meshComp->geo) == instancedMeshes.end()) {
             instancedMeshes[meshComp->geo] = InstancedMeshComp::create(meshComp);
           }
-          instancedMeshes[meshComp->geo]->transforms.push_back(meshComp->getAbsTransformMatrix());
+          instancedNum++;
+          instancedMeshes[meshComp->geo]->addTransform(meshComp->getAbsTransformMatrix());
         }
         else {
           render(meshComp);
@@ -162,25 +167,18 @@ void Renderer::update (const vector<weak_ptr<AComp>>& comps, const float& dt) {
       }
     }
   }
-  LOG("Renderer::update: culled ", culledNum, " meshes");
 
-  // instancing
-  // for (auto& [geo, meshComps] : geoToMeshComps) {
-  //   vector<mat4> transforms;
-  //   transforms.reserve(meshComps.size());
-  //   for (auto& meshComp : meshComps) {
-  //     transforms.push_back(meshComp->getAbsTransformMatrix());
-  //   }
-  //   if (meshComps.size()) {
-  //     geo->bindInstancingBuffer(transforms);
-  //     render(meshComps[0], true);
-  //   }
-  // }
   for (auto& [geo, instanceMesh] : instancedMeshes) {
+    instanceMesh->culled = !frustrum.isAABBPartiallyInsideFrustum(instanceMesh->getBoundingBox());
+    if (instanceMesh->culled) {
+      culledNum++;
+      continue;
+    }
     geo->bindInstancingBuffer(instanceMesh->transforms);
-    instanceMesh->geo->instancesCount = instanceMesh->transforms.size();
     render(instanceMesh, true);
   }
+
+  LOG("Renderer::update: culled ", culledNum, " meshes; instanced ", instancedNum, " meshes");
 }
 
 void Renderer::render (shared_ptr<MeshComp> mesh, bool instanced) {
@@ -197,7 +195,7 @@ void Renderer::render (shared_ptr<MeshComp> mesh, bool instanced) {
   bool toWireframe = wireframes || mesh->conf.wireframe;
   if (toShade || toWireframe) {
     shader->setUniform("model", model);
-    shader->setUniform("instancesCount", int(mesh->geo->instancesCount));
+    shader->setUniform("instancesCount", int(mesh->getInstancesNum()));
   }
 
   if (toShade) {

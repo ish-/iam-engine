@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include "glm/ext/matrix_transform.hpp"
 #include "glm/fwd.hpp"
 // #include <glm/gtc/matrix_transform.hpp>
 // #include <glm/gtc/quaternion.hpp>
@@ -29,7 +30,7 @@ public:
 
   Conf conf;
 
-  Transform() = default;
+  Transform (): matrix(glm::identity<mat4>()) {}
   Transform (const mat4& matrix): matrix(matrix) {}
   Transform (const vec3& pos) { setPosition(pos); }
   Transform (const vec3& pos, const vec3& rot) { setPosition(pos); setRotation(rot); }

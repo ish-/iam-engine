@@ -78,9 +78,12 @@ struct Plane {
 class Frustum {
 public:
     std::array<Plane, 6> planes;
+    glm::vec3 pos;
+    float radius = 2.0f;
 
     void update(const glm::mat4& VP) {
         const glm::mat4& m = VP;
+        pos = glm::vec3(VP[3]);
 
         // Corrected plane extraction using column vectors
         planes[0] = { glm::vec3(m[0][3] + m[0][0], m[1][3] + m[1][0], m[2][3] + m[2][0]), m[3][3] + m[3][0] }; // Left
@@ -101,18 +104,27 @@ public:
     }
 
     bool isAABBPartiallyInsideFrustum(BoundingBox bb) {
-        for (const auto& plane : planes) {
-            // Get the positive vertex (p-vertex)
-            glm::vec3 positive = bb.min;
-            if (plane.normal.x >= 0) positive.x = bb.max.x;
-            if (plane.normal.y >= 0) positive.y = bb.max.y;
-            if (plane.normal.z >= 0) positive.z = bb.max.z;
+        if (glm::length(bb.center - pos) - radius < bb.radius)
+            return true;
 
-            // If p-vertex is outside, the entire AABB is outside
-            if (plane.distanceToPoint(positive) < 0) {
+        for (const auto& plane : planes) {
+            if (plane.distanceToPoint(bb.center) < -bb.radius) {
                 return false;
             }
         }
+
+        // for (const auto& plane : planes) {
+        //     // Get the positive vertex (p-vertex)
+        //     glm::vec3 positive = bb.min;
+        //     if (plane.normal.x >= 0) positive.x = bb.max.x;
+        //     if (plane.normal.y >= 0) positive.y = bb.max.y;
+        //     if (plane.normal.z >= 0) positive.z = bb.max.z;
+
+        //     // If p-vertex is outside, the entire AABB is outside
+        //     if (plane.distanceToPoint(positive) < 0) {
+        //         return false;
+        //     }
+        // }
         return true;
     }
 };

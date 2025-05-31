@@ -152,7 +152,7 @@ std::string Transform::transformStr() const {
 
 void Transform::setTransformConf (const Conf& conf) {
   this->conf = conf;
-  glm::mat4 translationMatrix = glm::translate(glm::mat4(1.0f), conf.pos);
+  glm::mat4 scaleMatrix = glm::scale(glm::mat4(1.0f), conf.scale);
 
   glm::mat4 rotationMatrix = glm::eulerAngleXYZ(
     glm::radians(conf.rot.x),
@@ -160,7 +160,7 @@ void Transform::setTransformConf (const Conf& conf) {
     glm::radians(conf.rot.z)
   );
 
-  glm::mat4 scaleMatrix = glm::scale(glm::mat4(1.0f), conf.scale);
+  glm::mat4 translationMatrix = glm::translate(glm::mat4(1.0f), conf.pos);
 
   matrix = translationMatrix * rotationMatrix * scaleMatrix;
 }

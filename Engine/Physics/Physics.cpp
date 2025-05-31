@@ -9,6 +9,7 @@
 #include "BulletCollision/CollisionDispatch/btDefaultCollisionConfiguration.h"
 #include "DebugDraw.hpp"
 #include "../Graphics/MeshComp.hpp"
+#include "DebugTimer.hpp"
 // #include "./CollisionDispatcher.hpp"
 
 glm::mat4 Physics::toGlmTMat4 (const btTransform& transform) {
@@ -42,7 +43,7 @@ bool Physics::init () {
 }
 
 void Physics::update (const vector<weak_ptr<AComp>>& comps, const float& dt) {
-  dynamicsWorld->stepSimulation(dt * conf.speed, 1);
+  dynamicsWorld->stepSimulation(dt * conf.speed, 10);
   ASystem::update(comps, dt);
 }
 

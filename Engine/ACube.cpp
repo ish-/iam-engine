@@ -19,7 +19,9 @@ using namespace std;
 void ACube::init () {
   Actor::init();
   auto ctr = getScene();
-  auto meshComp = ctr->newComp<MeshComp>(shared_from_this());
+  auto meshComp = ctr->newComp<MeshComp>(shared_from_this(), MeshComp::Conf{
+    // .autoInstancing = false,
+  });
   // meshComp->tint = vec3( rd::in(0, 1), rd::in(0, 1), rd::in(0, 1));
   meshComp->geo = BoxGeo::getPtr();
 

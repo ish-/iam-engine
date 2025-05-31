@@ -119,6 +119,7 @@ sp<ModelDataFull> AssetStore::loadModel(const std::string& path) {
       }
       indicesOffset += mesh->mNumVertices;
   }
+  bb.update();
 
   PhongMaterial::Conf matConf;
 
