@@ -67,15 +67,6 @@ void main()
     // Ambient
     float ambientStrength = 0.05;
     vec3 ambient = ambientStrength * vec3(1.0);
-    // if (lightsNum == 0) {
-    //   FragColor = vec4(vec3(1,0,0), 1.); return;
-    // }
-    // if (lightsNum == 1) {
-    //   FragColor = vec4(vec3(0,1,0), 1.); return;
-    // }
-    // if (lightsNum == 2) {
-    //   FragColor = vec4(vec3(0,0,1), 1.); return;
-    // }
 
     vec3 LIGHTING = vec3(0.0);
 

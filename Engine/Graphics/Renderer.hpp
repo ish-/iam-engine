@@ -8,7 +8,7 @@
 #include <glm/mat4x4.hpp>
 #include "../ASystem.hpp"
 #include "../common/Symbol.hpp"
-// #include "MeshComp.hpp"
+#include "Frustrum.hpp"
 
 using namespace std;
 using namespace glm;
@@ -37,6 +37,7 @@ public:
     unsigned int frame = 0;
     mat4 view;
     mat4 projection;
+    mat4 viewProjection;
     vec3 viewPos;
     vec2 resolution = { 1280, 720 };
   };
@@ -48,11 +49,17 @@ public:
   shared_ptr<class Scene> scene;
   SDL_GLContext* context;
   FrameCache frameCache;
+  Frustum frustrum;
 
   unordered_map<
     shared_ptr<class Geo>,
     vector<shared_ptr<class MeshComp>>
   > geoToMeshComps;
+
+  unordered_map<
+    shared_ptr<class Geo>,
+    sp<class InstancedMeshComp>
+  > instancedMeshes;
 
   void init (SDL_Window* sdlWindow);
   // void setScene(shared_ptr<Scene> scene);

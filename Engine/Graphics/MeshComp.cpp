@@ -34,23 +34,6 @@ void MeshComp::draw() {
   glBindVertexArray(0);
 }
 
-void MeshComp::drawInstances() {
-  glBindVertexArray(geo->VAO);
-  // if (auto err = glGetError()) LOG("GL ERROR: glBindVertexArray", err);
-
-  if (material) {
-    material->bind();
-  }
-
-  // geo->bindInstancingBuffer(transforms);
-  glDrawElementsInstanced(GL_TRIANGLES, geo->vertexCount, GL_UNSIGNED_INT, 0, geo->instancesCount);
-  // glDrawArraysInstanced(GL_TRIANGLES, 0, geo->vertexCount, geo->instancesCount);
-  // if (auto err = glGetError()) LOG("GL ERROR: glDrawArraysInstanced", err);
-
-  glBindVertexArray(0);
-  // if (auto err = glGetError()) LOG("GL ERROR: glBindVertexArray(0)", err);
-}
-
 void MeshComp::update (const float& dt) {
 
 }
@@ -78,3 +61,38 @@ MeshComp::~MeshComp () {
 }
 
 bool MeshComp::shouldInstance () { return conf.autoInstancing && geo->instancesCount > 1; }
+
+BoundingBox MeshComp::getBoundingBox() {
+  BoundingBox bb;
+  auto transform = getAbsTransformMatrix();
+  // bad transform
+  // bb.min = glm::vec4(geo->boundingBox.min, 1) * transform;
+  // bb.max = glm::vec4(geo->boundingBox.max, 1) * transform;
+
+  // just position
+  // vec3 pos = Transform(transform).getPosition();
+  // bb.min = geo->boundingBox.min + pos;
+  // bb.max = geo->boundingBox.max + pos;
+
+  // full
+  auto& localBB = geo->boundingBox;
+  bb.min = glm::vec3(FLT_MAX);
+  bb.max = glm::vec3(-FLT_MAX);
+
+  for (int x = 0; x <= 1; ++x) {
+    for (int y = 0; y <= 1; ++y) {
+      for (int z = 0; z <= 1; ++z) {
+        glm::vec3 corner = glm::vec3(
+          x ? localBB.max.x : localBB.min.x,
+          y ? localBB.max.y : localBB.min.y,
+          z ? localBB.max.z : localBB.min.z
+        );
+        glm::vec3 worldCorner = glm::vec3(transform * glm::vec4(corner, 1.0f));
+        bb.min = glm::min(bb.min, worldCorner);
+        bb.max = glm::max(bb.max, worldCorner);
+      }
+    }
+  }
+
+  return bb;
+}

@@ -51,5 +51,8 @@ BoxGeo::BoxGeo(float _size)
     };
     // clang-format on
 
+    boundingBox.min = glm::vec3(-s, -s, -s);
+    boundingBox.max = glm::vec3(s, s, s);
+
     bindBuffers({vertices, indices, {3, 3, 2}});
   }

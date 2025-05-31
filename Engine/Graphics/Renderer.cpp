@@ -26,7 +26,9 @@
 #include "glm/ext/quaternion_common.hpp"
 #include <map>
 
-#include "Graphics/Texture.hpp"
+#include "Texture.hpp"
+#include "Frustrum.hpp"
+#include "InstancedMeshComp.hpp"
 
 using namespace glm;
 
@@ -130,32 +132,55 @@ void Renderer::init (SDL_Window* sdlWindow) {
 
 void Renderer::update (const vector<weak_ptr<AComp>>& comps, const float& dt) {
   // LOG("Renderer::renderComps");
+  // geoToMeshComps.clear();
+  instancedMeshes.clear();
   setFrameData();
+  frustrum.update(frameCache.viewProjection);
 
   // auto comps = getComps();
+  int culledNum = 0;
   for (auto& wComp : comps) {
     if (auto comp = wComp.lock()) {
       auto meshComp = dynamic_pointer_cast<MeshComp>(comp);
       if (meshComp) {
-        if (meshComp->shouldInstance())
-          geoToMeshComps[meshComp->geo].push_back(meshComp);
-        else
+        auto bb = meshComp->getBoundingBox();
+        if (!frustrum.isAABBPartiallyInsideFrustum(bb)) {
+          culledNum++;
+          continue;
+        }
+
+        if (meshComp->shouldInstance()) {
+          // geoToMeshComps[meshComp->geo].push_back(meshComp);
+          if (instancedMeshes.find(meshComp->geo) == instancedMeshes.end()) {
+            instancedMeshes[meshComp->geo] = InstancedMeshComp::create(meshComp);
+          }
+          instancedMeshes[meshComp->geo]->transforms.push_back(meshComp->getAbsTransformMatrix());
+        }
+        else {
           render(meshComp);
+        }
       }
     }
   }
+  LOG("Renderer::update: culled ", culledNum, " meshes");
 
   // instancing
-  for (auto& [geo, meshComps] : geoToMeshComps) {
-    vector<mat4> transforms;
-    transforms.reserve(meshComps.size());
-    for (auto& meshComp : meshComps) {
-      transforms.push_back(meshComp->getAbsTransformMatrix());
-    }
-    geo->bindInstancingBuffer(transforms);
-    render(meshComps[0], true);
+  // for (auto& [geo, meshComps] : geoToMeshComps) {
+  //   vector<mat4> transforms;
+  //   transforms.reserve(meshComps.size());
+  //   for (auto& meshComp : meshComps) {
+  //     transforms.push_back(meshComp->getAbsTransformMatrix());
+  //   }
+  //   if (meshComps.size()) {
+  //     geo->bindInstancingBuffer(transforms);
+  //     render(meshComps[0], true);
+  //   }
+  // }
+  for (auto& [geo, instanceMesh] : instancedMeshes) {
+    geo->bindInstancingBuffer(instanceMesh->transforms);
+    instanceMesh->geo->instancesCount = instanceMesh->transforms.size();
+    render(instanceMesh, true);
   }
-  geoToMeshComps.clear();
 }
 
 void Renderer::render (shared_ptr<MeshComp> mesh, bool instanced) {
@@ -183,9 +208,9 @@ void Renderer::render (shared_ptr<MeshComp> mesh, bool instanced) {
     // glActiveTexture(GL_TEXTURE0);
     // glBindTexture(GL_TEXTURE_2D, tex->id);
 
-    if (instanced)
-      mesh->drawInstances();
-    else
+    // if (instanced)
+    //   mesh->drawInstances();
+    // else
       mesh->draw();
   }
 
@@ -193,9 +218,9 @@ void Renderer::render (shared_ptr<MeshComp> mesh, bool instanced) {
     shader->setUniform("wireframes", 1.f);
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
-    if (instanced)
-      mesh->drawInstances();
-    else
+    // if (instanced)
+    //   mesh->drawInstances();
+    // else
       mesh->draw();
   }
 }
@@ -265,10 +290,12 @@ void Renderer::setFrameData () {
 
   if (frameCache.frame < nowFrame) {
     mat4 cameraMat = scene->camera->getAbsTransformMatrix();
+    mat4 inverseCameraMat = glm::inverse(cameraMat);
     frameCache = {
       .frame = nowFrame,
-      .view = glm::inverse(cameraMat),
+      .view = inverseCameraMat,
       .projection = scene->camera->projection,
+      .viewProjection = scene->camera->projection * inverseCameraMat,
       .viewPos = Transform(cameraMat).getPosition(),
       .resolution = vec2(window.width, window.height),
     };

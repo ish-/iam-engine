@@ -42,6 +42,12 @@
 			_COUT( CYELLOW("[LOG]"), title, "->", args... );
 		}
 
+		inline std::ostream& operator<< (std::ostream& os, const glm::vec3& v) {
+			os << "vec3{ ";
+				os << v.x << " " << v.y << " " << v.z;
+			os << " }"; return os;
+		}
+
 		#ifdef LOG_VECTOR
 			#include <vector>
 			template <typename T>

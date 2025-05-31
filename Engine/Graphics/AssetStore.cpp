@@ -83,20 +83,22 @@ sp<ModelDataFull> AssetStore::loadModel(const std::string& path) {
   std::vector<int> meshesOffsets;
   GLint indicesOffset = 0;
 
+  BoundingBox bb;
+
   for (unsigned int i = 0; i < scene->mNumMeshes; i++) {
       aiMesh* mesh = scene->mMeshes[i];
       meshesOffsets.push_back(indicesOffset);
 
       // Process vertices
       for (unsigned int j = 0; j < mesh->mNumVertices; j++) {
-          aiVector3D position = mesh->mVertices[j];
+          aiVector3D pos = mesh->mVertices[j];
           aiVector3D normal = mesh->mNormals[j];
           aiVector3D texCoord = mesh->mTextureCoords[0] ? mesh->mTextureCoords[0][j] : aiVector3D(0.0f, 0.0f, 0.0f);
 
           // Add to the vertices array
-          vertices.push_back(position.x);
-          vertices.push_back(position.y);
-          vertices.push_back(position.z);
+          vertices.push_back(pos.x);
+          vertices.push_back(pos.y);
+          vertices.push_back(pos.z);
 
           vertices.push_back(normal.x);
           vertices.push_back(normal.y);
@@ -104,6 +106,8 @@ sp<ModelDataFull> AssetStore::loadModel(const std::string& path) {
 
           vertices.push_back(texCoord.x);
           vertices.push_back(texCoord.y);
+
+          bb.extend(pos.x, pos.y, pos.z);
       }
 
       // Process indices
@@ -139,6 +143,7 @@ sp<ModelDataFull> AssetStore::loadModel(const std::string& path) {
   // auto modelGeo
   auto modelData = ModelData{vertices, indices, {3,3,2}, 8, meshesOffsets};
   auto geo = std::make_shared<Geo>(modelData);
+  geo->boundingBox = bb;
   geos[path] = geo;
   // auto geo = std::make_shared<Geo>(Geo::Data{vertices, indices, {3,3,2}, 8, meshesOffsets});
   // if (!conf.exposeData)

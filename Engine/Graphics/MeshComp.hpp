@@ -41,7 +41,7 @@ public:
 
   virtual void draw();
   // virtual void drawInstances(const vector<mat4>& transforms);
-  virtual void drawInstances();
+  // virtual void drawInstances();
 
   virtual void init() override;
 
@@ -51,6 +51,8 @@ public:
   mat4 getAbsTransformMatrix() const;
 
   virtual bool shouldInstance ();
+
+  virtual class BoundingBox getBoundingBox();
 
   ~MeshComp ();
 };

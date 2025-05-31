@@ -3,7 +3,10 @@
 #include <glm/vec2.hpp>
 #include <memory>
 #include <vector>
+#include "BoundingBox.hpp"
 #include "ModelData.hpp"
+
+
 
 class Geo {
 public:
@@ -17,6 +20,7 @@ public:
 
   // std::vector<std::shared_ptr<Geo>> parts;
 
+  BoundingBox boundingBox;
   GLuint vertexCount = 0;
 
   Geo () {}
