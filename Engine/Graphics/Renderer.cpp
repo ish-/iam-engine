@@ -15,6 +15,7 @@
 #include "SDL3/SDL_video.h"
 #include "Shader.hpp"
 #include "Material.hpp"
+#include "Window.hpp"
 #include "../Camera.hpp"
 #include "../Time.hpp"
 #include "../Light.hpp"
@@ -204,6 +205,7 @@ void Renderer::setShaderViewProjection(shared_ptr<Shader> shader) {
   shader->setUniform("view", frameCache.view);
   shader->setUniform("projection", frameCache.projection);
   shader->setUniform("viewPos", frameCache.viewPos);
+  shader->setUniform("uResolution", frameCache.resolution);
 }
 
 // struct ShaderLight {
@@ -259,6 +261,7 @@ void Renderer::setShader (shared_ptr<Shader> _shader) {
 
 void Renderer::setFrameData () {
   auto nowFrame = Time::get().frame;
+  auto window = Window::get();
 
   if (frameCache.frame < nowFrame) {
     mat4 cameraMat = scene->camera->getAbsTransformMatrix();
@@ -266,7 +269,8 @@ void Renderer::setFrameData () {
       .frame = nowFrame,
       .view = glm::inverse(cameraMat),
       .projection = scene->camera->projection,
-      .viewPos = Transform(cameraMat).getPosition()
+      .viewPos = Transform(cameraMat).getPosition(),
+      .resolution = vec2(window.width, window.height),
     };
   }
 

@@ -29,6 +29,8 @@ uniform vec3 wireColor;
 uniform sampler2D sAlbedo;
 uniform float uShininess;
 uniform vec3 uSpecularColor;
+uniform bool uWorldAlignedTexture;
+uniform float uUvScale;
 
 float invlerp (float from, float to, float value){
   return (value - from) / (to - from);
@@ -43,6 +45,17 @@ float attenuateLight (Light light, vec3 fragPos) {
 	vec3 toLight = light.pos - vFragPos;
 	float distSq = dot(toLight, toLight);
 	return clamp(remap(light.atten[0], light.atten[1], 1., 0. , distSq), 0., 1.);
+}
+
+vec3 blendWeights(vec3 normal) {
+    vec3 absNormal = abs(normal);
+    return absNormal / (absNormal.x + absNormal.y + absNormal.z);
+}
+
+vec2 getTexCoord(vec3 position, int axis) {
+    if (axis == 0) return position.zy; // X projection
+    if (axis == 1) return position.xz; // Y projection
+    return position.xy;                // Z projection
 }
 
 void main()
@@ -84,9 +97,25 @@ void main()
       float spec = pow(max(dot(viewDir, reflectDir), 0.0), uShininess);
       vec3 specular = spec * uSpecularColor * min(attenuation * 10, 1);
 
-      vec3 albedo = texture(sAlbedo, vUv).rgb;
 
-      // vec3 result = (ambient + diffuse + specular) * texture(texture1, TexCoords).rgb;
+      vec3 albedo;
+      if (uWorldAlignedTexture) {
+        vec3 weights = blendWeights(normalize(norm));
+
+        vec2 uvX = getTexCoord(vFragPos * uUvScale, 0);
+        vec2 uvY = getTexCoord(vFragPos * uUvScale, 1);
+        vec2 uvZ = getTexCoord(vFragPos * uUvScale, 2);
+
+        vec3 texX = texture(sAlbedo, uvX).rgb;
+        vec3 texY = texture(sAlbedo, uvY).rgb;
+        vec3 texZ = texture(sAlbedo, uvZ).rgb;
+
+        albedo = texX * weights.x + texY * weights.y + texZ * weights.z;
+      }
+      else {
+        albedo = texture(sAlbedo, vUv * uUvScale).rgb;
+      }
+
       LIGHTING += (diffuse * albedo + specular) * tintColor;
     }
 

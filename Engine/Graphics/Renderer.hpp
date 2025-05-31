@@ -38,6 +38,7 @@ public:
     mat4 view;
     mat4 projection;
     vec3 viewPos;
+    vec2 resolution = { 1280, 720 };
   };
   // virtual ~Renderer() = default;
   // shared_ptr<Scene> scene;

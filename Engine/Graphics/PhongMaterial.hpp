@@ -7,8 +7,8 @@ struct PhongMaterial : public Material {
   SINGLETON_PTR(PhongMaterial)
 
   struct Conf : public Material::Conf {
-    float shininess = 200.0f;
-    glm::vec3 specularColor = { 1.f, 1.f, 1.f };
+    float shininess = 32.0f;
+    glm::vec3 specularColor = { .2f, .2f, .2f };
 
     JSON_DEFINE_OPTIONAL(Conf, shininess, specularColor);
   };
@@ -31,5 +31,7 @@ struct PhongMaterial : public Material {
       GLint loc = glGetUniformLocation(shader->shaderId, "sAlbedo");
       glUniform1i(loc, 0);
     }
+
+    Material::bind();
   }
 };

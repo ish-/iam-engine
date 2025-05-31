@@ -10,6 +10,8 @@
 #include "ACube.hpp"
 #include "Engine/common/random.hpp"
 #include "Engine/common/screenToWorld.hpp"
+#include "Graphics/MeshComp.hpp"
+#include "Graphics/Material.hpp"
 #include "Transform.hpp"
 
 // DLScene1::DLScene1 () {}
@@ -29,6 +31,11 @@ void DLScene1::init () {
   });
 
   loadJson("resources/scenes/lvl_station.json");
+
+  auto stationMesh = getActorByName("lvl_station")->getComp<MeshComp>();
+  stationMesh->material->conf.worldAlignedTexture = true;
+  stationMesh->material->conf.uvScale = .5f;
+  stationMesh->material->albedoTex = AssetStore::get().loadTexture("scenes/likeabluenoise.jpg", 4);
 
   for (size_t i = 0; i < 100; i++) {
     auto cube = newActor<ACube>();

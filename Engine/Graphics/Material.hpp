@@ -6,6 +6,8 @@
 struct Material {
   struct Conf {
     string albedoPath = "";
+    bool worldAlignedTexture = false;
+    float uvScale = 1.f;
 
     JSON_DEFINE_OPTIONAL(Conf, albedoPath);
   };
@@ -22,6 +24,7 @@ struct Material {
   }
 
   virtual void bind() {
-
+    shader->setUniform("uWorldAlignedTexture", conf.worldAlignedTexture);
+    shader->setUniform("uUvScale", conf.uvScale);
   }
 };
