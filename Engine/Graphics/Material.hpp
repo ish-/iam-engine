@@ -23,10 +23,16 @@ struct Material {
       albedoTex = AssetStore::get().loadTexture(conf.albedoPath, 4);
     }
   }
-
-  virtual void bind() {
+  virtual void bind () {
     shader->setUniform("uWorldAlignedTexture", conf.worldAlignedTexture);
     shader->setUniform("uUvScale", conf.uvScale);
     shader->setUniform("uNormalOffset", conf.normalOffset);
+
+    if (albedoTex) {
+      albedoTex->bind(0);
+
+      GLint loc = glGetUniformLocation(shader->shaderId, "sAlbedo");
+      glUniform1i(loc, 0);
+    }
   }
 };

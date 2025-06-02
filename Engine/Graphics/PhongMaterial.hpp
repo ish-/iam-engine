@@ -21,17 +21,10 @@ struct PhongMaterial : public Material {
     shader = PhongShader::getPtr();
   }
 
-  virtual void bind() {
+  virtual void bind() override {
+    Material::bind();
+
     shader->setUniform("uShininess", conf.shininess);
     shader->setUniform("uSpecularColor", conf.specularColor);
-
-    if (albedoTex) {
-      albedoTex->bind(0);
-
-      GLint loc = glGetUniformLocation(shader->shaderId, "sAlbedo");
-      glUniform1i(loc, 0);
-    }
-
-    Material::bind();
   }
 };

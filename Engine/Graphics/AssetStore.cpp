@@ -80,6 +80,14 @@ sp<ModelDataFull> AssetStore::loadModel(const std::string& path) {
   // Extract
   std::vector<float> vertices;
   std::vector<int> indices;
+  // std::unordered_map<GeoAttr, bool> hasAttrs = {
+  //   {GeoAttr::POS, false},
+  //   {GeoAttr::NORMAL, false},
+  //   {GeoAttr::UV, false},
+  //   {GeoAttr::COLOR, false},
+  //   {GeoAttr::TANGENT, false},
+  //   {GeoAttr::BITANGENT, false}
+  // };
   std::vector<int> meshesOffsets;
   GLint indicesOffset = 0;
 
@@ -89,13 +97,14 @@ sp<ModelDataFull> AssetStore::loadModel(const std::string& path) {
       aiMesh* mesh = scene->mMeshes[i];
       meshesOffsets.push_back(indicesOffset);
 
-      bool hasNormals = mesh->HasNormals();
-      bool hasTexCoord = mesh->HasTextureCoords(0);
-      if (!hasNormals && !hasTexCoord)
+      bool hasN = mesh->HasNormals();
+      bool hasTB = mesh->HasTangentsAndBitangents();
+      bool hasUV = mesh->HasTextureCoords(0);
+      if (!hasN && !hasUV)
         throw std::runtime_error("Mesh has no normals or texture coordinates, skipping");
 
-      std::string hasStr = (hasNormals ? "has normals" : "no normals") + std::string(", ") +
-                           (hasTexCoord ? "has texture coords" : "no texture coords");
+      std::string hasStr = (hasN ? "has normals" : "no normals") + std::string(", ") +
+                           (hasUV ? "has texture coords" : "no texture coords");
       LOG("Mesh", mesh->mName.C_Str(), hasStr);
 
       // Process vertices
@@ -108,14 +117,14 @@ sp<ModelDataFull> AssetStore::loadModel(const std::string& path) {
           vertices.push_back(pos.z);
           bb.extend(pos.x, pos.y, pos.z);
 
-          if (hasNormals) {
+          if (hasN) {
             aiVector3D normal = mesh->mNormals[j];
             vertices.push_back(normal.x);
             vertices.push_back(normal.y);
             vertices.push_back(normal.z);
           }
 
-          if (hasTexCoord) {
+          if (hasUV) {
             aiVector3D texCoord = mesh->mTextureCoords[0] ? mesh->mTextureCoords[0][j] : aiVector3D(0.0f, 0.0f, 0.0f);
             vertices.push_back(texCoord.x);
             vertices.push_back(texCoord.y);
@@ -130,6 +139,11 @@ sp<ModelDataFull> AssetStore::loadModel(const std::string& path) {
           }
       }
       indicesOffset += mesh->mNumVertices;
+
+      // hasAttrs[GeoAttr::UV] = hasAttrs[GeoAttr::UV] || hasUV;
+      // hasAttrs[GeoAttr::NORMAL] = hasAttrs[GeoAttr::NORMAL] || hasN;
+      // hasAttrs[GeoAttr::TANGENT] = hasAttrs[GeoAttr::TANGENT] || hasTB;
+      // hasAttrs[GeoAttr::BITANGENT] = hasAttrs[GeoAttr::BITANGENT] || hasTB;
   }
   bb.update();
 
@@ -154,7 +168,7 @@ sp<ModelDataFull> AssetStore::loadModel(const std::string& path) {
 
   auto mat = createMaterial<PhongMaterial>(path, matConf);
   // auto modelGeo
-  auto modelData = ModelData{vertices, indices, {3,3,2}, 8, meshesOffsets};
+  auto modelData = ModelData{vertices, indices, {3,3,2}, /* hasAttrs,*/ 8, meshesOffsets};
   auto geo = std::make_shared<Geo>(modelData);
   geo->boundingBox = bb;
   geos[path] = geo;

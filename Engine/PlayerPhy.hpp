@@ -26,6 +26,7 @@ public:
   PlayerPhy (): Actor() {};
   PlayerPhy (Conf& conf): conf(conf), Actor() {}
 
+  sp<class Light> light;
   std::shared_ptr<PhysicsComp> phyComp;
   std::shared_ptr<PlayerPhyCtrlComp> ctrlComp;
   std::shared_ptr<GunComp> gunComp;

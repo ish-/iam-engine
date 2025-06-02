@@ -214,7 +214,7 @@ void Renderer::render (shared_ptr<MeshComp> mesh, bool instanced) {
 
   if (toShade) {
     shader->setUniform("tintColor", mesh->conf.tint);
-    shader->setUniform("wireframes", 0.f);
+    shader->setUniform("uWireframes", vec4(0.f));
     shader->setUniform("normalsMult", mesh->conf.invertNormals ? -1.f : 1.f);
 
     // glActiveTexture(GL_TEXTURE0);
@@ -227,7 +227,7 @@ void Renderer::render (shared_ptr<MeshComp> mesh, bool instanced) {
   }
 
   if (toWireframe) {
-    shader->setUniform("wireframes", 1.f);
+    shader->setUniform("uWireframes", vec4(1.f));
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
     // if (instanced)
@@ -262,7 +262,7 @@ void Renderer::setShaderLight(shared_ptr<Shader> shader) {
 
     std::string base = "lights[" + std::to_string(curIdx) + "]";
     shader->setUniform((base+".pos").c_str(), lightPos);
-    shader->setUniform((base+".color").c_str(), light->conf.color);
+    shader->setUniform((base+".color").c_str(), light->conf.color * light->conf.intensity);
     shader->setUniform((base+".atten").c_str(), light->conf.attenuation * light->conf.attenuation);
     curIdx++;
   }

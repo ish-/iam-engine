@@ -18,13 +18,12 @@ uniform Light lights[MAX_LIGHTS];
 // uniform Light lightTest;
 // uniform Light lights[MAX_LIGHTS];
 uniform int lightsNum;
-uniform float wireframes;
+uniform vec4 uWireframes;
 // uniform vec3 lightPos;
 // uniform vec3 lightColor;
 uniform vec3 viewPos;
 uniform vec3 tintColor;
 uniform vec2 lightAttenuationSq;
-uniform vec3 wireColor;
 
 uniform sampler2D sAlbedo;
 uniform float uShininess;
@@ -60,6 +59,10 @@ vec2 getTexCoord(vec3 position, int axis) {
 
 void main()
 {
+    if (uWireframes.a > .0) {
+      FragColor = uWireframes;
+      return;
+    }
     // if (wireColor.r > 0) {
     //   FragColor = vec4(wireColor, 1.0);
     //   return;
@@ -115,7 +118,6 @@ void main()
 		// if inside a mesh
 		// float inside = 1 - step(0, dot(viewDir, norm));
     // FragColor = vec4(result, inside * .3);
-    LIGHTING = mix(LIGHTING, vec3(1.), wireframes);
     // FragColor = vec4(LIGHTING, vBlendFace);
     FragColor = vec4(LIGHTING, 1.);
     // FragColor = vec4(lightsNum / vec3(3), 1.);

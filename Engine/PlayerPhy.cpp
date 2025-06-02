@@ -29,7 +29,7 @@ void PlayerPhy::init () {
     attach(camera);
   }
 
-  auto light = scene.get()->newActor<Light>((Light::Conf){
+  light = scene.get()->newActor<Light>((Light::Conf){
     // .color = vec3(1., 1., .7),
     // .intensity = 1.,
     .attenuation = vec2(10, 30.),
@@ -59,7 +59,7 @@ void PlayerPhy::init () {
 
   gunComp = scene->newComp<GunComp>(shared());
 
-  scene->player = shared();
+  // scene->player = shared();
 }
 
 #include <imgui.h>

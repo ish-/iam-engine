@@ -20,9 +20,9 @@ public:
     meshComp->scale(.7f);
     meshComp->material->albedoTex = AssetStore::get().loadTexture("scenes/likeabluenoise.jpg", 4);
     meshComp->material->conf.uvScale = 0.5f;
-    if (auto mat = dynamic_pointer_cast<PhongMaterial>(meshComp->material)) {
-      mat->conf.shininess = 200.f;
-    }
+    // if (auto mat = dynamic_pointer_cast<PhongMaterial>(meshComp->material)) {
+    //   mat->conf.shininess = 200.f;
+    // }
     meshComp->conf.tint = glm::vec3(.3f, 0.1f, 0.1f);
 
     PhysicsComp::Params createParams {

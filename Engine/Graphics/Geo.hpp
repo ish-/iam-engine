@@ -1,16 +1,13 @@
 #pragma once
 #include <glad/glad.h>
 #include <glm/vec2.hpp>
-#include <memory>
-#include <vector>
 #include "BoundingBox.hpp"
 #include "ModelData.hpp"
-
+#include "GeoAttr.hpp"
 
 
 class Geo {
-public:
-  GLuint VAO = 0;
+public:  GLuint VAO = 0;
   GLuint VBO = 0;
   GLuint EBO = 0;
   ModelData data;

@@ -5,16 +5,19 @@
 #include "Engine/PlayerPhy.hpp"
 #include <glm/gtc/matrix_transform.hpp>
 #include <imgui.h>
+#include <memory>
 
 // #include "Engine/Physics/PhysicsComp.hpp"
 #include "AEnemy.hpp"
 #include "ACube.hpp"
+#include "Time.hpp"
 #include "AAsteroid.hpp"
 #include "Engine/common/random.hpp"
 #include "Engine/common/screenToWorld.hpp"
 #include "Graphics/MeshComp.hpp"
 #include "Graphics/Material.hpp"
 #include "Transform.hpp"
+#include "Light.hpp"
 #include "Graphics/Geo.hpp"
 #include "Graphics/Frustrum.hpp"
 
@@ -62,6 +65,9 @@ void DLScene1::init () {
 }
 
 void DLScene1::update (const float& dt) {
+  dynamic_pointer_cast<PlayerPhy>(player)
+    ->light->conf.intensity = sin(Time::get().eT * 5) * .1f + 1;
+
   Scene::update(dt);
 };
 
