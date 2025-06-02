@@ -77,7 +77,7 @@ void main()
       vec3 norm = vNormal;
       vec3 lightDir = normalize(lights[i].pos - vFragPos);
       // float diff = max(dot(norm, lightDir), 0.0);
-      float diff = abs(dot(norm, lightDir));
+      float diff = abs(dot(norm, lightDir)); // backface texturing
       float attenuation = attenuateLight(lights[i], vFragPos);
       vec3 diffuse = diff * attenuation * lights[i].color;
       // TODO: discard not enlighten fragments
@@ -107,7 +107,8 @@ void main()
         albedo = texture(sAlbedo, vUv * uUvScale).rgb;
       }
 
-      LIGHTING += (diffuse * albedo + specular) * tintColor;
+      LIGHTING += (diffuse * albedo + specular) * tintColor * 5;
+      // LIGHTING = pow(LIGHTING, vec3(1.0/2.2)); // gamma correction
     }
 
     LIGHTING += (ambient * tintColor);

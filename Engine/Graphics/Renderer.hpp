@@ -85,4 +85,6 @@ public:
 // settings
   bool wireframes = false;
   bool shading = true;
+  bool culling = true;
+  bool autoInstancing = true;
 };

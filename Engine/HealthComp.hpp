@@ -18,12 +18,14 @@ public:
   HealthComp ():  AComp() {};
 
   virtual void update (const float& dt) {
-    conf.health += conf.regen * dt;
     if (conf.health <= 0) {
       getOwner()->release();
-    } if (conf.health > conf.maxHealth) {
+    }
+    else if (conf.health > conf.maxHealth) {
       conf.health = conf.maxHealth;
     }
+    else
+      conf.health += conf.regen * dt;
   }
 
   virtual float takeDamage (const float& damage, sp<Actor> projectile) {

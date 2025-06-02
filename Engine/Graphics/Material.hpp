@@ -8,6 +8,7 @@ struct Material {
     string albedoPath = "";
     bool worldAlignedTexture = false;
     float uvScale = 1.f;
+    float normalOffset = 0.f;
 
     JSON_DEFINE_OPTIONAL(Conf, albedoPath);
   };
@@ -26,5 +27,6 @@ struct Material {
   virtual void bind() {
     shader->setUniform("uWorldAlignedTexture", conf.worldAlignedTexture);
     shader->setUniform("uUvScale", conf.uvScale);
+    shader->setUniform("uNormalOffset", conf.normalOffset);
   }
 };

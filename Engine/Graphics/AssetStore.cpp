@@ -89,25 +89,37 @@ sp<ModelDataFull> AssetStore::loadModel(const std::string& path) {
       aiMesh* mesh = scene->mMeshes[i];
       meshesOffsets.push_back(indicesOffset);
 
+      bool hasNormals = mesh->HasNormals();
+      bool hasTexCoord = mesh->HasTextureCoords(0);
+      if (!hasNormals && !hasTexCoord)
+        throw std::runtime_error("Mesh has no normals or texture coordinates, skipping");
+
+      std::string hasStr = (hasNormals ? "has normals" : "no normals") + std::string(", ") +
+                           (hasTexCoord ? "has texture coords" : "no texture coords");
+      LOG("Mesh", mesh->mName.C_Str(), hasStr);
+
       // Process vertices
       for (unsigned int j = 0; j < mesh->mNumVertices; j++) {
           aiVector3D pos = mesh->mVertices[j];
-          aiVector3D normal = mesh->mNormals[j];
-          aiVector3D texCoord = mesh->mTextureCoords[0] ? mesh->mTextureCoords[0][j] : aiVector3D(0.0f, 0.0f, 0.0f);
 
           // Add to the vertices array
           vertices.push_back(pos.x);
           vertices.push_back(pos.y);
           vertices.push_back(pos.z);
-
-          vertices.push_back(normal.x);
-          vertices.push_back(normal.y);
-          vertices.push_back(normal.z);
-
-          vertices.push_back(texCoord.x);
-          vertices.push_back(texCoord.y);
-
           bb.extend(pos.x, pos.y, pos.z);
+
+          if (hasNormals) {
+            aiVector3D normal = mesh->mNormals[j];
+            vertices.push_back(normal.x);
+            vertices.push_back(normal.y);
+            vertices.push_back(normal.z);
+          }
+
+          if (hasTexCoord) {
+            aiVector3D texCoord = mesh->mTextureCoords[0] ? mesh->mTextureCoords[0][j] : aiVector3D(0.0f, 0.0f, 0.0f);
+            vertices.push_back(texCoord.x);
+            vertices.push_back(texCoord.y);
+          }
       }
 
       // Process indices

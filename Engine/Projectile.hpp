@@ -32,8 +32,9 @@ public:
     // setName("Projectile-" + to_string(id));
 
     auto meshComp = scene->newComp<MeshComp>(shared_from_this());
-    meshComp->scale(.2);
-    conf.physics.shapeSize = btVector3(.2f, .2f, .2f);
+    // meshComp->scale(.2);
+    conf.physics.shapeSize = btVector3(.2f, .2f, 2.f);
+    meshComp->scale(vec3(.033,.033,1.));
 
     // conf.physics.mask = PhysicsComp::PLAYER;
     phyComp = scene->newComp<PhysicsComp>(shared_from_this(), conf.physics);

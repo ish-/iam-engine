@@ -10,7 +10,7 @@ public:
   struct Conf {
     float intensity = 1.f;
     glm::vec3 color = {1.0f, 1.0f, 1.0f};
-    glm::vec2 attenuation = {8.f, 21.f};
+    glm::vec2 attenuation = {1.f, 5.f};
 
     JSON_DEFINE_OPTIONAL(Conf, intensity, color, attenuation)
   };

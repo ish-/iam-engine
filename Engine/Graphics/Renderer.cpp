@@ -31,6 +31,9 @@
 #include "Frustrum.hpp"
 #include "InstancedMeshComp.hpp"
 
+#include "imgui.h"
+#include "GUI.hpp"
+
 using namespace glm;
 
 #ifdef _WIN32
@@ -145,7 +148,7 @@ void Renderer::update (const vector<weak_ptr<AComp>>& comps, const float& dt) {
     if (auto comp = wComp.lock()) {
       auto meshComp = dynamic_pointer_cast<MeshComp>(comp);
       if (meshComp) {
-        if (meshComp->shouldCulled()) {
+        if (culling && meshComp->shouldCulled()) {
           meshComp->culled = !frustrum.isAABBPartiallyInsideFrustum(meshComp->getBoundingBox());
           if (meshComp->culled) {
             culledNum++;
@@ -153,7 +156,10 @@ void Renderer::update (const vector<weak_ptr<AComp>>& comps, const float& dt) {
           }
         }
 
-        if (meshComp->shouldInstance()) {
+        // if (meshComp->getOwner()->getActorClassName() == "AAsteroid")
+        //   LOG("AAsteroid", meshComp->shouldInstance(), autoInstancing);
+
+        if (autoInstancing && meshComp->shouldInstance()) {
           // geoToMeshComps[meshComp->geo].push_back(meshComp);
           if (instancedMeshes.find(meshComp->geo) == instancedMeshes.end()) {
             instancedMeshes[meshComp->geo] = InstancedMeshComp::create(meshComp);
@@ -169,7 +175,7 @@ void Renderer::update (const vector<weak_ptr<AComp>>& comps, const float& dt) {
   }
 
   for (auto& [geo, instanceMesh] : instancedMeshes) {
-    instanceMesh->culled = !frustrum.isAABBPartiallyInsideFrustum(instanceMesh->getBoundingBox());
+    instanceMesh->culled = (culling && !frustrum.isAABBPartiallyInsideFrustum(instanceMesh->getBoundingBox()));
     if (instanceMesh->culled) {
       culledNum++;
       continue;
@@ -178,7 +184,15 @@ void Renderer::update (const vector<weak_ptr<AComp>>& comps, const float& dt) {
     render(instanceMesh, true);
   }
 
-  LOG("Renderer::update: culled ", culledNum, " meshes; instanced ", instancedNum, " meshes");
+  if(GUI::get().conf.showDebug) {
+    ImGui::Begin("iam-engine");
+      // ImGui::Text("Perf: %i ~ %ims",
+      //   int(1. / time.frameDur),
+      //   int(time.frameComputing * 1000.));
+      ImGui::Text("Culled meshes: %d", culledNum);
+      ImGui::Text("Instanced meshes: %d (%d)", int(instancedMeshes.size()), instancedNum);
+    ImGui::End();
+  }
 }
 
 void Renderer::render (shared_ptr<MeshComp> mesh, bool instanced) {
@@ -195,7 +209,7 @@ void Renderer::render (shared_ptr<MeshComp> mesh, bool instanced) {
   bool toWireframe = wireframes || mesh->conf.wireframe;
   if (toShade || toWireframe) {
     shader->setUniform("model", model);
-    shader->setUniform("instancesCount", int(mesh->getInstancesNum()));
+    shader->setUniform("instancesCount", instanced ? mesh->getInstancesNum() : 1);
   }
 
   if (toShade) {

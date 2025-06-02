@@ -26,6 +26,8 @@ public:
   sp<class MeshComp> meshComp;
   sp<class GunComp> gunComp;
 
+  float dying = 0;
+
   AEnemy (const Conf& conf): conf(conf), Actor(conf.transform) {};
 
   virtual void init () override;

@@ -15,11 +15,7 @@ Symbol MeshComp::getASystemType () {
 }
 
 MeshComp::MeshComp(const Conf& conf): conf(conf), AComp() {
-  if (conf.path.length() > 0) {
-    auto modelFull = AssetStore::get().loadModel(conf.path);
-    geo = modelFull->geo;
-    material = modelFull->material;
-  }
+
 }
 
 void MeshComp::draw() {
@@ -42,7 +38,14 @@ void MeshComp::init() {
   if (geo)
     return;
 
-  geo = BoxGeo::getPtr();
+  if (conf.path.length() > 0) {
+    auto modelFull = AssetStore::get().loadModel(conf.path);
+    geo = modelFull->geo;
+    material = modelFull->material;
+  }
+  else
+    geo = BoxGeo::getPtr();
+
   if (conf.autoInstancing)
     geo->instancesCount++;
 
@@ -59,7 +62,7 @@ mat4 MeshComp::getAbsTransformMatrix() const {
 
 #include <Engine.hpp>
 MeshComp::~MeshComp () {
-  if (shouldInstance()) {
+  if (conf.autoInstancing && geo) {
     geo->instancesCount--;
   }
 }

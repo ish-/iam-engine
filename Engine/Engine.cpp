@@ -130,12 +130,14 @@ void Engine::drawGui () {
   if (GUI::get().conf.showDebug) {
     ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiCond_FirstUseEver);
     ImGui::Begin("iam-engine");
-      ImGui::Checkbox("ImGgui Demo", &__imguiShowDemo);
+      // ImGui::Checkbox("ImGgui Demo", &__imguiShowDemo);
       ImGui::Text("Perf: %i ~ %ims",
         int(1. / time.frameDur),
         int(time.frameComputing * 1000.));
       ImGui::Checkbox("Wireframes", &renderer.wireframes);
       ImGui::Checkbox("Shading", &renderer.shading);
+      ImGui::Checkbox("Culling", &renderer.culling);
+      ImGui::Checkbox("Auto Instacing", &renderer.autoInstancing);
       ImGui::Checkbox("Collisions", &physics.drawDebug);
       ImGui::SliderFloat("Sim Speed", &physics.conf.speed, 0.0, 10);
     ImGui::End();

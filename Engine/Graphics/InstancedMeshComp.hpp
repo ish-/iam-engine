@@ -50,7 +50,7 @@ public:
   BoundingBox getBoundingBox() override {
     bb.update();
     bb.radius += geo->boundingBox.radius;
-    std::cout << bb.center << " " << bb.radius << std::endl;
+    // std::cout << bb.center << " " << bb.radius << std::endl;
     return bb;
   }
 

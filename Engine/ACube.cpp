@@ -21,9 +21,11 @@ void ACube::init () {
   auto ctr = getScene();
   auto meshComp = ctr->newComp<MeshComp>(shared_from_this(), MeshComp::Conf{
     // .autoInstancing = false,
+    // .path = "resources/models/asteroid2.fbx"
   });
+  // meshComp->scale(.5f);
   // meshComp->tint = vec3( rd::in(0, 1), rd::in(0, 1), rd::in(0, 1));
-  meshComp->geo = BoxGeo::getPtr();
+  // meshComp->geo = BoxGeo::getPtr();
 
   // auto posMat = meshComp->getAbsTransformMatrix();
 

@@ -1,10 +1,13 @@
 #include "AEnemy.hpp"
+#include "Actor.hpp"
 #include "Engine/Projectile.hpp"
 #include "Engine/Transform.hpp"
 #include "Engine/Graphics/MeshComp.hpp"
 #include "Engine/Physics/PhysicsComp.hpp"
 #include "Engine/HealthComp.hpp"
 #include "Engine/GunComp.hpp"
+#include "Engine/Graphics/Material.hpp"
+#include "Engine/Graphics/PhongMaterial.hpp"
 
 // AEnemy::AEnemy () {}
 
@@ -17,7 +20,11 @@ void AEnemy::init () {
     (HealthComp::Conf){ .regen = .03 });
 
   meshComp = scene->newComp<MeshComp>(shared(),
-    MeshComp::Conf{ .path = "resources/models/papership.obj" });
+    MeshComp::Conf{
+      .autoInstancing = false,
+      .path = "resources/models/papership.obj",
+    });
+  meshComp->material = std::make_shared<PhongMaterial>();
 
   phyComp = scene->newComp<PhysicsComp>(shared(), conf.physics);
 
@@ -27,7 +34,17 @@ void AEnemy::init () {
 #include <glm/gtx/matrix_interpolation.hpp>
 void AEnemy::update(const float& dt) {
   float health = getComp<HealthComp>()->getHealth();
-  meshComp->conf.tint = glm::min(meshComp->conf.tint + vec3(.01), vec3(1, health, health));
+  if (health <= 0) {
+    // if (dying < 1) {
+    //   dying += dt;
+    //   meshComp->material->shader->setUniform("uNormalOffset", dying);
+    // }
+    // else release();
+
+    Actor::update(dt);
+    return; // dead
+  }
+  meshComp->conf.tint = glm::min(meshComp->conf.tint + vec3(.01), vec3(1, health, 0));
 
   auto scene = getScene();
   auto target = scene->player;
@@ -61,6 +78,7 @@ void AEnemy::update(const float& dt) {
 
       // vec3 angularVelocity = Physics::toGlmVec3(phyComp->rigidBody->getAngularVelocity());
       // vec3 torque = Kp * error - Kd * angularVelocity;
+
       // // /////// Proportional-Derivative
 
       btTransform transform = phyComp->rigidBody->getWorldTransform();
@@ -73,12 +91,12 @@ void AEnemy::update(const float& dt) {
       glm::vec3 axis = glm::cross(forwardDirection, dirToTarget);
       axis = glm::normalize(axis);
 
-      float kp = .5f; // gain
+      float kp = 1.f; // gain
       btVector3 torque = btVector3(axis.x, axis.y, axis.z) * angle * kp;
       phyComp->rigidBody->applyTorque(torque);
 
       btVector3 angularVelocity = phyComp->rigidBody->getAngularVelocity();
-      float damping = 0.08f;
+      float damping = 0.5f;
       btVector3 dampingTorque = -angularVelocity * damping;
       phyComp->rigidBody->applyTorque(dampingTorque);
 

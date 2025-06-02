@@ -22,6 +22,7 @@
 #include "Light.hpp"
 #include "Time.hpp"
 #include "Graphics/MeshComp.hpp"
+
 // #include "Graphics/MeshModelComp.hpp"
 using namespace std;
 using namespace nlohmann;
@@ -37,7 +38,7 @@ void Scene::update (const float& dt) {
 
   // update components per systems
   for (auto& [sysType, system] : systems) {
-    DebugTimer timer("Scene::update " + sysType.name());
+    DebugTimer timer(sysType.name() + " system", T_IMGUI);
     system->update(compsBySystem[sysType], dt);
   }
 
