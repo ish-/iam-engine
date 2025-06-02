@@ -10,6 +10,7 @@
 // #include "Engine/Physics/PhysicsComp.hpp"
 #include "AEnemy.hpp"
 #include "ACube.hpp"
+#include "Physics/PhysicsComp.hpp"
 #include "Time.hpp"
 #include "AAsteroid.hpp"
 #include "Engine/common/random.hpp"
@@ -42,13 +43,9 @@ void DLScene1::init () {
   stationMesh->material->conf.worldAlignedTexture = true;
   stationMesh->material->conf.uvScale = .5f;
   stationMesh->material->albedoTex = AssetStore::get().loadTexture("scenes/likeabluenoise.jpg", 4);
-  stationMesh->conf.tint = glm::vec3(.7f, 0.7f, 1.f);
+  // stationMesh->conf.tint = glm::vec3(.7f, 0.7f, 1.f);
 
   // Engine::get().pause = true;
-
-  // auto asteroid = newActor();
-  // auto asteroidMesh = newComp<MeshComp>(asteroid, MeshComp::Conf{ .path = "resources/models/asteroid2.fbx" });
-
 
   for (size_t i = 0; i < 100; i++) {
     auto asteroid = newActor<AAsteroid>();
@@ -60,7 +57,7 @@ void DLScene1::init () {
       ),
       rd::vec3in(-180,180)
     });
-    LOG("asteroid instances count: ", asteroid->getComp<MeshComp>()->geo->instancesCount);
+    asteroid->getComp<PhysicsComp>()->rigidBody->applyCentralForce(btVector3(rd::in(-10, 10),rd::in(-10, 10),rd::in(-10, -5)));
   }
 }
 

@@ -18,7 +18,7 @@ struct Material {
   sp<Texture> albedoTex;
   sp<Shader> shader;
 
-  Material (const Conf& conf) {
+  Material (const Conf& conf): conf(conf) {
     if (!conf.albedoPath.empty()) {
       albedoTex = AssetStore::get().loadTexture(conf.albedoPath, 4);
     }

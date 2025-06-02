@@ -7,17 +7,19 @@ struct PhongMaterial : public Material {
   SINGLETON_PTR(PhongMaterial)
 
   struct Conf : public Material::Conf {
-    float shininess = 32.0f;
-    glm::vec3 specularColor = { .2f, .2f, .2f };
+    float shininess;
+    glm::vec3 specularColor;
+
+    Conf()
+      : shininess(32.0f), specularColor(0.2f, 0.2f, 0.2f)
+    {}
 
     JSON_DEFINE_OPTIONAL(Conf, shininess, specularColor);
   };
 
   Conf conf;
 
-  PhongMaterial(const Material::Conf& conf = {}) : Material(Material::Conf{
-    .albedoPath = conf.albedoPath.empty() ? "images/grey_grid.png" : conf.albedoPath,
-  }) {
+  PhongMaterial(const PhongMaterial::Conf& conf = PhongMaterial::Conf{}) : Material(conf), conf(conf) {
     shader = PhongShader::getPtr();
   }
 
