@@ -154,7 +154,8 @@ sp<ModelDataFull> AssetStore::loadModel(const std::string& path) {
 
       // Process textures (Diffuse)
       unsigned int texCount = material->GetTextureCount(aiTextureType_DIFFUSE);
-      for (unsigned int j = 0; j < texCount; j++) {
+      // for (unsigned int j = 0; j < texCount; j++) {
+      for (unsigned int j = 0; j < 1; j++) {
         aiString texturePath;
         if (material->GetTexture(aiTextureType_DIFFUSE, j, &texturePath) == AI_SUCCESS) {
           // Handle texture loading, e.g., using stb_image.h for loading the image

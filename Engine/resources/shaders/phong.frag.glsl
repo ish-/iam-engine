@@ -25,11 +25,13 @@ uniform vec3 viewPos;
 uniform vec3 tintColor;
 uniform vec2 lightAttenuationSq;
 
+uniform bool uUseAlbedo = false;
 uniform sampler2D sAlbedo;
-uniform float uShininess;
-uniform vec3 uSpecularColor;
-uniform bool uWorldAlignedTexture;
-uniform float uUvScale;
+uniform float uShininess = 32.;
+uniform vec3 uSpecularColor = vec3(1.);
+uniform bool uWorldAlignedTexture = false;
+uniform float uUvScale = 1.;
+uniform float uNormalStrength = 1.;
 
 float invlerp (float from, float to, float value){
   return (value - from) / (to - from);
@@ -107,10 +109,13 @@ void main()
         albedo = texX * weights.x + texY * weights.y + texZ * weights.z;
       }
       else {
-        albedo = texture(sAlbedo, vUv * uUvScale).rgb;
+        if (uUseAlbedo)
+          albedo = texture(sAlbedo, vUv * uUvScale).rgb;
+        else
+          albedo = vec3(1.0);
       }
 
-      LIGHTING += (diffuse * albedo + specular) * tintColor * 5;
+      LIGHTING += (diffuse * albedo + specular) * tintColor;
       // LIGHTING = pow(LIGHTING, vec3(1.0/2.2)); // gamma correction
     }
 

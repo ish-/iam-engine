@@ -12,6 +12,12 @@
 #include <unordered_map>
 using namespace std;
 
+using UniformValue = std::variant<float, int, std::array<float,4>>;
+struct Uniform
+{
+    std::string name;
+    UniformValue value;
+};
 
 class Shader {
 public:
@@ -47,15 +53,16 @@ public:
   void setUniform(const char* name, const int& value) { glUniform1iv(getUnformLocation(name), 1, &value); }
   // void setUniform(const char* name, const bool& value) { glUniform1i(getUnformLocation(name), static_cast<int>(value)); }
 
-private:
-  GLuint loadShader (string& vertShaderCode, string& fragShaderCode);
-
   GLint getUnformLocation(const string& name) {
     if (uniformLocations.find(name) == uniformLocations.end()) {
       uniformLocations[name] = glGetUniformLocation(shaderId, name.c_str());
     }
     return uniformLocations[name];
   }
+
+private:
+  GLuint loadShader (string& vertShaderCode, string& fragShaderCode);
+
 
   unordered_map<string, GLint> uniformLocations;
 };

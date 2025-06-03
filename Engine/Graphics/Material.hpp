@@ -9,6 +9,7 @@ struct Material {
     bool worldAlignedTexture = false;
     float uvScale = 1.f;
     float normalOffset = 0.f;
+    float normalStrength = 1.f;
 
     JSON_DEFINE_OPTIONAL(Conf, albedoPath);
   };
@@ -27,12 +28,19 @@ struct Material {
     shader->setUniform("uWorldAlignedTexture", conf.worldAlignedTexture);
     shader->setUniform("uUvScale", conf.uvScale);
     shader->setUniform("uNormalOffset", conf.normalOffset);
+    shader->setUniform("uNormalStrength", conf.normalStrength);
 
-    if (albedoTex) {
-      albedoTex->bind(0);
+    useTexture(("Albedo"), albedoTex);
+  }
 
-      GLint loc = glGetUniformLocation(shader->shaderId, "sAlbedo");
+  bool useTexture (const string& name, const sp<Texture> texture = nullptr) const {
+    bool useTexture = bool(texture);
+    GLint loc = shader->getUnformLocation("s" + name);
+    shader->setUniform("uUseAlbedo", useTexture);
+    if (texture) {
+      texture->bind(0);
       glUniform1i(loc, 0);
     }
+    return useTexture;
   }
 };

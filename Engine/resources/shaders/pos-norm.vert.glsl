@@ -9,16 +9,17 @@ uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
 uniform vec3 viewPos;
-uniform int instancesCount;
+uniform int instancesCount = 1;
 
-uniform float normalsMult;
+uniform float normalsMult = 1.;
 
 out vec3 vFragPos;
 out vec3 vNormal;
 out vec2 vUv;
 // out float vBlendFace;
 
-uniform float uNormalOffset;
+uniform float uNormalOffset = 0.;
+// uniform float uNormalStrength;
 
 layout (location = 3) in vec4 instanceMat0; // mat4 first column
 layout (location = 4) in vec4 instanceMat1;
@@ -30,6 +31,7 @@ void main() {
 	if (instancesCount > 1) {
 		_model = mat4(instanceMat0, instanceMat1, instanceMat2, instanceMat3);
 	}
+	// vec3 normal = mix(vec3(0.0, 0.0, 1.0), aNormal, uNormalStrength);
 	vNormal = normalize(transpose(inverse(mat3(_model))) * aNormal);
 	// Offset the fragment position along the normal by a parameterized amount
 	vFragPos = vec3(_model * vec4(aPos, 1.0)) + vNormal * uNormalOffset;

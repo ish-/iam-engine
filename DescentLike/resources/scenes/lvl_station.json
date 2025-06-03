@@ -6,12 +6,21 @@
       "comps": [
         {
           "type": "MeshComp",
-          "path": "resources/scenes/lvl_station2.fbx",
+          "path": "resources/scenes/lvl_station-noised.fbx",
           "exposeData": true
         },
         {
           "type": "PhysicsComp",
           "shapeType": "TRIANGULATE_SHAPE"
+        }
+      ]
+    },
+    {
+      "name": "lvl_station",
+      "comps": [
+        {
+          "type": "MeshComp",
+          "path": "resources/scenes/icosphere.fbx"
         }
       ]
     }

@@ -20,7 +20,7 @@ public:
   sp<Texture> loadTexture (const std::string& path, int numChannels = 4);
 
   template <typename MAT>
-  sp<MAT> createMaterial(const std::string& name, typename MAT::Conf conf) {
+  sp<MAT> createMaterial(const std::string& name, const MAT::Conf& conf) {
     if (materials.find(name) != materials.end())
       return std::dynamic_pointer_cast<MAT>(materials[name]);
 

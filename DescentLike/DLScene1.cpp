@@ -40,25 +40,23 @@ void DLScene1::init () {
 
   loadJson("resources/scenes/lvl_station.json");
   auto stationMesh = getActorByName("lvl_station")->getComp<MeshComp>();
-  stationMesh->material->conf.worldAlignedTexture = true;
-  stationMesh->material->conf.uvScale = .5f;
-  stationMesh->material->albedoTex = AssetStore::get().loadTexture("scenes/likeabluenoise.jpg", 4);
-  // stationMesh->conf.tint = glm::vec3(.7f, 0.7f, 1.f);
+  // stationMesh->material->conf.worldAlignedTexture = true;
+  stationMesh->material->conf.uvScale = 10.f;
+  // stationMesh->material->albedoTex = AssetStore::get().loadTexture("scenes/likeabluenoise.jpg", 4);
+  // stationMesh->conf.tint = vec3(3.f);
 
-  // Engine::get().pause = true;
-
-  for (size_t i = 0; i < 100; i++) {
-    auto asteroid = newActor<AAsteroid>();
-    asteroid->setTransformConf((Transform::Conf){
-      vec3(0,0,-5) + vec3(
-        rd::in(-15,15),
-        rd::in(-5,5),
-        rd::in(0, 30)
-      ),
-      rd::vec3in(-180,180)
-    });
-    asteroid->getComp<PhysicsComp>()->rigidBody->applyCentralForce(btVector3(rd::in(-10, 10),rd::in(-10, 10),rd::in(-10, -5)));
-  }
+  // for (size_t i = 0; i < 100; i++) {
+  //   auto asteroid = newActor<AAsteroid>();
+  //   asteroid->setTransformConf((Transform::Conf){
+  //     vec3(0,0,-5) + vec3(
+  //       rd::in(-15,15),
+  //       rd::in(-5,5),
+  //       rd::in(0, 30)
+  //     ),
+  //     rd::vec3in(-180,180)
+  //   });
+  //   asteroid->getComp<PhysicsComp>()->rigidBody->applyCentralForce(btVector3(rd::in(-10, 10),rd::in(-10, 10),rd::in(-10, -5)));
+  // }
 }
 
 void DLScene1::update (const float& dt) {
