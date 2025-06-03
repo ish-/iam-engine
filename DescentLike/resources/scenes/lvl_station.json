@@ -15,15 +15,15 @@
         }
       ]
     }
-    //, {
-    //   "name": "lvl_station",
-    //   "comps": [
-    //     {
-    //       "type": "MeshComp",
-    //       "path": "resources/scenes/icosphere.fbx"
-    //     }
-    //   ]
-    // }
+    , {
+      "name": "icosphere",
+      "comps": [
+        {
+          "type": "MeshComp",
+          "path": "resources/scenes/icosphere.fbx"
+        }
+      ]
+    }
     , {
       "type": "APlayer",
       "pos": [0, 0, -5],

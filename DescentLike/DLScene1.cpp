@@ -41,27 +41,34 @@ void DLScene1::init () {
   loadJson("resources/scenes/lvl_station.json");
   auto stationMesh = getActorByName("lvl_station")->getComp<MeshComp>();
   // stationMesh->material->conf.worldAlignedTexture = true;
-  stationMesh->material->conf.uvScale = 10.f;
+  stationMesh->material->uniforms.set("uUvScale", 10.f);
   // stationMesh->material->albedoTex = AssetStore::get().loadTexture("scenes/likeabluenoise.jpg", 4);
   // stationMesh->conf.tint = vec3(3.f);
 
-  // for (size_t i = 0; i < 100; i++) {
-  //   auto asteroid = newActor<AAsteroid>();
-  //   asteroid->setTransformConf((Transform::Conf){
-  //     vec3(0,0,-5) + vec3(
-  //       rd::in(-15,15),
-  //       rd::in(-5,5),
-  //       rd::in(0, 30)
-  //     ),
-  //     rd::vec3in(-180,180)
-  //   });
-  //   asteroid->getComp<PhysicsComp>()->rigidBody->applyCentralForce(btVector3(rd::in(-10, 10),rd::in(-10, 10),rd::in(-10, -5)));
-  // }
+  asteroidMat = AssetStore::get().createMaterial<PhongMaterial>("asteroid", UniformsMap{
+    {"sAlbedo", AssetStore::get().loadTexture("scenes/likeabluenoise.jpg", 4)},
+    {"uShininess", 1.f},
+  });
+  for (size_t i = 0; i < 100; i++) {
+    auto asteroid = newActor<AAsteroid>();
+    asteroid->setTransformConf((Transform::Conf){
+      vec3(0,0,-5) + vec3(
+        rd::in(-15,15),
+        rd::in(-5,5),
+        rd::in(0, 30)
+      ),
+      rd::vec3in(-180,180)
+    });
+    asteroid->getComp<PhysicsComp>()->rigidBody->applyCentralForce(btVector3(rd::in(-10, 10),rd::in(-10, 10),rd::in(-10, -5)));
+    asteroid->getComp<MeshComp>()->material = asteroidMat;
+  }
 }
 
 void DLScene1::update (const float& dt) {
   dynamic_pointer_cast<PlayerPhy>(player)
     ->light->conf.intensity = sin(Time::get().eT * 5) * .1f + 1;
+
+  // asteroidMat->uniforms.set("uUvScale", float(1.f + sin(Time::get().eT * 2) * .5f));
 
   Scene::update(dt);
 };

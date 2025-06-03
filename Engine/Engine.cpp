@@ -5,7 +5,8 @@
 #include <SDL3/SDL_video.h>
 #include <SDL3/SDL_timer.h>
 #define STB_IMAGE_IMPLEMENTATION
-#include <stb_image.h>
+// #include <stb_image.h>
+#include "Graphics/AssetStore.hpp"
 #include "imgui.h"
 
 #include "Engine.hpp"
@@ -128,12 +129,15 @@ void Engine::run() {
 bool __imguiShowDemo = false;
 void Engine::drawGui () {
   if (GUI::get().conf.showDebug) {
+    auto& assetsStore = AssetStore::get();
+
     ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiCond_FirstUseEver);
     ImGui::Begin("iam-engine");
       // ImGui::Checkbox("ImGgui Demo", &__imguiShowDemo);
       ImGui::Text("Perf: %i ~ %ims",
         int(1. / time.frameDur),
         int(time.frameComputing * 1000.));
+      ImGui::Text("GEOs: %i, MATs: %i, TEXs: %i", assetsStore.geos.size(), assetsStore.materials.size(), assetsStore.textures.size());
       ImGui::Checkbox("Wireframes", &renderer.wireframes);
       ImGui::Checkbox("Shading", &renderer.shading);
       ImGui::Checkbox("Culling", &renderer.culling);

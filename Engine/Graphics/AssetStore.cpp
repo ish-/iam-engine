@@ -147,7 +147,7 @@ sp<ModelDataFull> AssetStore::loadModel(const std::string& path) {
   }
   bb.update();
 
-  PhongMaterial::Conf matConf;
+  UniformsMap matConf;
 
   for (unsigned int i = 0; i < scene->mNumMaterials && i < 1; i++) {
       aiMaterial* material = scene->mMaterials[i];
@@ -161,7 +161,7 @@ sp<ModelDataFull> AssetStore::loadModel(const std::string& path) {
           // Handle texture loading, e.g., using stb_image.h for loading the image
           std::string textureFilePath = texturePath.C_Str();
           std::cout << "Texture path: " << textureFilePath << std::endl;
-          matConf.albedoPath = "scenes/" + textureFilePath; // Assuming the texture is in the same directory
+          matConf["sAlbedo"] = loadTexture("scenes/" + textureFilePath); // Assuming the texture is in the same directory
         }
       }
 

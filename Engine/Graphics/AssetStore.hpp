@@ -1,5 +1,6 @@
 #pragma once
 #include "ModelData.hpp"
+#include "Material.hpp"
 
 class Geo;
 class Texture;
@@ -20,7 +21,7 @@ public:
   sp<Texture> loadTexture (const std::string& path, int numChannels = 4);
 
   template <typename MAT>
-  sp<MAT> createMaterial(const std::string& name, const MAT::Conf& conf) {
+  sp<MAT> createMaterial(const std::string& name, const UniformsMap& conf) {
     if (materials.find(name) != materials.end())
       return std::dynamic_pointer_cast<MAT>(materials[name]);
 
@@ -31,7 +32,6 @@ public:
 
   void logChildren (const class aiNode* node, int level = 0);
 
-private:
   std::unordered_map<std::string, sp<Geo>> geos;
   std::unordered_map<std::string, sp<Texture>> textures;
   std::unordered_map<std::string, sp<Material>> materials;

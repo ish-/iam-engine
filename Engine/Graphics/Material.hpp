@@ -1,39 +1,64 @@
 #pragma once
 #include "Shader.hpp"
-#include "AssetStore.hpp"
 #include "Texture.hpp"
+// #include "Uniforms.hpp"
 
-struct Material {
-  struct Conf {
-    string albedoPath = "";
-    bool worldAlignedTexture = false;
-    float uvScale = 1.f;
-    float normalOffset = 0.f;
-    float normalStrength = 1.f;
+template<typename K, typename T>
+class Map : public std::unordered_map<K, T> {
+public:
+  Map () = default;
+  Map (std::initializer_list<std::pair<const K, T>> uniforms)
+    : std::unordered_map<K, T>(uniforms) {}
 
-    JSON_DEFINE_OPTIONAL(Conf, albedoPath);
-  };
-
-  Conf conf;
-
-  sp<Texture> albedoTex;
-  sp<Shader> shader;
-
-  Material (const Conf& conf): conf(conf) {
-    if (!conf.albedoPath.empty()) {
-      albedoTex = AssetStore::get().loadTexture(conf.albedoPath, 4);
+  template<typename V = float>
+  V get(const K& name) const {
+    try {
+      return std::get<V>(std::unordered_map<K, T>::at(name));
+    } catch (const std::out_of_range&) {
+      throw std::runtime_error("Uniform " + name + " not found");
+    } catch (const std::bad_variant_access&) {
+      throw std::runtime_error("Uniform " + name + " is not of the requested type");
     }
   }
-  virtual void bind () {
-    shader->setUniform("uWorldAlignedTexture", conf.worldAlignedTexture);
-    shader->setUniform("uUvScale", conf.uvScale);
-    shader->setUniform("uNormalOffset", conf.normalOffset);
-    shader->setUniform("uNormalStrength", conf.normalStrength);
 
-    useTexture("Albedo", ALBEDO_UNIT, albedoTex);
+  void set (const K& key, const T& value) {
+    std::unordered_map<K, T>::insert_or_assign(key, value);
+  }
+};
+
+
+using UniformValue = std::variant<bool, float, int, glm::vec2, glm::vec3, glm::vec4, sp<Texture>>;
+using UniformsMap = Map<string, UniformValue>;
+// using TexturesMap = Map<string, sp<Texture>>;
+
+class Material {
+public:
+  static UniformsMap defaultUniforms;
+  // static TexturesMap defaultTextures;
+
+  UniformsMap uniforms;
+  // TexturesMap textures;
+
+  sp<Shader> shader;
+
+  Material () {
+    uniforms.insert(defaultUniforms.begin(), defaultUniforms.end());
+  };
+
+  Material (const UniformsMap& _uniforms): Material() {
+    uniforms.insert(_uniforms.begin(), _uniforms.end());
+  };
+
+  virtual void bind () {
+    shader->setUniform("uWorldAlignedTexture", uniforms.get<bool>("uWorldAlignedTexture"));
+    shader->setUniform("uUvScale", uniforms.get("uUvScale"));
+    shader->setUniform("uNormalOffset", uniforms.get("uNormalOffset"));
+    shader->setUniform("uNormalStrength", uniforms.get("uNormalStrength"));
+
+    useTexture("Albedo", ALBEDO_UNIT, uniforms.get<sp<Texture>>("sAlbedo"));
   }
 
-  bool useTexture (const string& name, const GLuint unit = 0, const sp<Texture> texture = nullptr) const {
+  bool useTexture (const string& name, const GLuint unit = 0, const sp<Texture>& texture = nullptr) const {
     bool use = !(texture == nullptr);
     GLint loc = shader->getUnformLocation("s" + name);
     shader->setUniform("uUseAlbedo", use);

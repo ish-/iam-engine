@@ -1,0 +1,26 @@
+{
+  "version": "0.2.0",
+  "setupCommands": [
+    {
+      "text": "settings set target.load-script-from-symbol-file false"
+    },
+    {
+      "text": "settings set target.process.stop-on-sharedlibrary-events false"
+    },
+    {
+      "text": "settings set symbols.enable-external-lookup false"
+    }
+  ],
+  "configurations": [
+    {
+      "name": "Debug iam-engine",
+      "type": "lldb",
+      "request": "launch",
+      "program": "${workspaceFolder}/build/bin/iam-engine",
+      "args": [],
+      "cwd": "${workspaceFolder}",
+      "stopAtEntry": false,
+      "externalConsole": false
+    }
+  ]
+}

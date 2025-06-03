@@ -3,30 +3,27 @@
 #include "Material.hpp"
 #include "PhongShader.hpp"
 
+static UniformsMap PhongMaterialDefaults = UniformsMap{
+  { "uShininess", 32.0f },
+  { "uSpecularColor", glm::vec3(0.2f, 0.2f, 0.2f) },
+};
+
 struct PhongMaterial : public Material {
   SINGLETON_PTR(PhongMaterial)
 
-  struct Conf : public Material::Conf {
-    float shininess;
-    glm::vec3 specularColor;
-
-    Conf()
-      : shininess(32.0f), specularColor(0.2f, 0.2f, 0.2f)
-    {}
-
-    JSON_DEFINE_OPTIONAL(Conf, shininess, specularColor);
-  };
-
-  Conf conf;
-
-  PhongMaterial(const PhongMaterial::Conf& conf = PhongMaterial::Conf{}) : Material(conf), conf(conf) {
+  PhongMaterial() : Material(PhongMaterialDefaults) {
     shader = PhongShader::getPtr();
+  }
+  PhongMaterial(const UniformsMap& _uniforms) : PhongMaterial() {
+    for (const auto& [key, value] : _uniforms) {
+        uniforms.insert_or_assign(key, value);  // Replaces if key exists
+    }
   }
 
   virtual void bind() override {
     Material::bind();
 
-    shader->setUniform("uShininess", conf.shininess);
-    shader->setUniform("uSpecularColor", conf.specularColor);
+    shader->setUniform("uShininess", uniforms.get("uShininess"));
+    shader->setUniform("uSpecularColor", uniforms.get<glm::vec3>("uSpecularColor"));
   }
 };

@@ -46,6 +46,7 @@ public:
   void setUniform(const char* name, const glm::vec2& value) { glUniform2fv(getUnformLocation(name), 1, glm::value_ptr(value)); }
   void setUniform(const char* name, const float& value) { glUniform1fv(getUnformLocation(name), 1, &value); }
   void setUniform(const char* name, const int& value) { glUniform1iv(getUnformLocation(name), 1, &value); }
+
   // void setUniform(const char* name, const bool& value) { glUniform1i(getUnformLocation(name), static_cast<int>(value)); }
 
   GLint getUnformLocation(const string& name) {
