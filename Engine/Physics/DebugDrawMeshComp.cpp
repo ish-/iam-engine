@@ -21,7 +21,6 @@ DebugDrawGeo::DebugDrawGeo () {
 }
 
 DebugDrawMeshComp::DebugDrawMeshComp () {
-  shader = WireframeShader::get();
   geo = std::make_shared<DebugDrawGeo>();
   conf.wireframe = true;
 }

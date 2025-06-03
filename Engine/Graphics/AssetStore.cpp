@@ -80,14 +80,7 @@ sp<ModelDataFull> AssetStore::loadModel(const std::string& path) {
   // Extract
   std::vector<float> vertices;
   std::vector<int> indices;
-  // std::unordered_map<GeoAttr, bool> hasAttrs = {
-  //   {GeoAttr::POS, false},
-  //   {GeoAttr::NORMAL, false},
-  //   {GeoAttr::UV, false},
-  //   {GeoAttr::COLOR, false},
-  //   {GeoAttr::TANGENT, false},
-  //   {GeoAttr::BITANGENT, false}
-  // };
+  std::unordered_map<GeoAttr, bool> hasAttrs = {};
   std::vector<int> meshesOffsets;
   GLint indicesOffset = 0;
 
@@ -100,6 +93,7 @@ sp<ModelDataFull> AssetStore::loadModel(const std::string& path) {
       bool hasN = mesh->HasNormals();
       bool hasTB = mesh->HasTangentsAndBitangents();
       bool hasUV = mesh->HasTextureCoords(0);
+      bool hasColor = mesh->HasVertexColors(0);
       if (!hasN && !hasUV)
         throw std::runtime_error("Mesh has no normals or texture coordinates, skipping");
 
@@ -140,10 +134,11 @@ sp<ModelDataFull> AssetStore::loadModel(const std::string& path) {
       }
       indicesOffset += mesh->mNumVertices;
 
-      // hasAttrs[GeoAttr::UV] = hasAttrs[GeoAttr::UV] || hasUV;
-      // hasAttrs[GeoAttr::NORMAL] = hasAttrs[GeoAttr::NORMAL] || hasN;
-      // hasAttrs[GeoAttr::TANGENT] = hasAttrs[GeoAttr::TANGENT] || hasTB;
-      // hasAttrs[GeoAttr::BITANGENT] = hasAttrs[GeoAttr::BITANGENT] || hasTB;
+      if (hasUV) hasAttrs.insert_or_assign(GeoAttr::UV, hasUV);
+      if (hasN) hasAttrs.insert_or_assign(GeoAttr::NORMAL, hasN);
+      if (hasTB) hasAttrs.insert_or_assign(GeoAttr::TANGENT, hasTB);
+      if (hasTB) hasAttrs.insert_or_assign(GeoAttr::BITANGENT, hasTB);
+      if (hasColor) hasAttrs.insert_or_assign(GeoAttr::COLOR, hasColor);
   }
   bb.update();
 

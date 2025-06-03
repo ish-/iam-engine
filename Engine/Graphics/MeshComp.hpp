@@ -43,7 +43,6 @@ public:
   MeshComp(): AComp() {}
   MeshComp(const Conf& conf);
 
-  shared_ptr<Shader> shader;
   shared_ptr<Geo> geo;
   sp<class Material> material;
   bool culled = false;

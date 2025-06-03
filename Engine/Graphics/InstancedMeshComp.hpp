@@ -10,7 +10,6 @@ public:
     auto instancedMesh = make_shared<InstancedMeshComp>();
     instancedMesh->conf = meshComp->conf;
     instancedMesh->geo = meshComp->geo;
-    instancedMesh->shader = meshComp->shader;
     instancedMesh->material = meshComp->material;
     return instancedMesh;
   }
