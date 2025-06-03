@@ -30,17 +30,17 @@ struct Material {
     shader->setUniform("uNormalOffset", conf.normalOffset);
     shader->setUniform("uNormalStrength", conf.normalStrength);
 
-    useTexture(("Albedo"), albedoTex);
+    useTexture("Albedo", ALBEDO_UNIT, albedoTex);
   }
 
-  bool useTexture (const string& name, const sp<Texture> texture = nullptr) const {
-    bool useTexture = bool(texture);
+  bool useTexture (const string& name, const GLuint unit = 0, const sp<Texture> texture = nullptr) const {
+    bool use = !(texture == nullptr);
     GLint loc = shader->getUnformLocation("s" + name);
-    shader->setUniform("uUseAlbedo", useTexture);
+    shader->setUniform("uUseAlbedo", use);
     if (texture) {
-      texture->bind(0);
-      glUniform1i(loc, 0);
+      texture->activate(unit);
+      glUniform1i(loc, unit);
     }
-    return useTexture;
+    return use;
   }
 };

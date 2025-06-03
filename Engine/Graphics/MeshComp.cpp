@@ -35,6 +35,8 @@ void MeshComp::update (const float& dt) {
 }
 
 void MeshComp::init() {
+  material = PhongMaterial::getPtr();
+
   if (geo)
     return;
 
@@ -49,7 +51,6 @@ void MeshComp::init() {
   if (conf.autoInstancing)
     geo->instancesCount++;
 
-  material = PhongMaterial::getPtr();
 }
 
 // TODO: cache it since it's not update()d

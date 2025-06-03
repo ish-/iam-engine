@@ -4,8 +4,10 @@
 struct Texture {
   GLuint id;
   sp<Image> image;
+  std::string path;
+  int numChannels;
 
-  Texture (const std::string& path, int numChannels) {
+  Texture (const std::string& path, int numChannels): path(path), numChannels(numChannels) {
     image = std::make_shared<Image>(path, numChannels);
     create();
   }
@@ -14,7 +16,7 @@ struct Texture {
     create();
   }
 
-  void bind (GLuint unit) const {
+  void activate (GLuint unit) const {
     glActiveTexture(GL_TEXTURE0 + unit);
     glBindTexture(GL_TEXTURE_2D, id);
   }

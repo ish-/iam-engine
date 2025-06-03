@@ -12,12 +12,7 @@
 #include <unordered_map>
 using namespace std;
 
-using UniformValue = std::variant<float, int, std::array<float,4>>;
-struct Uniform
-{
-    std::string name;
-    UniformValue value;
-};
+#define ALBEDO_UNIT 0
 
 class Shader {
 public:
