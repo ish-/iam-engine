@@ -21,8 +21,8 @@ sp<ModelDataFull> AssetStore::loadModel(const std::string& path) {
   const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs);
 
   if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) {
-    std::cerr << "Error: " << importer.GetErrorString() << std::endl;
-    return nullptr;
+      std::cerr << "Error: " << importer.GetErrorString() << std::endl;
+      throw std::runtime_error("Failed to load model: " + path);
   }
   LOG("Model loaded", "Meshes: ", scene->mNumMeshes, "Materials: ", scene->mNumMaterials, "Textures: ", scene->mNumTextures, "Lights: ", scene->mNumLights, "Cameras: ", scene->mNumCameras);
   LOG("Root node", scene->mRootNode->mName.C_Str());
@@ -178,10 +178,20 @@ sp<ModelDataFull> AssetStore::loadModel(const std::string& path) {
 }
 
 void AssetStore::logChildren (const aiNode* node, int level) {
+  std::string name = node->mName.C_Str();
+  LOG("-- Child", name, node->mMetaData);
+  if (name == "off") return;
+
+  if (node->mMetaData != nullptr) {
+    for (int i = 0; i < node->mMetaData->mNumProperties; i++) {
+      aiString key, value;
+      aiMetadataEntry value2 = node->mMetaData->mValues[i];
+      node->mMetaData->Get(i, value);
+      key = node->mMetaData->mKeys[i].C_Str();
+      LOG("meta: ", key.C_Str(), " -> ", value.C_Str(), value2.mData ? value2.mData : "null");
+    }
+  }
   for (unsigned int i = 0; i < node->mNumChildren; i++) {
-    auto name = std::string(node->mChildren[i]->mName.C_Str());
-    if (name == "off") continue;
-    LOG("-- Child", name);
     logChildren(node->mChildren[i], level + 1);
   }
 }
