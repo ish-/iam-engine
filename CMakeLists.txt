@@ -30,6 +30,22 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_RELEASE ${LIBRARY_DIRECTORY})
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+# set(CMAKE_CXX_FLAGS_DEBUG "-gline-tables-only -O0") # try speedup
+set(CMAKE_XCODE_ATTRIBUTE_DEBUG_INFORMATION_FORMAT "dwarf") # try speedup
+
+# Ask for “DWARF” only, without generating dSYM
+set(CMAKE_BUILD_TYPE Debug)
+set(CMAKE_CXX_FLAGS_DEBUG "-g")
+set(CMAKE_C_FLAGS_DEBUG   "-g")
+set(CMAKE_MACOSX_RPATH ON)
+# set(CMAKE_OSX_ARCHITECTURES "x86_64;arm64")  # if universal
+# Instruct CMake not to create .dSYM bundles
+# set(CMAKE_SKIP_BUILD_RPATH TRUE)
+
+# set(CMAKE_BUILD_TYPE RelWithDebInfo)
+# set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-O2 -g")
+# set(CMAKE_C_FLAGS_RELWITHDEBINFO   "-O2 -g")
+
 # set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Werror")
 
@@ -70,9 +86,10 @@ target_link_libraries(${PROJECT_NAME} ${Engine})
 include(FetchContent)
 
 # !!!!!! SDL3
-set(SDL3_VERSION 3.2.2)
-find_package(SDL3 ${SDL3_VERSION} QUIET) # QUIET or REQUIRED
+set(SDL3_VERSION 3.2.16)
+# find_package(SDL3 ${SDL3_VERSION} QUIET) # QUIET or REQUIRED
 if (NOT SDL3_FOUND) # If there's none, fetch and build SDL3
+    message(STATUS "SDL3 not found, fetching SDL3 version ${SDL3_VERSION}...")
     include(FetchContent)
     if (UNIX)
         FetchContent_Declare(
@@ -88,7 +105,18 @@ if (NOT SDL3_FOUND) # If there's none, fetch and build SDL3
         FetchContent_MakeAvailable(SDL3)
     endif()
 endif()
+
+# if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+#     # Manually specify precompiled SDL3 paths
+#     # set(SDL3_LIBRARY "path/to/precompiled/sdl3_debug.lib") # Windows
+#     set(SDL3_INCLUDE_DIR "path/to/sdl3/include")
+#     target_include_directories(${Engine} PRIVATE ${SDL3_INCLUDE_DIR})
+#     target_link_libraries(${Engine} PRIVATE ${SDL3_LIBRARY})
+# else()
+#     target_link_libraries(${Engine} PRIVATE SDL3::SDL3)
+# endif()
 target_link_libraries(${Engine} SDL3::SDL3)
+
 
 # !!!!!! GLM
 FetchContent_Declare(

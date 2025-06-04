@@ -1,4 +1,12 @@
 {
+    // "cmake.debugger": "lldb","
+    "lldb.executable": "/usr/local/opt/llvm/bin/lldb",
+    "cmake.debugger": "lldb",
+    // "cmake.debugConfig": {
+    //     "type": "lldb",
+    //     "request": "launch",
+    //     "miDebuggerPath": "/usr/local/opt/llvm/bin/lldb"
+    // },
     "files.associations": {
         "memory": "cpp",
         "vector": "cpp",

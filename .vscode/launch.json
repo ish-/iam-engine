@@ -1,26 +1,24 @@
 {
   "version": "0.2.0",
-  "setupCommands": [
-    {
-      "text": "settings set target.load-script-from-symbol-file false"
-    },
-    {
-      "text": "settings set target.process.stop-on-sharedlibrary-events false"
-    },
-    {
-      "text": "settings set symbols.enable-external-lookup false"
-    }
-  ],
   "configurations": [
     {
       "name": "Debug iam-engine",
       "type": "lldb",
       "request": "launch",
-      "program": "${workspaceFolder}/build/bin/iam-engine",
+      // "program": "${workspaceFolder}/build/bin/iam-engine",
+      "program": "${command:cmake.launchTargetPath}",
+      "stopOnEntry": false,
+      "initCommands": [
+        "version",
+        "settings set target.import-std-module false",
+        "type summary clear",
+        "type synthetic clear",
+        "settings set auto-confirm true",
+        "type summary clear",
+        "type synthetic clear",
+      ],
       "args": [],
-      "cwd": "${workspaceFolder}",
-      "stopAtEntry": false,
-      "externalConsole": false
+      "cwd": "${workspaceFolder}/build/bin",
     }
   ]
 }
