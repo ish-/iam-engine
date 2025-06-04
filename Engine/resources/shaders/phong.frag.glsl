@@ -115,11 +115,11 @@ void main()
           albedo = vec3(1.0);
       }
 
-      LIGHTING += (diffuse * albedo + specular) * tintColor;
+      LIGHTING += (diffuse * albedo * tintColor + specular);
       // LIGHTING = pow(LIGHTING, vec3(1.0/2.2)); // gamma correction
     }
 
-    LIGHTING += (ambient * tintColor);
+    LIGHTING += ambient;
 		// if inside a mesh
 		// float inside = 1 - step(0, dot(viewDir, norm));
     // FragColor = vec4(result, inside * .3);

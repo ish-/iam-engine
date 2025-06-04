@@ -41,9 +41,10 @@ void DLScene1::init () {
   loadJson("resources/scenes/lvl_station.json");
   auto stationMesh = getActorByName("lvl_station")->getComp<MeshComp>();
   // stationMesh->material->conf.worldAlignedTexture = true;
-  stationMesh->material->uniforms.set("uUvScale", 10.f);
-  // stationMesh->material->albedoTex = AssetStore::get().loadTexture("scenes/likeabluenoise.jpg", 4);
-  // stationMesh->conf.tint = vec3(3.f);
+  stationMesh->material->uniforms.set("uUvScale", .3f);
+  stationMesh->material->uniforms.set("uWorldAlignedTexture", true);
+  stationMesh->material->uniforms.set("sAlbedo", AssetStore::get().loadTexture("scenes/likeabluenoise.jpg", 4));
+  stationMesh->conf.tint = vec3(3.f);
 
   asteroidMat = AssetStore::get().createMaterial<PhongMaterial>("asteroid", UniformsMap{
     {"sAlbedo", AssetStore::get().loadTexture("scenes/likeabluenoise.jpg", 4)},
