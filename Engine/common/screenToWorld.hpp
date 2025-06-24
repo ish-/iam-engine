@@ -1,8 +1,9 @@
+#pragma once
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-glm::vec3 screenToWorldDir(float mouseX, float mouseY, int screenWidth, int screenHeight,
+static glm::vec3 screenToWorldDir(float mouseX, float mouseY, int screenWidth, int screenHeight,
                            const glm::mat4& viewMatrix, const glm::mat4& projectionMatrix) {
     float ndcX = (2.0f * mouseX) / screenWidth - 1.0f;
     float ndcY = 1.0f - (2.0f * mouseY) / screenHeight;

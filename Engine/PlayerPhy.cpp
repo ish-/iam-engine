@@ -43,6 +43,7 @@ void PlayerPhy::init () {
     .pos = btVector3(posMat[3][0], posMat[3][1], posMat[3][2]),
     .mass = 1.,
     .damping = vec2(.3, .3),
+    .friction = .1f,
   // .group = PhysicsComp::PLAYER,
     // .initialImpulse = btVector3(rd::in(-10,10), rd::in(-10,10), rd::in(-10,10)),
   };
@@ -51,7 +52,9 @@ void PlayerPhy::init () {
   ctrlComp = scene->newComp<PlayerPhyCtrlComp>(shared());
 
   scene->newComp<HealthComp>(shared(), HealthComp::Conf{
+    .health = 10.,
     .regen = .03,
+    .maxHealth = 10.,
     .takeDamageCallback = [](const float& damage, sp<Actor> actor) {
       std::cout << "Player took " << damage << " damage" << endl;
     },
@@ -74,7 +77,8 @@ void PlayerPhy::update(const float &dt)
     using namespace ImGui;
     auto w = Window::get();
     Begin("HUD", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_AlwaysAutoResize);
-    ProgressBar(getComp<HealthComp>()->conf.health, ImVec2(180, 20), "HP");
+    auto healthConf = getComp<HealthComp>()->conf;
+    ProgressBar(healthConf.health / healthConf.maxHealth, ImVec2(180, 20), "HP");
     auto size = GetWindowSize();
     SetWindowPos(ImVec2(w.width / 2 - size.x / 2, w.height - size.y));
     End();

@@ -118,7 +118,7 @@ void AEnemy::update(const float& dt) {
     vec3 moveDir = dirToTarget;
     if (glm::length2(toTarget) < pow(conf.hauntMinDist, 2))
       moveDir = -moveDir;
-    phyComp->applyForce(moveDir * rotationDot);
+    phyComp->applyForce(moveDir * 1.f);
   }
 
   Actor::update(dt);
